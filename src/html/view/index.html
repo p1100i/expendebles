@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta content="text/html;charset=utf-8"                 http-equiv="Content-Type">
+    <meta content="IE=edge"                                 http-equiv="X-UA-Compatible">
+    <meta content="p1100i - p1100i@gmx.com"  name="author">
+    <meta content="Track/stat your personal finances."                      name="description">
+    <meta content="keywords"                                name="keywords">
+    <meta content="width=device-width, initial-scale=1.0"   name="viewport">
+
+    <title>expendebles</title>
+
+    <link rel="icon" href="image/favicon.ico">
+
+    <link type="text/css" rel="stylesheet" href="css/app.css">
+
+    <script type="text/javascript" src="js/bootstrap.js" defer></script>
+  </head>
+
+  <body data-ng-controller="appController as app" data-ng-class="app.bodyClass">
+    <div class="page-wrapper" >
+      <div class="content-frame" data-ng-include="'header.html'"></div>
+
+      <div class="content-wrapper">
+        <!-- ng-view works by using angular routing. -->
+        <!-- see: https://docs.angularjs.org/api/ngRoute/directive/ngView -->
+        <div class="content" data-ng-view=""></div>
+      </div>
+
+    </div>
+    <div class="content-frame" data-ng-include="'footer.html'"></div>
+  </body>
+</html>

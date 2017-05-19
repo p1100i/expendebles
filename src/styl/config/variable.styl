@@ -1,0 +1,78 @@
+/*
+ * Definition of all variables
+ */
+
+colors = {
+  // Some customr colors.
+  navy            : #001f3f,
+  blue            : #0074d9,
+  aqua            : #7fdbff,
+  teal            : #39cccc,
+  olive           : #3d9970,
+  green           : #2ecc40,
+  lime            : #01ff70,
+  yellow          : #ffdc00,
+  gold            : #daa520,
+  orange          : #ff851b,
+  red             : #ff4136,
+  maroon          : #85144B,
+  fuchsia         : #f012be,
+  purple          : #b10dc9,
+  white           : #fefefe
+
+  // 50 shades of grey.
+  grey-white      : #eeeeee,
+  grey-light      : #aeb7b5,
+  grey            : #556368,
+  grey-dark       : #404750,
+  grey-black      : #202020,
+
+  // Terminal solarized colors,
+  solarized-0     : #2e3436,
+  solarized-1     : #c05350,
+  solarized-2     : #729533,
+  solarized-3     : #ba8a33,
+  solarized-4     : #4b8cba,
+  solarized-5     : #ba5586,
+  solarized-6     : #4d9994,
+  solarized-7     : #d3d7cf,
+  solarized-8     : #555753,
+  solarized-9     : #e95c59,
+  solarized-10    : #8cbe33,
+  solarized-11    : #e3a533,
+  solarized-12    : #52a6e3,
+  solarized-13    : #e3609e,
+  solarized-14    : #58c2ba,
+  solarized-15    : #eeeeec,
+  solarized-16    : #4d4d63,
+  solarized-17    : #a83030,
+  solarized-18    : #208820,
+  solarized-19    : #a88800
+}
+
+text-color(c)
+  color : c
+
+bg-color(c)
+  background-color : c
+
+for name, value in colors
+  // Defined $COLOR_NAME variable to use it anywhere else.
+  define('$' + name, value, true)
+
+  // Define .text-<color> classes.
+  .text-{name}
+    text-color(value)
+
+  // Define .bg-<color> classes.
+  .bg-{name}
+    bg-color(value)
+
+// Some extra variable definitions.
+$shadow-color   = #a1a1a1
+$selected-color = $teal
+
+$header-height  = 38px
+$footer-height  = 35px
+$content-width  = 800px
+$border-radius  = 8px

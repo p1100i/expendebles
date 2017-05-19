@@ -1,0 +1,66 @@
+body
+  background-color $grey-white
+
+div.page-wrapper
+  height      auto
+  min-height  100%
+
+div.content-frame
+  min-width $content-width
+
+div.content-wrapper
+  width           $content-width
+  margin          0 auto
+  padding-top     $header-height
+  display         table
+  padding-bottom  $footer-height + 50px
+
+div.content
+  margin-top 30px
+  padding 0 20px
+
+table.header
+  color             white
+  position          fixed
+  width             100%
+  height            $header-height
+  background-color  $grey-dark
+  mix-user-select(none)
+
+  a.menu-button
+    height $header-height
+
+  span.menu-title
+    line-height $header-height
+
+table.footer
+  width             100%
+  color             white
+  clear             both
+  position          relative
+  height            $footer-height
+  margin-top        -1 * $footer-height
+  background-color  $grey-dark
+
+  a.menu-button
+    height $footer-height
+
+  span.menu-title
+    line-height $footer-height
+
+i.icon
+  font-size 26px
+  vertical-align middle
+  margin-left 5px
+
+a.menu-button
+  display         inline-block
+  color           $grey-white
+  padding         0 10px
+  vertical-align  middle
+  &:hover
+    color white
+    background-color $grey
+
+span.app-name
+  font-size 18px

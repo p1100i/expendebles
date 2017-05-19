@@ -1,0 +1,19 @@
+<table class="text-center bg-white shadow colors">
+  <tbody>
+    <tr>
+      <td colspan="5">Custom colors</td>
+    </tr>
+
+    <tr data-ng-repeat="customColorSet in help.customColorSets">
+      <td class="text-white" data-ng-class="'bg-' + name" data-ng-bind="'bg-' + name" data-ng-repeat="name in customColorSet"></td>
+    </tr>
+
+    <tr>
+      <td class="separator" colspan="5">Solarized colors</td>
+    </tr>
+
+    <tr data-ng-repeat="solarizedColorSet in help.solarizedColorSets">
+      <td class="text-white" data-ng-class="'bg-' + name" data-ng-bind="'bg-' + name" data-ng-repeat="name in solarizedColorSet"></td>
+    </tr>
+  </tbody>
+</table>
