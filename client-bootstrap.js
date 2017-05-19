@@ -82,6 +82,8 @@ var
       'controller/about-controller',
       'controller/app-controller',
       'controller/help-controller',
+      'controller/register-controller',
+      'controller/statistic-controller',
       'directive/help-directive',
       'factory/setting-service'
     ], function (angular, app) {
