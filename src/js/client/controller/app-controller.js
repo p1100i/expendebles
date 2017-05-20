@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('appController', ['$location', 'settingService', function appControllerFactory($location, settingService) {
+  app.controller('appController', ['$location', function appControllerFactory($location) {
     var
       ctrl = this,
 

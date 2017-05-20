@@ -1,4 +1,4 @@
-describe('settingService', function () {
+describe('storageService', function () {
   var test;
 
   beforeEach(function () {
@@ -6,8 +6,8 @@ describe('settingService', function () {
 
     module('app');
 
-    inject(['settingService', function (settingService) {
-      test.service = settingService;
+    inject(['storageService', function (storageService) {
+      test.service = storageService;
     }]);
   });
 
@@ -18,18 +18,18 @@ describe('settingService', function () {
       });
     });
 
-    describe('with a property having default value', function () {
+    describe('with finance (a property w/ default value)', function () {
       it('should return the default value', function () {
-        expect(this.service.get('bodyClass')).toBe('simple');
+        expect(this.service.get('finance')).toEqual({});
       });
 
       describe('with a set on that property', function () {
         beforeEach(function () {
-          this.service.set('bodyClass', 'complex');
+          this.service.set('finance', 'x');
         });
 
         it('should return the newly set value', function () {
-          expect(this.service.get('bodyClass')).toBe('complex');
+          expect(this.service.get('finance')).toBe('x');
         });
       });
     });

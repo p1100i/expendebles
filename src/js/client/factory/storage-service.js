@@ -1,11 +1,11 @@
 define(['app'], function (app) {
-  app.factory('settingService', ['$rootScope', 'localStorageService', function settingServiceFactory($rootScope, localStorageService) {
+  app.factory('storageService', ['$rootScope', 'localStorageService', function storageServiceFactory($rootScope, localStorageService) {
     var
       DEFAULTS = {
-        'bodyClass' : 'simple'
+        'finance' : {}
       },
 
-      CURRENT_VERSION = '1',
+      CURRENT_VERSION = 1,
 
       get = function get(key) {
         var
@@ -17,7 +17,7 @@ define(['app'], function (app) {
       set = function set(key, value) {
         localStorageService.set(key, value);
 
-        $rootScope.$broadcast('settingChanged', key, value);
+        $rootScope.$broadcast('storageChanged', key, value);
       },
 
       init = function init() {

@@ -85,7 +85,8 @@ var
       'controller/register-controller',
       'controller/statistic-controller',
       'directive/help-directive',
-      'factory/setting-service'
+      'factory/finance-service',
+      'factory/storage-service'
     ], function (angular, app) {
       app.config(['$httpProvider', '$routeProvider', 'routeConfig', 'localStorageServiceProvider', function ($httpProvider, $routeProvider, routeConfig, localStorageServiceProvider) {
         var
