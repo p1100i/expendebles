@@ -1,3 +1,19 @@
 <div class="data-wrapper">
-  Import/export data
+  <h4>
+    Data exported to JSON
+  </h4>
+
+  <pre class="export" data-ng-bind="data.exportedJSON">
+  </pre>
+
+  <br>
+  <hr>
+  <br>
+
+  <h4>
+    Import JSON data
+  </h4>
+
+  <textarea class="import" data-ng-model="data.importedJSON" rows="30" cols="30"></textarea>
+  <input class="submit" type="button" value="Import" data-ng-click="data.importJSON(data.importedJSON)">
 </div>
