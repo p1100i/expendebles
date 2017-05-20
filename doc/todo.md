@@ -1,3 +1,7 @@
+- manage registered entries
+
+- add categories on registering
+
 + naiv data page
   + new blank page
   + display JSON.stringify of localStorage data
