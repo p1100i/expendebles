@@ -8,6 +8,10 @@ define(['app'], function (app) {
         storageService.set('finance', finance );
       },
 
+      getItems = function getItems() {
+        return finance.items;
+      },
+
       addItem = function addItem(amount) {
         amount = parseInt(amount);
 
@@ -39,8 +43,9 @@ define(['app'], function (app) {
     init();
 
     return {
-      'addItem' : addItem,
-      'getSum'  : getSum
+      'addItem'   : addItem,
+      'getItems'  : getItems,
+      'getSum'    : getSum
     };
   }]);
 });

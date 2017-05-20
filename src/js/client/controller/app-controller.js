@@ -5,6 +5,8 @@ define(['app'], function (app) {
 
       anchors = [],
 
+      DATE_FORMAT_SHORT = 'yyyy-MM-dd HH:mm',
+
       createAnchor = function createAnchor(text, href, title, icon) {
         return {
           'text'  : text,
@@ -38,6 +40,8 @@ define(['app'], function (app) {
         ctrl.anchors    = anchors;
         ctrl.debug      = debug;
         ctrl.isSelected = isSelected;
+
+        ctrl.DATE_FORMAT_SHORT = DATE_FORMAT_SHORT;
       };
 
     init();

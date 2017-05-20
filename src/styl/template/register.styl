@@ -2,8 +2,50 @@ div.register-wrapper
   text-align center
 
   input.sum
-    size2(236px, 60px)
+    size2(256px, 60px)
     font-size 36px
+    margin-bottom 5px
 
   input.submit
-    margin-top 5px
+    margin 5px 0
+
+  table.control, table.items
+    width 260px
+
+  table.items
+    font-size 12px
+
+    tr
+      height 30px
+
+    tr.selected
+      background-color $solarized-8
+
+      td.amount-cell
+        mix-border-tl-radius(10px)
+        mix-border-bl-radius(10px)
+
+      td.date-cell
+        mix-border-tr-radius(10px)
+        mix-border-br-radius(10px)
+
+    td.date-cell
+      width 150px
+
+    span.bubble
+      mix-border-radius($border-radius)
+      margin            5px
+      padding           2px 6px
+      color             white
+
+    span.date
+      background-color  $solarized-4
+
+    span.expense
+      background-color  $solarized-1
+
+    span.income
+      background-color  $solarized-2
+
+    span.edit
+      background-color  $solarized-8

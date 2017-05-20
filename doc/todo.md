@@ -1,4 +1,11 @@
-- manage registered entries
+- manage registered items
+  + display items
+  + select item for edit
+  - edit selected item
+    - amount
+    - +/-
+    - delete
+    - modify date
 
 - add categories on registering
 

@@ -1,12 +1,47 @@
 <div class="register-wrapper">
-  <table>
+  <table class="control">
     <tbody>
       <tr>
-        <td colspan="2"><input class="sum" type="tel" data-ng-model="register.data.amount"></td>
+        <td colspan="2"><input class="sum" type="tel" data-ng-model="register.amount"></td>
       </tr>
       <tr>
-        <td><input class="submit" type="button" value="+" data-ng-click="register.addIncome()"></td>
-        <td><input class="submit" type="button" value="-" data-ng-click="register.addExpense()"></td>
+        <td>
+          <input class="submit" type="button" value="+" data-ng-click="register.addIncome(register.amount)">
+        </td>
+        <td>
+          <input class="submit" type="button" value="-" data-ng-click="register.addExpense(register.amount)">
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input
+            class="submit submit-wide"
+            type="button"
+            value="{{ register.items ? 'Hide items' : 'Show items' }}"
+            data-ng-click="register.toggleItems()">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="items" data-ng-if="register.items">
+    <tbody>
+      <tr
+        data-ng-class="{ 'selected' : item === register.selectedItem }"
+        data-ng-repeat="item in register.items"
+        data-ng-click="register.selectItem(item)">
+        <td class="text-right amount-cell">
+          <span class="bubble amount" data-ng-class="{ true : 'income', false : 'expense'}[item.amount >= 0]">
+            <span data-ng-bind="item.amount"></span>
+            <i class="fa fa-cubes"></i>
+          </span>
+        </td>
+        <td class="text-right date-cell">
+          <span class="bubble date">
+            <span data-ng-bind="item.timestamp | date:app.DATE_FORMAT_SHORT"></span>
+            <i class="fa fa-calendar"></i>
+          </span>
+        </td>
       </tr>
     </tbody>
   </table>
