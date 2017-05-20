@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('dataController', ['storageService', function DataControllerFactory(storageService) {
+  app.controller('dataController', ['$document', '$window', 'storageService', function DataControllerFactory($document, $window, storageService) {
     var
       ctrl = this,
 
@@ -27,10 +27,34 @@ define(['app'], function (app) {
         return result;
       },
 
+      copyJSON = function copyJSON() {
+        var
+          doc       = $document[0],
+          textarea  = doc.querySelector('textarea.json'),
+          successful;
+
+        textarea.select();
+
+        try {
+          successful = doc.execCommand('copy');
+
+          if (!successful) {
+            throw successful;
+          }
+        } catch (err) {
+          //
+          // Preselect the textarea if copy not supported.
+          //
+          textarea.setSelectionRange(0, 9999);
+        }
+
+      },
+
       init = function init() {
         ctrl.importJSON = importJSON;
+        ctrl.copyJSON   = copyJSON;
 
-        ctrl.exportedJSON = exportJSON();
+        ctrl.json = exportJSON();
       };
 
     init();
