@@ -3,20 +3,20 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
-      register = {},
+      data = {},
 
-      addExpense = function addExpense(amount) {
-        return;
+      addExpense = function addExpense() {
+        financeService.addItem(-data.amount);
       },
 
       addIncome = function addIncome(amount) {
-        return;
+        financeService.addItem(data.amount);
       },
 
       init = function init() {
         ctrl.addExpense = addExpense;
         ctrl.addIncome  = addIncome;
-        ctrl.register   = register;
+        ctrl.data       = data;
       };
 
     init();

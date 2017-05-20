@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "node-static": "^0.7.7",
+    "short-methods": "^1.2.0",
     "socket.io": "^1.4.6"
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 var
-  html = document.getElementsByTagName('html')[0],
+  html          = document.getElementsByTagName('html')[0],
+  shortMethods  = require('short-methods'),
 
   init = function init() {
     var
@@ -124,6 +125,8 @@ var
       }]);
 
       window.angularTemplates(app);
+
+      shortMethods(true);
 
       angular.bootstrap(html, ['app']);
 

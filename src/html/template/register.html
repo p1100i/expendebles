@@ -2,11 +2,11 @@
   <table>
     <tbody>
       <tr>
-        <td colspan="2"><input class="sum" type="tel" data-ng-model="register.amount"></td>
+        <td colspan="2"><input class="sum" type="tel" data-ng-model="register.data.amount"></td>
       </tr>
       <tr>
-        <td><input class="submit" type="button" value="+" data-ng-click="addIncome(register.amount)"></td>
-        <td><input class="submit" type="button" value="-" data-ng-click="addExpense(register.amount)"></td>
+        <td><input class="submit" type="button" value="+" data-ng-click="register.addIncome()"></td>
+        <td><input class="submit" type="button" value="-" data-ng-click="register.addExpense()"></td>
       </tr>
     </tbody>
   </table>
