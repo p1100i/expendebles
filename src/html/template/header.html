@@ -1,19 +1,12 @@
 <table class="header shadow-bottom" role="navigation">
   <tbody>
     <tr>
-      <td class="text-left">
-        <a class="menu-button" href="#!/register" title="Register spendings"><span class="menu-title">/reg</span></a>
-      </td>
-      <td class="text-left">
-        <a class="menu-button" href="#!/statistic" title="Statistics"><span class="menu-title">/stat</span></a>
-      </td>
-      <td class="text-left">
-        <a class="menu-button" href="#!/help" title="Help"><span class="menu-title">/help</span></a>
-      </td>
-      <td class="text-right max">
-        <a class="menu-button" href="#!/" title="About">
-          <i class="icon fa fa-bank"></i>
-          <span class="app-name menu-title">expendebles</span>
+      <td
+        data-ng-repeat="anchor in app.anchors"
+        data-ng-class="{ 'text-right max last' : $last, 'selected' : app.isSelected(anchor) }">
+        <a class="anchor" href="{{anchor.href}}" title="{{anchor.title}}">
+          <i data-ng-if="anchor.icon" class="icon fa" data-ng-class="'fa-' + anchor.icon"></i>
+          <span class="anchor-title" data-ng-bind="anchor.text"></span>
         </a>
       </td>
     </tr>

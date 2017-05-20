@@ -24,28 +24,29 @@ table.header
   background-color  $grey-dark
   mix-user-select(none)
 
+  a.anchor
+    color           $grey-white
+    display         inline-block
+    font-size       13px
+    height          $header-height
+    padding         0 10px
+    vertical-align  middle
+    &:hover
+      background-color  $grey
+      color             white
+
+  span.anchor-title
+    line-height $header-height
+
+  i.icon
+    height $header-height
+    font-size 18px
+
   td.max
     width 99%
 
-  a.menu-button
-    height $header-height
+  td.last span.anchor-title
+    font-size 16px
 
-  span.menu-title
-    line-height $header-height
-
-i.icon
-  height $header-height
-  font-size 18px
-
-a.menu-button
-  font-size       13px
-  display         inline-block
-  color           $grey-white
-  padding         0 10px
-  vertical-align  middle
-  &:hover
-    color white
-    background-color $grey
-
-span.app-name
-  font-size 16px
+  td.selected a.anchor
+    background-color  $grey

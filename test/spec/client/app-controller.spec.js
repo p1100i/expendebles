@@ -7,19 +7,8 @@ describe('appController', function () {
     module('app');
 
     var
-      settingService = {
-        'get' : function () { return 'getValue'; }
-      },
-
-      spies = {
-        'settingService' : {
-          'get' : spyOn(settingService, 'get').and.callThrough()
-        }
-      },
-
-      dependencies = {
-        'settingService' : settingService
-      };
+      spies         = {},
+      dependencies  = {};
 
     inject(['$controller', function ($controller) {
       test.ctrl = $controller('appController', dependencies);
@@ -28,11 +17,7 @@ describe('appController', function () {
     this.spies = spies;
   });
 
-  it('should call settingService.get()', function () {
-    expect(this.spies.settingService.get).toHaveBeenCalledWith('bodyClass');
-  });
-
-  it('should set bodyclass', function () {
-    expect(this.ctrl.bodyClass).toBe('getValue');
+  it('should set anchors', function () {
+    expect(this.ctrl.anchors).toEqual(jasmine.any(Array));
   });
 });
