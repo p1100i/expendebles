@@ -17,7 +17,7 @@ define(['app'], function (app) {
       setMenu = function setMenu() {
         anchors.push(createAnchor('/reg',         '#!/register',  'Register spendings'));
         anchors.push(createAnchor('/stat',        '#!/statistic', 'View statistics'));
-        anchors.push(createAnchor('/help',        '#!/help',      'View help'));
+        anchors.push(createAnchor('/data',        '#!/data',      'Export/import data'));
         anchors.push(createAnchor('expendebles',  '#!/',          'About', 'bank'));
       },
 

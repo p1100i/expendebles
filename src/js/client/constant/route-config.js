@@ -37,7 +37,7 @@ define(['app'], function (app) {
         'about'     : createEntityConfig('aboutController',     'about',      'about.html',     ['/']),
         'register'  : createEntityConfig('registerController',  'register',   'register.html',  ['/register']),
         'stat'      : createEntityConfig('statisticController', 'statistic',  'statistic.html', ['/statistic']),
-        'help'      : createEntityConfig('helpController',      'help',       'help.html',      ['/help'])
+        'data'      : createEntityConfig('dataController',      'data',       'data.html',      ['/data'])
       });
     };
 
