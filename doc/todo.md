@@ -1,4 +1,5 @@
-- registration
-  - add plus icon w/ onclick adding item to localstorage
+- register an expense
+  + add plus/minus icon
+  - bind onclick to add expense
 
 + highlight selected/current anchor
