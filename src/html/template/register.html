@@ -2,7 +2,7 @@
   <table class="control">
     <tbody>
       <tr>
-        <td colspan="2">
+        <td colspan="4">
           <input
           class="sum"
           type="tel"
@@ -29,11 +29,27 @@
             value="-"
             data-ng-click="register.setSelectedExpense(true)">
         </td>
+        <td>
+          <input
+            class="submit delete"
+            data-ng-disabled="!register.isAmountValid(register.amount)"
+            type="button"
+            value="/del"
+            data-ng-click="register.deleteItem(register.selectedItem)">
+        </td>
+        <td>
+          <input
+            class="submit edit"
+            data-ng-disabled="!register.isAmountValid(register.amount)"
+            type="button"
+            value="/edit"
+            data-ng-click="register.setSelectedExpense(true)">
+        </td>
       </tr>
       <!-- <tr> -->
       <!--   <td colspan="2"> -->
       <!--     <input -->
-      <!--       class="submit submit-wide" -->
+      <!--       class="submit" -->
       <!--       type="button" -->
       <!--       value="{{ register.items ? 'Hide items' : 'Show items' }}" -->
       <!--       data-ng-click="register.toggleItems()"> -->

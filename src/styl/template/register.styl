@@ -5,17 +5,25 @@ div.register-wrapper
     font-size     36px
     margin-bottom 5px
     text-align    center
-    size2(256px, 60px)
+    size2($content-width - 4, 60px)
 
   input.submit
     margin 5px 0
-
-    &:not([disabled])
-      font-size 22px
+    size2($content-width / 4, 40px)
 
     &.selected
       font-weight bold
       font-size 30px
+
+    &.plus, &.minus
+      &:not([disabled])
+        font-size 22px
+
+    &.delete:not([disabled])
+      color $solarized-5
+
+    &.edit:not([disabled])
+      color $solarized-4
 
     &.plus.selected
       color $solarized-2
@@ -24,7 +32,7 @@ div.register-wrapper
       color $solarized-1
 
   table.control, table.items
-    width 260px
+    width $content-width
 
   table.items
     font-size 12px

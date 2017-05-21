@@ -3,6 +3,7 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
+      items,
       selectedItem,
 
       AMOUNT_DOT_REGEX = /[,]+/g,
@@ -63,6 +64,16 @@ define(['app'], function (app) {
         }
       },
 
+      deleteItem = function deleteItem(item) {
+        items.remove(item);
+
+        if (item === selectedItem) {
+          setSelectedItem();
+        }
+
+        financeService.save();
+      },
+
       isAmountValid = function isAmountValid(amount) {
         return parseAmount(amount) !== 0;
       },
@@ -76,13 +87,14 @@ define(['app'], function (app) {
       },
 
       init = function init() {
+        ctrl.deleteItem         = deleteItem;
         ctrl.formatAmount       = formatAmount;
         ctrl.isAmountValid      = isAmountValid;
         ctrl.onAmountChanged    = onAmountChanged;
         ctrl.selectItem         = selectItem;
         ctrl.setSelectedExpense = setSelectedExpense;
 
-        ctrl.items = financeService.getItems();
+        ctrl.items = items = financeService.getItems();
       };
 
     init();
