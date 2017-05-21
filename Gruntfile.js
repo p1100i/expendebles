@@ -281,6 +281,20 @@ module.exports = function runGrunt(grunt) {
         },
 
         'replace' : {
+          'build' : {
+            'options': {
+              'patterns': [{
+                'match'       : /'BUILD_DATE'/g,
+                'replacement' : Date.now()
+              }]
+            },
+
+            'files': [{
+              'src'   : ['build/precompiled/js/client-bootstrap.js'],
+              'dest'  : 'build/precompiled/js/client-bootstrap.js'
+            }]
+          },
+
           'coverage_client': {
             'options': {
               'patterns': [{
@@ -351,7 +365,7 @@ module.exports = function runGrunt(grunt) {
 
           'bootstrap' : {
             'files' : ['client-bootstrap.js'],
-            'tasks' : ['test:core', 'browserify', 'concat:compiled', 'test:client']
+            'tasks' : ['test:core', 'browserify', 'replace:build', 'concat:compiled', 'test:client']
           },
 
           'client' : {
@@ -402,6 +416,7 @@ module.exports = function runGrunt(grunt) {
         'clean:precompiled',
         'clean:compiled',
         'browserify',
+        'replace:build',
         'ngtemplates',
         'concat:compiled',
         'stylus:compiled',

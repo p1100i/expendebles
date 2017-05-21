@@ -32,7 +32,7 @@ table.header
     padding         0 10px
     vertical-align  middle
     &:hover
-      background-color  $grey
+      background-color  $grey-light
       color             white
 
   span.anchor-title
@@ -42,8 +42,12 @@ table.header
     height $header-height
     font-size 18px
 
-  td.last span.anchor-title
-    font-size 16px
+  td.last
+    a
+      background-color $solarized-16
 
-  td.selected a.anchor
+    span.anchor-title
+      font-size 16px
+
+  td.selected a
     background-color  $grey

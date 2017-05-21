@@ -1,1 +1,23 @@
-About
+<div class="about-wrapper">
+  <h1>expendebles</h1>
+
+  <p>is a privacy respecting personal finance tracking webapp.</p>
+
+  <h4>Features:</h4>
+  <ul>
+    <li>- add/manage expenses/incomes (JSON-export/-import)</li>
+    <li>- view basic statistics about your cashflow (in-progress)</li>
+    <li>- full privacy (no tracking cookies / no backend requests)</li>
+    <li>- pure client-side app (you can use it w/o internet connection)</li>
+  </ul>
+
+  <h4>Version:</h4>
+  <span class="version" data-ng-bind="about.version"></span>
+  <span>(built {{about.buildDate | date:app.DATE_FORMAT}})</span>
+
+  <h4>Basics:</h4>
+  <ul>
+    <li>- add expense/income entries on <a href="#!/register">/reg</a> page</li>
+    <li>- export/import your app data on <a href="#!/data">/data</a> page</li>
+  </ul>
+</div>

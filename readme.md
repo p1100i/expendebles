@@ -11,7 +11,7 @@ Refresh the page any time you like, to get the newest features.
 
 ## Features
 - add/manage expenses/incomes (JSON-export/-import)
-- view basic statistics about your cashflow
+- view basic statistics about your cashflow (in-progress)
 - full privacy (no tracking cookies / no backend requests)
 - pure client-side app (you can use it w/o internet connection)
 
