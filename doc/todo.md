@@ -1,6 +1,10 @@
-- manage registered items
-  - modify date
-  - persist every change to storage
+- add categories on registering
+
+- after /data-clear the finance manager should be synced
+
++ manage registered items
+  + persist every change to storage
+  + modify date
   + delete
   + sort items by newest timestamp
   + change amount icon to symbolize +/-
@@ -11,10 +15,6 @@
   + remove visual negative amounts
   + edit amount
   + edit +/-
-
-- add categories on registering
-
-- after /data-clear the finance manager should be synced
 
 + naiv data page
   + new blank page

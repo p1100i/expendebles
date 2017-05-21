@@ -5,7 +5,24 @@ define(['app'], function (app) {
       finance,
 
       save = function save() {
-        storageService.set('finance', finance );
+        var
+          item,
+          len = items.length,
+          serializedItems = [];
+
+        while (len--) {
+          item = items[len];
+
+          serializedItems.push({
+            'timestamp' : item.timestamp,
+            'expense'   : item.expense,
+            'amount'    : item.amount
+          });
+        }
+
+        storageService.set('finance', {
+          'items' : serializedItems
+        });
       },
 
       getItems = function getItems() {
@@ -36,6 +53,9 @@ define(['app'], function (app) {
       },
 
       init = function init() {
+        var
+          item;
+
         finance = storageService.get('finance');
         items   = finance.items;
 
@@ -44,6 +64,15 @@ define(['app'], function (app) {
 
           save();
         }
+
+        var
+          len = items.length;
+
+        while (len--) {
+          item      = items[len];
+          item.date = new Date(item.timestamp);
+        }
+
       };
 
     init();

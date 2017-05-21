@@ -7,8 +7,13 @@ div.register-wrapper
     text-align    center
     size2($content-width - 4, 60px)
 
+  input.datetime
+    font-size     12px
+    margin-bottom 5px
+    width $content-width
+
   input.submit
-    margin 5px 0
+    margin 5px 0 10px
     size2($content-width / 4, 40px)
 
     &.selected
@@ -22,7 +27,7 @@ div.register-wrapper
     &.delete:not([disabled])
       color $solarized-5
 
-    &.edit:not([disabled])
+    &.more:not([disabled])
       color $solarized-4
 
     &.plus.selected
@@ -30,6 +35,10 @@ div.register-wrapper
 
     &.minus.selected
       color $solarized-1
+
+  input.submit-wide
+    size2($content-width, 40px)
+    margin-bottom 10px
 
   table.control, table.items
     width $content-width

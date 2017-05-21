@@ -18,34 +18,33 @@ define(['app'], function (app) {
         ctrl.amount = amount;
       },
 
-      setSelectedExpense = function setSelectedExpense(expense) {
-        if (!selectedItem) {
-          throw new Error('selected_item_needed');
-        }
-
-        selectedItem.expense = !!expense;
-
-        financeService.save();
-
-        // TODO loop to category selection.
-      },
-
-      clearSelected = function clearSelected() {
-        setInputAmount(0);
-      },
-
-      parseAmount = function parseAmount(amount) {
-        return Math.abs(parseFloat(amount) || 0);
-      },
-
       setSelectedItem = function setSelectedItem(item) {
         ctrl.selectedItem = selectedItem = (selectedItem === item ? undefined : item);
 
         if (selectedItem) {
           setInputAmount(selectedItem.amount);
         } else {
-          clearSelected();
+          setInputAmount(0);
         }
+      },
+
+      setSelectedExpense = function setSelectedExpense(expense) {
+        if (!selectedItem) {
+          throw new Error('selected_item_needed');
+        }
+
+        expense = !!expense;
+
+        if (selectedItem.expense !== expense) {
+          selectedItem.expense = expense;
+          financeService.save();
+        } else {
+          setSelectedItem();
+        }
+      },
+
+      parseAmount = function parseAmount(amount) {
+        return Math.abs(parseFloat(amount) || 0);
       },
 
       selectItem = function selectItem(item) {
@@ -86,13 +85,30 @@ define(['app'], function (app) {
         return parseAmount(amount).toLocaleString();
       },
 
+      showMoreItem = function showMoreItem(item) {
+        ctrl.more = true;
+      },
+
+      hideMoreItem = function hideMoreItem(item) {
+        ctrl.more = false;
+      },
+
+      onItemDateChanged = function onItemDateChanged(item) {
+        item.timestamp = item.date.getTime();
+
+        financeService.save();
+      },
+
       init = function init() {
         ctrl.deleteItem         = deleteItem;
         ctrl.formatAmount       = formatAmount;
+        ctrl.hideMoreItem       = hideMoreItem;
         ctrl.isAmountValid      = isAmountValid;
         ctrl.onAmountChanged    = onAmountChanged;
+        ctrl.onItemDateChanged  = onItemDateChanged;
         ctrl.selectItem         = selectItem;
         ctrl.setSelectedExpense = setSelectedExpense;
+        ctrl.showMoreItem       = showMoreItem;
 
         ctrl.items = items = financeService.getItems();
       };

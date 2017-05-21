@@ -1,7 +1,7 @@
 <div class="register-wrapper">
   <table class="control">
     <tbody>
-      <tr>
+      <tr data-ng-if="!register.more">
         <td colspan="4">
           <input
           class="sum"
@@ -10,7 +10,7 @@
           data-ng-change="register.onAmountChanged(register.amount)">
         </td>
       </tr>
-      <tr>
+      <tr data-ng-if="!register.more">
         <td>
           <input
             class="submit plus"
@@ -39,13 +39,34 @@
         </td>
         <td>
           <input
-            class="submit edit"
+            class="submit more"
             data-ng-disabled="!register.isAmountValid(register.amount)"
             type="button"
-            value="/edit"
-            data-ng-click="register.setSelectedExpense(true)">
+            value="/more"
+            data-ng-click="register.showMoreItem(register.selectedItem)">
         </td>
       </tr>
+
+      <tr data-ng-if="register.more">
+        <td colspan="4">
+          <input
+            class="datetime"
+            type="datetime-local"
+            data-ng-change="register.onItemDateChanged(register.selectedItem)"
+            data-ng-model="register.selectedItem.date" >
+        </td>
+      </tr>
+
+      <tr data-ng-if="register.more">
+        <td colspan="4">
+          <input
+            class="submit submit-wide"
+            type="button"
+            value="/done"
+            data-ng-click="register.hideMoreItem(register.selectedItem)">
+        </td>
+      </tr>
+
       <!-- <tr> -->
       <!--   <td colspan="2"> -->
       <!--     <input -->
