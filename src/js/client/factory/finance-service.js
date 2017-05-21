@@ -22,6 +22,7 @@ define(['app'], function (app) {
         var
           item = {
             'timestamp' : Date.now(),
+            'expense'   : true,
             'amount'    : amount
           };
 

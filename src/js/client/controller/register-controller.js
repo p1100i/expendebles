@@ -5,45 +5,39 @@ define(['app'], function (app) {
 
       selectedItem,
 
-      setAmount = function setAmount(amount) {
-        amount = Math.abs(amount) || 0;
+      AMOUNT_REGEX = /[^\d\.]*/g,
+
+      setInputAmount = function setInputAmount(amount) {
+        if (amount && amount.replace) {
+          amount = amount.replace(AMOUNT_REGEX, '');
+        }
 
         ctrl.amount = amount;
       },
 
-      addExpense = function addExpense(amount) {
-        financeService.addItem(-amount);
-        setAmount(0);
-      },
-
-      addIncome = function addIncome(amount) {
-        financeService.addItem(amount);
-        setAmount(0);
-      },
-
-      setAmountType = function setAmountType(positive, showCategories) {
-        ctrl.amountType = positive;
-
+      setSelectedExpense = function setSelectedExpense(expense) {
         if (!selectedItem) {
           throw new Error('selected_item_needed');
         }
 
-        if (showCategories) {
-          console.log('IMPLEMENT ME!');
-        }
+        selectedItem.expense = !!expense;
+
+        // TODO loop to category selection.
       },
 
       clearSelected = function clearSelected() {
-        setAmount(0);
-        setAmountType();
+        setInputAmount(0);
+      },
+
+      sanitizeAmount = function sanitizeAmount(amount) {
+        return Math.abs(parseFloat(amount) || 0);
       },
 
       setSelectedItem = function setSelectedItem(item) {
         ctrl.selectedItem = selectedItem = (selectedItem === item ? undefined : item);
 
         if (selectedItem) {
-          setAmount(selectedItem.amount);
-          setAmountType(selectedItem.amount >= 0);
+          setInputAmount(selectedItem.amount);
         } else {
           clearSelected();
         }
@@ -53,17 +47,15 @@ define(['app'], function (app) {
         setSelectedItem(item);
       },
 
-      sanitizeAmount = function sanitizeAmount(amount) {
-        return Math.abs(parseFloat(amount)) || 0;
-      },
-
       onAmountChanged = function onAmountChanged(amount) {
+        setInputAmount(amount);
+
         amount = sanitizeAmount(amount);
 
-        if (!selectedItem) {
-          setSelectedItem(financeService.addItem(amount));
+        if (selectedItem) {
+          selectedItem.amount = amount;
         } else {
-          selectedItem.amount = sanitizeAmount(amount);
+          setSelectedItem(financeService.addItem(amount));
         }
       },
 
@@ -71,13 +63,16 @@ define(['app'], function (app) {
         return sanitizeAmount(amount) !== 0;
       },
 
+      formatAmount = function formatAmount(amount) {
+        return Math.abs(amount);
+      },
+
       init = function init() {
-        ctrl.addExpense       = addExpense;
-        ctrl.addIncome        = addIncome;
-        ctrl.onAmountChanged  = onAmountChanged;
-        ctrl.selectItem       = selectItem;
-        ctrl.setAmountType    = setAmountType;
-        ctrl.isAmountValid    = isAmountValid;
+        ctrl.formatAmount       = formatAmount;
+        ctrl.isAmountValid      = isAmountValid;
+        ctrl.onAmountChanged    = onAmountChanged;
+        ctrl.selectItem         = selectItem;
+        ctrl.setSelectedExpense = setSelectedExpense;
 
         ctrl.items = financeService.getItems();
       };

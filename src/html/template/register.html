@@ -14,20 +14,20 @@
         <td>
           <input
             class="submit plus"
-            data-ng-class="{ 'selected' : register.amountType === true }"
+            data-ng-class="{ 'selected' : register.selectedItem && !register.selectedItem.expense }"
             data-ng-disabled="!register.isAmountValid(register.amount)"
             type="button"
             value="+"
-            data-ng-click="register.setAmountType(true, true)">
+            data-ng-click="register.setSelectedExpense(false)">
         </td>
         <td>
           <input
             class="submit minus"
+            data-ng-class="{ 'selected' : register.selectedItem && register.selectedItem.expense }"
             data-ng-disabled="!register.isAmountValid(register.amount)"
-            data-ng-class="{ 'selected' : register.amountType === false }"
             type="button"
             value="-"
-            data-ng-click="register.setAmountType(false, true)">
+            data-ng-click="register.setSelectedExpense(true)">
         </td>
       </tr>
       <!-- <tr> -->
@@ -49,8 +49,8 @@
         data-ng-repeat="item in register.items"
         data-ng-click="register.selectItem(item)">
         <td class="text-right amount-cell">
-          <span class="bubble amount" data-ng-class="{ true : 'income', false : 'expense'}[item.amount >= 0]">
-            <span data-ng-bind="item.amount"></span>
+          <span class="bubble amount" data-ng-class="{ true : 'expense', false : 'income'}[item.expense]">
+            <span data-ng-bind="register.formatAmount(item.amount)"></span>
             <i class="fa fa-cubes"></i>
           </span>
         </td>
