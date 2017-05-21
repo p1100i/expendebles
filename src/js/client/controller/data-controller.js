@@ -50,11 +50,35 @@ define(['app'], function (app) {
 
       },
 
+      setJSON = function setJSON() {
+        ctrl.json = exportJSON();
+      },
+
+      clear = function clear() {
+        var
+          confirmMessage,
+          confirmed;
+
+        confirmMessage  = [
+          'Are you sure?',
+          'By hitting OK you will erase all registered entries from before.'
+        ].join('\n\n');
+
+        confirmed = $window.confirm(confirmMessage);
+
+        if (confirmed) {
+          storageService.clear();
+        }
+
+        setJSON();
+      },
+
       init = function init() {
         ctrl.importJSON = importJSON;
         ctrl.copyJSON   = copyJSON;
+        ctrl.clear      = clear;
 
-        ctrl.json = exportJSON();
+        setJSON();
       };
 
     init();

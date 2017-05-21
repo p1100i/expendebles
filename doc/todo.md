@@ -1,11 +1,12 @@
 - manage registered items
   + display items
   + select item for edit
-  - add all-clear for /data
+  + add all-clear for /data
+  - add undecided +/- amount color
+  - when selecting +/- change the selected item type
   - remove visual negative amounts
   - change amount icon to symbolize +/-
   - sort items by newest timestamp
-  - add undecided +/- amount color
   - edit selected item
     + amount
     - +/-

@@ -14,7 +14,7 @@ describe('storageService', function () {
   describe('.get()', function () {
     describe('with a property not set', function () {
       it('should return undefined', function () {
-        expect(this.service.get('something')).toBe(undefined);
+        expect(this.service.get('something')).toBe(null);
       });
     });
 

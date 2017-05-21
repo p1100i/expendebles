@@ -40,6 +40,8 @@ define(['app'], function (app) {
 
         if (!items) {
           items = finance.items = [];
+
+          save();
         }
       };
 

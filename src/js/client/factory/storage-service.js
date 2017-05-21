@@ -11,7 +11,13 @@ define(['app'], function (app) {
         var
           value = localStorageService.get(key);
 
-        return value === null ? DEFAULTS[key] : value;
+        if (value === null && DEFAULTS[key]) {
+          localStorageService.set(key, DEFAULTS[key]);
+
+          value = localStorageService.get(key);
+        }
+
+        return value;
       },
 
       set = function set(key, value) {
@@ -20,20 +26,30 @@ define(['app'], function (app) {
         $rootScope.$broadcast('storageChanged', key, value);
       },
 
-      init = function init() {
+      upgrade = function upgrade() {
         var
           version = localStorageService.get('version');
 
         if (!version) {
           localStorageService.set('version', CURRENT_VERSION);
         }
+      },
+
+      clear = function clear() {
+        localStorageService.clearAll();
+        upgrade();
+      },
+
+      init = function init() {
+        upgrade();
       };
 
     init();
 
     return {
-      'get' : get,
-      'set' : set
+      'clear' : clear,
+      'get'   : get,
+      'set'   : set
     };
   }]);
 });
