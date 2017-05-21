@@ -50,8 +50,8 @@
         data-ng-click="register.selectItem(item)">
         <td class="text-right amount-cell">
           <span class="bubble amount" data-ng-class="{ true : 'expense', false : 'income'}[item.expense]">
+            <i class="fa" data-ng-class="{ true : 'fa-minus-circle', false : 'fa-plus-circle'}[item.expense]"></i>
             <span data-ng-bind="register.formatAmount(item.amount)"></span>
-            <i class="fa fa-cubes"></i>
           </span>
         </td>
         <td class="text-right date-cell">

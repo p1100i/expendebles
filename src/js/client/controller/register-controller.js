@@ -5,11 +5,13 @@ define(['app'], function (app) {
 
       selectedItem,
 
-      AMOUNT_REGEX = /[^\d\.]*/g,
+      AMOUNT_DOT_REGEX = /[,]+/g,
+      AMOUNT_REMOVE_REGEX = /[^\d\.]*/g,
 
       setInputAmount = function setInputAmount(amount) {
         if (amount && amount.replace) {
-          amount = amount.replace(AMOUNT_REGEX, '');
+          amount = amount.replace(AMOUNT_DOT_REGEX, '.');
+          amount = amount.replace(AMOUNT_REMOVE_REGEX, '');
         }
 
         ctrl.amount = amount;
@@ -22,6 +24,8 @@ define(['app'], function (app) {
 
         selectedItem.expense = !!expense;
 
+        financeService.save();
+
         // TODO loop to category selection.
       },
 
@@ -29,7 +33,7 @@ define(['app'], function (app) {
         setInputAmount(0);
       },
 
-      sanitizeAmount = function sanitizeAmount(amount) {
+      parseAmount = function parseAmount(amount) {
         return Math.abs(parseFloat(amount) || 0);
       },
 
@@ -50,7 +54,7 @@ define(['app'], function (app) {
       onAmountChanged = function onAmountChanged(amount) {
         setInputAmount(amount);
 
-        amount = sanitizeAmount(amount);
+        amount = parseAmount(amount);
 
         if (selectedItem) {
           selectedItem.amount = amount;
@@ -60,11 +64,15 @@ define(['app'], function (app) {
       },
 
       isAmountValid = function isAmountValid(amount) {
-        return sanitizeAmount(amount) !== 0;
+        return parseAmount(amount) !== 0;
       },
 
       formatAmount = function formatAmount(amount) {
-        return Math.abs(amount);
+        //
+        // amount = parseAmount(amount).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        //
+
+        return parseAmount(amount).toLocaleString();
       },
 
       init = function init() {

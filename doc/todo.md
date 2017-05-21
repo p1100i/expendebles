@@ -1,9 +1,9 @@
 - manage registered items
-  - change amount icon to symbolize +/-
   - sort items by newest timestamp
   - delete
   - modify date
   - persist every change to storage
+  + change amount icon to symbolize +/-
   + display items
   + select item for edit
   + add all-clear for /data
