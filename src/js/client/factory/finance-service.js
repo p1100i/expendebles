@@ -19,12 +19,15 @@ define(['app'], function (app) {
           throw new Error('invalid_amount');
         }
 
-        items.push({
-          'timestamp' : Date.now(),
-          'amount'    : amount
-        });
+        var
+          item = {
+            'timestamp' : Date.now(),
+            'amount'    : amount
+          };
 
-        save();
+        items.push(item);
+
+        return item;
       },
 
       getSum = function getSum() {
@@ -45,7 +48,8 @@ define(['app'], function (app) {
     return {
       'addItem'   : addItem,
       'getItems'  : getItems,
-      'getSum'    : getSum
+      'getSum'    : getSum,
+      'save'      : save
     };
   }]);
 });

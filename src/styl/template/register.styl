@@ -9,6 +9,19 @@ div.register-wrapper
   input.submit
     margin 5px 0
 
+    &:not([disabled])
+      font-size 22px
+
+    &.selected
+      font-weight bold
+      font-size 30px
+
+    &.plus.selected
+      color $solarized-2
+
+    &.minus.selected
+      color $solarized-1
+
   table.control, table.items
     width 260px
 
@@ -18,16 +31,16 @@ div.register-wrapper
     tr
       height 30px
 
-    tr.selected
-      background-color $solarized-8
+      &.selected
+        background-color $solarized-8
 
-      td.amount-cell
-        mix-border-tl-radius(10px)
-        mix-border-bl-radius(10px)
+        td.amount-cell
+          mix-border-tl-radius(10px)
+          mix-border-bl-radius(10px)
 
-      td.date-cell
-        mix-border-tr-radius(10px)
-        mix-border-br-radius(10px)
+        td.date-cell
+          mix-border-tr-radius(10px)
+          mix-border-br-radius(10px)
 
     td.date-cell
       width 150px

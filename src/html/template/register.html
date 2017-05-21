@@ -2,25 +2,43 @@
   <table class="control">
     <tbody>
       <tr>
-        <td colspan="2"><input class="sum" type="tel" data-ng-model="register.amount"></td>
-      </tr>
-      <tr>
-        <td>
-          <input class="submit" type="button" value="+" data-ng-click="register.addIncome(register.amount)">
-        </td>
-        <td>
-          <input class="submit" type="button" value="-" data-ng-click="register.addExpense(register.amount)">
-        </td>
-      </tr>
-      <tr>
         <td colspan="2">
           <input
-            class="submit submit-wide"
-            type="button"
-            value="{{ register.items ? 'Hide items' : 'Show items' }}"
-            data-ng-click="register.toggleItems()">
+          class="sum"
+          type="tel"
+          data-ng-model="register.amount"
+          data-ng-change="register.onAmountChanged(register.amount)">
         </td>
       </tr>
+      <tr>
+        <td>
+          <input
+            class="submit plus"
+            data-ng-class="{ 'selected' : register.amountType === true }"
+            data-ng-disabled="!register.isAmountValid(register.amount)"
+            type="button"
+            value="+"
+            data-ng-click="register.setAmountType(true, true)">
+        </td>
+        <td>
+          <input
+            class="submit minus"
+            data-ng-disabled="!register.isAmountValid(register.amount)"
+            data-ng-class="{ 'selected' : register.amountType === false }"
+            type="button"
+            value="-"
+            data-ng-click="register.setAmountType(false, true)">
+        </td>
+      </tr>
+      <!-- <tr> -->
+      <!--   <td colspan="2"> -->
+      <!--     <input -->
+      <!--       class="submit submit-wide" -->
+      <!--       type="button" -->
+      <!--       value="{{ register.items ? 'Hide items' : 'Show items' }}" -->
+      <!--       data-ng-click="register.toggleItems()"> -->
+      <!--   </td> -->
+      <!-- </tr> -->
     </tbody>
   </table>
 
