@@ -1,6 +1,6 @@
-- add categories on registering
-
 - after /data-clear the finance manager should be synced
+
++ add categories on registering
 
 + manage registered items
   + persist every change to storage

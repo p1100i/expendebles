@@ -1,12 +1,13 @@
 define(['app'], function (app) {
-  app.controller('registerController', ['financeService', function registerControllerFactory(financeService) {
+  app.controller('registerController', ['$scope', 'financeService', 'settingService', function registerControllerFactory($scope, financeService, settingService) {
     var
       ctrl = this,
 
       items,
+      categories,
       selectedItem,
 
-      AMOUNT_DOT_REGEX = /[,]+/g,
+      AMOUNT_DOT_REGEX    = /[,]+/g,
       AMOUNT_REMOVE_REGEX = /[^\d\.]*/g,
 
       setInputAmount = function setInputAmount(amount) {
@@ -28,17 +29,19 @@ define(['app'], function (app) {
         }
       },
 
-      setSelectedExpense = function setSelectedExpense(expense) {
-        if (!selectedItem) {
-          throw new Error('selected_item_needed');
+      setExpense = function setExpense($event, item, expense) {
+        if (!item) {
+          throw new Error('item_needed');
         }
+
+        $event.stopPropagation();
 
         expense = !!expense;
 
-        if (selectedItem.expense !== expense) {
-          selectedItem.expense = expense;
+        if (item.expense !== expense) {
+          item.expense = expense;
           financeService.save();
-        } else {
+        } else if (item === selectedItem) {
           setSelectedItem();
         }
       },
@@ -47,7 +50,11 @@ define(['app'], function (app) {
         return Math.abs(parseFloat(amount) || 0);
       },
 
-      selectItem = function selectItem(item) {
+      selectItem = function selectItem($event, item) {
+        if ($event && $event.stopPropagation) {
+          $event.stopPropagation();
+        }
+
         setSelectedItem(item);
       },
 
@@ -61,9 +68,13 @@ define(['app'], function (app) {
         } else {
           setSelectedItem(financeService.addItem(amount));
         }
+
+        financeService.save();
       },
 
-      deleteItem = function deleteItem(item) {
+      deleteItem = function deleteItem($event, item) {
+        $event.stopPropagation();
+
         items.remove(item);
 
         if (item === selectedItem) {
@@ -85,12 +96,16 @@ define(['app'], function (app) {
         return parseAmount(amount).toLocaleString();
       },
 
-      showMoreItem = function showMoreItem(item) {
-        ctrl.more = true;
+      showItemExtra = function showItemExtra($event, item) {
+        $event.stopPropagation();
+
+        ctrl.ext = true;
       },
 
-      hideMoreItem = function hideMoreItem(item) {
-        ctrl.more = false;
+      hideItemExtra = function hideItemExtra($event, item) {
+        $event.stopPropagation();
+
+        ctrl.ext = false;
       },
 
       onItemDateChanged = function onItemDateChanged(item) {
@@ -99,18 +114,36 @@ define(['app'], function (app) {
         financeService.save();
       },
 
+      getCategoryIcon = function getCategoryIcon(name) {
+        return settingService.getCategoryIcon(name) || 'calendar';
+      },
+
+      setCategory = function setCategory($event, item, category) {
+        $event.stopPropagation();
+
+        item.category = category.name;
+
+        financeService.save();
+      },
+
       init = function init() {
+        $scope.$on('bodyClick', selectItem);
+
         ctrl.deleteItem         = deleteItem;
         ctrl.formatAmount       = formatAmount;
-        ctrl.hideMoreItem       = hideMoreItem;
+        ctrl.getCategoryIcon    = getCategoryIcon;
+        ctrl.hideItemExtra      = hideItemExtra;
         ctrl.isAmountValid      = isAmountValid;
         ctrl.onAmountChanged    = onAmountChanged;
         ctrl.onItemDateChanged  = onItemDateChanged;
         ctrl.selectItem         = selectItem;
-        ctrl.setSelectedExpense = setSelectedExpense;
-        ctrl.showMoreItem       = showMoreItem;
+        ctrl.setCategory        = setCategory;
+        ctrl.setExpense         = setExpense;
+        ctrl.showItemExtra      = showItemExtra;
 
-        ctrl.items = items = financeService.getItems();
+        ctrl.categories = categories  = settingService.getCategories();
+        ctrl.items      = items       = financeService.getItems();
+
       };
 
     init();

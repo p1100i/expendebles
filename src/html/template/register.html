@@ -1,7 +1,9 @@
 <div class="register-wrapper">
   <table class="control">
     <tbody>
-      <tr data-ng-if="!register.more">
+
+      <!-- register amount field -->
+      <tr data-ng-if="!register.ext">
         <td colspan="4">
           <input
           class="sum"
@@ -10,7 +12,9 @@
           data-ng-change="register.onAmountChanged(register.amount)">
         </td>
       </tr>
-      <tr data-ng-if="!register.more">
+
+      <!-- register 4-buttons: +/-/del/ext -->
+      <tr data-ng-if="!register.ext">
         <td>
           <input
             class="submit plus"
@@ -18,8 +22,9 @@
             data-ng-disabled="!register.isAmountValid(register.amount)"
             type="button"
             value="+"
-            data-ng-click="register.setSelectedExpense(false)">
+            data-ng-click="register.setExpense($event, register.selectedItem, false)">
         </td>
+
         <td>
           <input
             class="submit minus"
@@ -27,27 +32,30 @@
             data-ng-disabled="!register.isAmountValid(register.amount)"
             type="button"
             value="-"
-            data-ng-click="register.setSelectedExpense(true)">
+            data-ng-click="register.setExpense($event, register.selectedItem, true)">
         </td>
+
+        <td>
+          <input
+            class="submit ext"
+            data-ng-disabled="!register.isAmountValid(register.amount)"
+            type="button"
+            value="/ext"
+            data-ng-click="register.showItemExtra($event, register.selectedItem)">
+        </td>
+
         <td>
           <input
             class="submit delete"
             data-ng-disabled="!register.isAmountValid(register.amount)"
             type="button"
             value="/del"
-            data-ng-click="register.deleteItem(register.selectedItem)">
-        </td>
-        <td>
-          <input
-            class="submit more"
-            data-ng-disabled="!register.isAmountValid(register.amount)"
-            type="button"
-            value="/more"
-            data-ng-click="register.showMoreItem(register.selectedItem)">
+            data-ng-click="register.deleteItem($event, register.selectedItem)">
         </td>
       </tr>
 
-      <tr data-ng-if="register.more">
+      <!-- register:ext datetime field -->
+      <tr data-ng-if="register.ext">
         <td colspan="4">
           <input
             class="datetime"
@@ -57,25 +65,29 @@
         </td>
       </tr>
 
-      <tr data-ng-if="register.more">
+      <!-- register:ext category rows -->
+      <tr data-ng-if="register.ext" data-ng-repeat="category in register.categories">
+        <td class="text-left" colspan="4">
+          <span
+            class="bubble category"
+            data-ng-class="{ 'bg-solarized-12' : category.name === register.selectedItem.category }"
+            data-ng-click="register.setCategory($event, register.selectedItem, category)">
+            <i class="fa" data-ng-class="'fa-' + category.icon"></i>
+            <span data-ng-bind="category.name"></span>
+          </span>
+        </td>
+      </tr>
+
+      <!-- register:ext done -->
+      <tr data-ng-if="register.ext">
         <td colspan="4">
           <input
             class="submit submit-wide"
             type="button"
             value="/done"
-            data-ng-click="register.hideMoreItem(register.selectedItem)">
+            data-ng-click="register.hideItemExtra($event, register.selectedItem)">
         </td>
       </tr>
-
-      <!-- <tr> -->
-      <!--   <td colspan="2"> -->
-      <!--     <input -->
-      <!--       class="submit" -->
-      <!--       type="button" -->
-      <!--       value="{{ register.items ? 'Hide items' : 'Show items' }}" -->
-      <!--       data-ng-click="register.toggleItems()"> -->
-      <!--   </td> -->
-      <!-- </tr> -->
     </tbody>
   </table>
 
@@ -84,7 +96,7 @@
       <tr
         data-ng-class="{ 'selected' : item === register.selectedItem }"
         data-ng-repeat="item in register.items | orderBy : 'timestamp' : true"
-        data-ng-click="register.selectItem(item)">
+        data-ng-click="register.selectItem($event, item)">
         <td class="text-right amount-cell">
           <span class="bubble amount" data-ng-class="{ true : 'expense', false : 'income'}[item.expense]">
             <i class="fa" data-ng-class="{ true : 'fa-minus-circle', false : 'fa-plus-circle'}[item.expense]"></i>
@@ -94,7 +106,7 @@
         <td class="text-right date-cell">
           <span class="bubble date">
             <span data-ng-bind="item.timestamp | date:app.DATE_FORMAT_SHORT"></span>
-            <i class="fa fa-calendar"></i>
+            <i class="fa" data-ng-class="'fa-' + register.getCategoryIcon(item.category)"></i>
           </span>
         </td>
       </tr>

@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('appController', ['$location', function appControllerFactory($location) {
+  app.controller('appController', ['$rootScope', '$location', function appControllerFactory($rootScope, $location) {
     var
       ctrl = this,
 
@@ -34,12 +34,17 @@ define(['app'], function (app) {
         return anchor.href === path;
       },
 
+      onBodyClick = function onBodyClick() {
+        $rootScope.$broadcast('bodyClick');
+      },
+
       init = function init() {
         setMenu();
 
-        ctrl.anchors    = anchors;
-        ctrl.debug      = debug;
-        ctrl.isSelected = isSelected;
+        ctrl.onBodyClick  = onBodyClick;
+        ctrl.anchors      = anchors;
+        ctrl.debug        = debug;
+        ctrl.isSelected   = isSelected;
 
         ctrl.DATE_FORMAT_SHORT = DATE_FORMAT_SHORT;
       };

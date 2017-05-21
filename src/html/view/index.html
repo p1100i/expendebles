@@ -17,7 +17,7 @@
     <script type="text/javascript" src="js/bootstrap.js" defer></script>
   </head>
 
-  <body data-ng-controller="appController as app">
+  <body data-ng-controller="appController as app" data-ng-click="app.onBodyClick($event)">
     <div class="page-wrapper" >
       <div class="content-frame" data-ng-include="'header.html'"></div>
 

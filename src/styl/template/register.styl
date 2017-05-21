@@ -10,7 +10,7 @@ div.register-wrapper
   input.datetime
     font-size     12px
     margin-bottom 5px
-    width $content-width
+    width $content-width - 4
 
   input.submit
     margin 5px 0 10px
@@ -27,7 +27,7 @@ div.register-wrapper
     &.delete:not([disabled])
       color $solarized-5
 
-    &.more:not([disabled])
+    &.ext:not([disabled])
       color $solarized-4
 
     &.plus.selected
@@ -44,8 +44,6 @@ div.register-wrapper
     width $content-width
 
   table.items
-    font-size 12px
-
     tr
       height 30px
 
@@ -60,23 +58,33 @@ div.register-wrapper
           mix-border-tr-radius(10px)
           mix-border-br-radius(10px)
 
+
     td.date-cell
       width 150px
 
-    span.bubble
-      mix-border-radius($border-radius)
-      margin            5px
-      padding           2px 6px
-      color             white
+  span.bubble
+    mix-border-radius($border-radius)
+    margin        0 5px
+    padding       1px 6px
+    color         white
+    font-size     12px
+    display       block
+    height        18px
+    line-height   18px
 
-    span.date
-      background-color  $solarized-4
 
-    span.expense
-      background-color  $solarized-1
+  span.category
+    width   110px
+    display inline-block
 
-    span.income
-      background-color  $solarized-2
+  span.date, span.category
+    background-color  $solarized-4
 
-    span.edit
-      background-color  $solarized-8
+  span.expense
+    background-color  $solarized-1
+
+  span.income
+    background-color  $solarized-2
+
+  span.edit
+    background-color  $solarized-8

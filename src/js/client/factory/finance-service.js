@@ -1,8 +1,9 @@
 define(['app'], function (app) {
-  app.factory('financeService', ['$rootScope', 'storageService', function financeServiceFactory($rootScope, storageService) {
+  app.factory('financeService', ['$rootScope', 'settingService', 'storageService', function financeServiceFactory($rootScope, settingService, storageService) {
     var
       items,
       finance,
+      defaultCategoryName,
 
       save = function save() {
         var
@@ -14,9 +15,10 @@ define(['app'], function (app) {
           item = items[len];
 
           serializedItems.push({
-            'timestamp' : item.timestamp,
+            'amount'    : item.amount,
+            'category'  : item.category,
             'expense'   : item.expense,
-            'amount'    : item.amount
+            'timestamp' : item.timestamp
           });
         }
 
@@ -29,6 +31,35 @@ define(['app'], function (app) {
         return finance.items;
       },
 
+      extendItem = function extendItem(item, amount) {
+
+        if (!item) {
+          item = {};
+        }
+
+        if (!item.timestamp) {
+          item.timestamp  = Date.now();
+        }
+
+        if (item.expense === undefined) {
+          item.expense = true;
+        }
+
+        if (item.amount === undefined) {
+          item.amount = amount;
+        }
+
+        if (item.date === undefined) {
+          item.date = new Date(item.timestamp);
+        }
+
+        if (item.category === undefined) {
+          item.category = defaultCategoryName;
+        }
+
+        return item;
+      },
+
       addItem = function addItem(amount) {
         amount = parseInt(amount);
 
@@ -37,11 +68,7 @@ define(['app'], function (app) {
         }
 
         var
-          item = {
-            'timestamp' : Date.now(),
-            'expense'   : true,
-            'amount'    : amount
-          };
+          item = extendItem({}, amount);
 
         items.push(item);
 
@@ -53,11 +80,9 @@ define(['app'], function (app) {
       },
 
       init = function init() {
-        var
-          item;
-
-        finance = storageService.get('finance');
-        items   = finance.items;
+        defaultCategoryName = settingService.getDefaultCategory().name;
+        finance             = storageService.get('finance');
+        items               = finance.items;
 
         if (!items) {
           items = finance.items = [];
@@ -69,8 +94,7 @@ define(['app'], function (app) {
           len = items.length;
 
         while (len--) {
-          item      = items[len];
-          item.date = new Date(item.timestamp);
+          extendItem(items[len]);
         }
 
       };
