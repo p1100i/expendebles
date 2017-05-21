@@ -1,4 +1,4 @@
-- after /data-clear the finance manager should be synced
++ after /data-clear the finance manager should be synced
 
 + add categories on registering
 

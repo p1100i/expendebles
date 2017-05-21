@@ -79,7 +79,7 @@ define(['app'], function (app) {
         return finance.items.sum('amount');
       },
 
-      init = function init() {
+      sync = function sync() {
         defaultCategoryName = settingService.getDefaultCategory().name;
         finance             = storageService.get('finance');
         items               = finance.items;
@@ -96,7 +96,10 @@ define(['app'], function (app) {
         while (len--) {
           extendItem(items[len]);
         }
+      },
 
+      init = function init() {
+        sync();
       };
 
     init();
@@ -105,7 +108,8 @@ define(['app'], function (app) {
       'addItem'   : addItem,
       'getItems'  : getItems,
       'getSum'    : getSum,
-      'save'      : save
+      'save'      : save,
+      'sync'      : sync
     };
   }]);
 });

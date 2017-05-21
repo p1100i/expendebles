@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('dataController', ['$document', '$window', 'storageService', function DataControllerFactory($document, $window, storageService) {
+  app.controller('dataController', ['$document', '$window', 'financeService', 'storageService', function DataControllerFactory($document, $window, financeService, storageService) {
     var
       ctrl = this,
 
@@ -68,6 +68,7 @@ define(['app'], function (app) {
 
         if (confirmed) {
           storageService.clear();
+          financeService.sync();
         }
 
         setJSON();
