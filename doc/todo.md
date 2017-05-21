@@ -1,8 +1,8 @@
 - manage registered items
-  - sort items by newest timestamp
   - delete
   - modify date
   - persist every change to storage
+  + sort items by newest timestamp
   + change amount icon to symbolize +/-
   + display items
   + select item for edit
