@@ -1,6 +1,6 @@
 - 1.0.0
   - month based register
-    - /about page link should shrink on icon if not selected
+    + /about page link should shrink on icon if not selected
     - on normal page header menu should shrink
       - icon < to view all menu again
       - /<current-page> should be displayed

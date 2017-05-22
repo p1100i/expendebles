@@ -43,6 +43,10 @@ define(['app'], function (app) {
         return anchor.href === path;
       },
 
+      isAnchorTextShown = function isAnchorTextShown(anchor) {
+        return !anchor.icon || isSelected(anchor);
+      },
+
       onBodyClick = function onBodyClick() {
         $rootScope.$broadcast('bodyClick');
       },
@@ -52,10 +56,11 @@ define(['app'], function (app) {
 
         $rootScope.$on('debug', debug);
 
-        ctrl.anchors      = anchors;
-        ctrl.emptyDebug   = emptyDebug;
-        ctrl.isSelected   = isSelected;
-        ctrl.onBodyClick  = onBodyClick;
+        ctrl.anchors            = anchors;
+        ctrl.emptyDebug         = emptyDebug;
+        ctrl.isSelected         = isSelected;
+        ctrl.onBodyClick        = onBodyClick;
+        ctrl.isAnchorTextShown  = isAnchorTextShown;
 
         ctrl.DATE_FORMAT       = DATE_FORMAT;
         ctrl.DATE_FORMAT_SHORT = DATE_FORMAT_SHORT;

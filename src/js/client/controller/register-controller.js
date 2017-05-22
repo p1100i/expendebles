@@ -11,9 +11,7 @@ define(['app'], function (app) {
       lastValidAmount = 0,
 
       setAmountInput = function setAmountInput() {
-        if (!amountInput) {
-          amountInput = $window.document.getElementById('amount');
-        }
+        amountInput = $window.document.getElementById('amount');
       },
 
       focusInputAmount = function focusInputAmount() {
@@ -23,7 +21,7 @@ define(['app'], function (app) {
       },
 
       setInputAmount = function setInputAmount(amount) {
-        ctrl.amount = amount;
+        ctrl.amount = lastValidAmount = amount;
 
         focusInputAmount();
       },
@@ -59,6 +57,19 @@ define(['app'], function (app) {
         return Math.abs(parseFloat(amount) || 0);
       },
 
+      sanitizeAmount = function sanitizeAmount(amount) {
+        amount = parseAmount(amount);
+
+        var
+          amountStr = amount.toString();
+
+        if (amountStr.length > 9) {
+          amount = parseAmount(amountStr.substring(0, 9));
+        }
+
+        return amount;
+      },
+
       selectItem = function selectItem($event, item) {
         if ($event && $event.stopPropagation) {
           $event.stopPropagation();
@@ -79,12 +90,10 @@ define(['app'], function (app) {
 
         setAmountInput();
 
-        amount = parseAmount(amount);
-        len    = lastValidAmount.toString().length;
+        amount = sanitizeAmount(amount);
+        len    = lastValidAmount ? lastValidAmount.toString().length : 0;
 
-        if (amount) {
-          lastValidAmount = amount;
-        } else if (len > 1) {
+        if (!amount && len > 1) {
           amount = lastValidAmount;
         }
 
@@ -113,10 +122,10 @@ define(['app'], function (app) {
 
       formatAmount = function formatAmount(amount) {
         //
-        // amount = parseAmount(amount).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        // amount = sanitizeAmount(amount).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
         //
 
-        return parseAmount(amount).toLocaleString();
+        return sanitizeAmount(amount).toLocaleString();
       },
 
       showItemExtra = function showItemExtra($event, item) {

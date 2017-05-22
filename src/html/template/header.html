@@ -5,8 +5,14 @@
         data-ng-repeat="anchor in app.anchors"
         data-ng-class="{ 'text-right max last' : $last, 'selected' : app.isSelected(anchor) }">
         <a class="anchor" href="{{anchor.href}}" title="{{anchor.title}}">
-          <i data-ng-if="anchor.icon" class="icon fa" data-ng-class="'fa-' + anchor.icon"></i>
-          <span class="anchor-title" data-ng-bind="anchor.text"></span>
+          <i
+            data-ng-if="anchor.icon"
+            class="icon fa"
+            data-ng-class="'fa-' + anchor.icon"></i>
+          <span
+            data-ng-if="app.isAnchorTextShown(anchor)"
+            class="anchor-title"
+            data-ng-bind="anchor.text"></span>
         </a>
       </td>
     </tr>
