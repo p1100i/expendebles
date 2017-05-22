@@ -3,22 +3,43 @@
     <tbody>
       <tr>
         <td colspan="2">
-          <textarea class="json" data-ng-model="data.json" rows="20"></textarea>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <input class="submit" type="button" value="Import"  data-ng-click="data.importJSON(data.importedJSON)">
-        </td>
-        <td>
-          <input class="submit" type="button" value="Copy"    data-ng-click="data.copyJSON()">
+          <span>Serialized data:</span>
         </td>
       </tr>
 
       <tr>
         <td colspan="2">
-          <input class="submit submit-wide" type="button" value="Clear all APP data!" data-ng-click="data.clear()">
+          <textarea class="json" data-ng-model="data.json" rows="12"></textarea>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <input
+            class="submit"
+            type="button"
+            value="Import"
+            title="Import the serialized data displayed in the textarea above."
+            data-ng-click="data.importJSON(data.importedJSON)">
+        </td>
+        <td>
+          <input
+            class="submit"
+            type="button"
+            value="Copy"
+            title="Copy the serialized data displayed in the textarea above."
+            data-ng-click="data.copyJSON()">
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="2">
+          <input
+            class="submit submit-wide"
+            type="button"
+            value="Clear all APP data!"
+            title="Clear all your APP data, careful this is irreversible."
+            data-ng-click="data.clear()">
         </td>
       </tr>
     </tbody>

@@ -24,8 +24,16 @@ define(['app'], function (app) {
         anchors.push(createAnchor('expendebles',  '#!/',          'About', 'bank'));
       },
 
-      debug = function debug() {
-        debugger;
+      debug = function debug($event, msg, startDebug) {
+        ctrl.debug += ' ' + msg;
+
+        if (startDebug) {
+          debugger;
+        }
+      },
+
+      emptyDebug = function emptyDebug() {
+        ctrl.debug = undefined;
       },
 
       isSelected = function isSelected(anchor) {
@@ -42,10 +50,12 @@ define(['app'], function (app) {
       init = function init() {
         setMenu();
 
-        ctrl.onBodyClick  = onBodyClick;
+        $rootScope.$on('debug', debug);
+
         ctrl.anchors      = anchors;
-        ctrl.debug        = debug;
+        ctrl.emptyDebug   = emptyDebug;
         ctrl.isSelected   = isSelected;
+        ctrl.onBodyClick  = onBodyClick;
 
         ctrl.DATE_FORMAT       = DATE_FORMAT;
         ctrl.DATE_FORMAT_SHORT = DATE_FORMAT_SHORT;

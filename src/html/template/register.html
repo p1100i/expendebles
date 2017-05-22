@@ -1,4 +1,4 @@
-<div class="register-wrapper">
+<div class="register-wrapper" data-ng-click="register.stopEvent($event)">
   <table class="control">
     <tbody>
 
@@ -6,10 +6,12 @@
       <tr data-ng-if="!register.ext">
         <td colspan="4">
           <input
-          class="sum"
-          type="tel"
-          data-ng-model="register.amount"
-          data-ng-change="register.onAmountChanged(register.amount)">
+            id="amount"
+            class="sum"
+            type="number"
+            placeholder="Amount"
+            data-ng-model="register.amount"
+            data-ng-change="register.onAmountChanged(register.amount)">
         </td>
       </tr>
 

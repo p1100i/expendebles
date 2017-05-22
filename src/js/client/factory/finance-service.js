@@ -61,7 +61,7 @@ define(['app'], function (app) {
       },
 
       addItem = function addItem(amount) {
-        amount = parseInt(amount);
+        amount = parseFloat(amount);
 
         if (isNaN(amount)) {
           throw new Error('invalid_amount');

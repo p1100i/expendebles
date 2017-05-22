@@ -2,6 +2,10 @@ module.exports = function runGrunt(grunt) {
   var
     pkg = grunt.file.readJSON('package.json'),
 
+    getCommit = function getCommit() {
+      return require('child_process').spawnSync('git', ['rev-parse', '--short', 'HEAD']).stdout.toString().trim();
+    },
+
     registerTask = function registerTask(taskName, task) {
       grunt.registerTask(taskName, task);
     },
@@ -284,8 +288,10 @@ module.exports = function runGrunt(grunt) {
           'build' : {
             'options': {
               'patterns': [{
-                'match'       : /'BUILD_DATE'/g,
-                'replacement' : Date.now()
+                'json' : {
+                  'BUILD_DATE'    : Date.now(),
+                  'BUILD_COMMIT'  : getCommit()
+                }
               }]
             },
 

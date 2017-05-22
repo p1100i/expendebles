@@ -5,15 +5,17 @@ A privacy respecting personal finance tracking webapp, use it on my [GitHub IO P
 ## About
 `expendebles` uses [localStorage][mozilla-localStorage] for saving your data, hence it stays on your machine/phone.
 
-**No network connection needed**, except the initial page load. You can leave the loaded tab and use it forever.
+**No network connection needed**, except the initial page load. You can leave the loaded tab and use it forever, it won't use the internet.
 
-Refresh the page any time you like, to get the newest features.
+Refresh the page any time you like, to get the newest features (your data storage is versioned so the app will know how to upgrade).
 
 ## Features
-- add/manage expenses/incomes (JSON-export/-import)
-- view basic statistics about your cashflow (in-progress)
-- full privacy (no tracking cookies / no backend requests)
-- pure client-side app (you can use it w/o internet connection)
+- <b>add/manage</b> your transactions
+- <b>cashflow statistics</b> view
+- <b>full privacy</b> (no tracking cookies, etc.)
+- <b>pure client-side</b> app (w/o internetz)
+- <b>mobile friendly</b> layout
+- <b><a href="https://github.com/p1100i/expendebles">open source</a> / free</b>
 
 [github-io]: https://p1100i.github.io/expendebles
 [mozilla-localStorage]: https://developer.mozilla.org/en/docs/Web/API/Window/localStorage

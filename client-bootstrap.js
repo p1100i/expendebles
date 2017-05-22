@@ -80,7 +80,8 @@ var
       // Strings gets replaced on build time, by grunt.
       //
       return {
-        'date' : 'BUILD_DATE'
+        'date'    : '@@BUILD_DATE',
+        'commit'  : '@@BUILD_COMMIT'
       };
     });
 
@@ -100,6 +101,7 @@ var
       'controller/register-controller',
       'controller/statistic-controller',
       'directive/help-directive',
+      'factory/debug-service',
       'factory/finance-service',
       'factory/setting-service',
       'factory/storage-service'

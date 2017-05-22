@@ -5,19 +5,37 @@
 
   <h4>Features:</h4>
   <ul>
-    <li>- add/manage expenses/incomes (JSON-export/-import)</li>
-    <li>- view basic statistics about your cashflow (in-progress)</li>
-    <li>- full privacy (no tracking cookies / no backend requests)</li>
-    <li>- pure client-side app (you can use it w/o internet connection)</li>
+    <li>- <b>add/manage</b> your transactions</li>
+    <li>- <b>cashflow statistics</b> view
+    <li>- <b>full privacy</b> (no tracking cookies, etc.)</li>
+    <li>- <b>pure client-side</b> app (w/o internetz)</li>
+    <li>- <b>mobile friendly</b> layout</li>
+    <li>- <b><a href="https://github.com/p1100i/expendebles">open source</a> / free</b></li>
   </ul>
 
-  <h4>Version:</h4>
-  <span class="version" data-ng-bind="about.version"></span>
-  <span>(built {{about.buildDate | date:app.DATE_FORMAT}})</span>
+  <h4>Build info:</h4>
+  <ul>
+    <li>- <b>version:</b> {{about.version}}</li>
+    <li>- <b>commit:</b> {{about.buildCommit}}</li>
+    <li>- <b>unix time:</b> {{about.unixTime}}</li>
+    <li>- <b>local time:</b> {{about.buildDate | date:app.DATE_FORMAT}}</li>
+  </ul>
 
   <h4>Basics:</h4>
   <ul>
     <li>- add expense/income entries on <a href="#!/register">/reg</a> page</li>
     <li>- export/import your app data on <a href="#!/data">/data</a> page</li>
+  </ul>
+
+  <h4>Roadmap:</h4>
+  <ul>
+    <li>- more statistics / charts</li>
+    <li>- customizable categories</li>
+  </ul>
+
+  <h4>Other:</h4>
+  <ul>
+    <li>- <b><a href="https://github.com/p1100i/expendebles/issues">open an issue</a></b> if you need something</li>
+    <li>- created by <b><a href="https://twitter.com/p1100i">p1100i</a></b></li>
   </ul>
 </div>

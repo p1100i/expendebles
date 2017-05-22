@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('registerController', ['$scope', 'financeService', 'settingService', function registerControllerFactory($scope, financeService, settingService) {
+  app.controller('registerController', ['$scope', '$window', 'financeService', 'settingService', function registerControllerFactory($scope, $window, financeService, settingService) {
     var
       ctrl = this,
 
@@ -7,16 +7,26 @@ define(['app'], function (app) {
       categories,
       selectedItem,
 
-      AMOUNT_DOT_REGEX    = /[,]+/g,
-      AMOUNT_REMOVE_REGEX = /[^\d\.]*/g,
+      amountInput,
+      lastValidAmount = 0,
 
-      setInputAmount = function setInputAmount(amount) {
-        if (amount && amount.replace) {
-          amount = amount.replace(AMOUNT_DOT_REGEX, '.');
-          amount = amount.replace(AMOUNT_REMOVE_REGEX, '');
+      AMOUNT_DOT_REGEX    = /[,]+/g,
+      AMOUNT_REMOVE_REGEX = /[^\d\.]+/g,
+
+      focusInputAmount = function focusInputAmount() {
+        if (!amountInput) {
+          amountInput = $window.document.getElementById('amount');
         }
 
+        if (amountInput && amountInput.focus) {
+          amountInput.focus();
+        }
+      },
+
+      setInputAmount = function setInputAmount(amount) {
         ctrl.amount = amount;
+
+        focusInputAmount();
       },
 
       setSelectedItem = function setSelectedItem(item) {
@@ -25,7 +35,7 @@ define(['app'], function (app) {
         if (selectedItem) {
           setInputAmount(selectedItem.amount);
         } else {
-          setInputAmount(0);
+          setInputAmount();
         }
       },
 
@@ -55,13 +65,25 @@ define(['app'], function (app) {
           $event.stopPropagation();
         }
 
-        setSelectedItem(item);
+        if (item !== selectedItem || item !== undefined) {
+          setSelectedItem(item);
+        }
+      },
+
+      isAmountValid = function isAmountValid(amount) {
+        return amount !== undefined;
       },
 
       onAmountChanged = function onAmountChanged(amount) {
-        setInputAmount(amount);
-
         amount = parseAmount(amount);
+
+        if (amount) {
+          lastValidAmount = amount;
+        } else {
+          amount = lastValidAmount;
+        }
+
+        setInputAmount(amount);
 
         if (selectedItem) {
           selectedItem.amount = amount;
@@ -82,10 +104,6 @@ define(['app'], function (app) {
         }
 
         financeService.save();
-      },
-
-      isAmountValid = function isAmountValid(amount) {
-        return parseAmount(amount) !== 0;
       },
 
       formatAmount = function formatAmount(amount) {
@@ -126,6 +144,10 @@ define(['app'], function (app) {
         financeService.save();
       },
 
+      stopEvent = function stopEvent($event) {
+        $event.stopPropagation();
+      },
+
       init = function init() {
         $scope.$on('bodyClick', selectItem);
 
@@ -140,10 +162,10 @@ define(['app'], function (app) {
         ctrl.setCategory        = setCategory;
         ctrl.setExpense         = setExpense;
         ctrl.showItemExtra      = showItemExtra;
+        ctrl.stopEvent          = stopEvent;
 
         ctrl.categories = categories  = settingService.getCategories();
         ctrl.items      = items       = financeService.getItems();
-
       };
 
     init();
