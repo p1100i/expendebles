@@ -10,17 +10,16 @@ define(['app'], function (app) {
       amountInput,
       lastValidAmount = 0,
 
-      AMOUNT_DOT_REGEX    = /[,]+/g,
-      AMOUNT_REMOVE_REGEX = /[^\d\.]+/g,
-
-      focusInputAmount = function focusInputAmount() {
+      setAmountInput = function setAmountInput() {
         if (!amountInput) {
           amountInput = $window.document.getElementById('amount');
         }
+      },
 
-        if (amountInput && amountInput.focus) {
-          amountInput.focus();
-        }
+      focusInputAmount = function focusInputAmount() {
+        setAmountInput();
+
+        amountInput.focus();
       },
 
       setInputAmount = function setInputAmount(amount) {
@@ -75,11 +74,17 @@ define(['app'], function (app) {
       },
 
       onAmountChanged = function onAmountChanged(amount) {
+        var
+          len;
+
+        setAmountInput();
+
         amount = parseAmount(amount);
+        len    = lastValidAmount.toString().length;
 
         if (amount) {
           lastValidAmount = amount;
-        } else {
+        } else if (len > 1) {
           amount = lastValidAmount;
         }
 

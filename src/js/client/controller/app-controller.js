@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('appController', ['$rootScope', '$location', function appControllerFactory($rootScope, $location) {
+  app.controller('appController', ['$rootScope', '$location', '$window', 'debugService', function appControllerFactory($rootScope, $location, $window, debugService) {
     var
       ctrl = this,
 
@@ -59,6 +59,10 @@ define(['app'], function (app) {
 
         ctrl.DATE_FORMAT       = DATE_FORMAT;
         ctrl.DATE_FORMAT_SHORT = DATE_FORMAT_SHORT;
+
+        //
+        // $window.d = debugService;
+        //
       };
 
     init();
