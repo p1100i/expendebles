@@ -12,7 +12,9 @@
   },
   "main": "src/js/node/expendebles",
   "keywords": [
-    "expendebles"
+    "expendebles",
+    "cashflow",
+    "personal"
   ],
   "author": {
     "name": "p1100i",
@@ -21,8 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "node-static": "^0.7.7",
-    "short-methods": "^1.2.0",
-    "socket.io": "^1.4.6"
+    "short-methods": "^1.2.0"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
