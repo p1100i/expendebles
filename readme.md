@@ -1,6 +1,6 @@
 # expendebles [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
-A privacy respecting personal finance tracking webapp, use it on my [GitHub IO Page (p1100i.github.io/expendebles)][github-io].
+A free, privacy-respecting, <b>personal cashflow</b> webapp, use it on my [GitHub IO Page (p1100i.github.io/expendebles)][github-io].
 
 ## About
 `expendebles` uses [localStorage][mozilla-localStorage] for saving your data, hence it stays on your machine/phone.
