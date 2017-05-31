@@ -3,25 +3,31 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
-      anchors = [],
+      anchors     = [],
+      rootAnchor  = {},
 
       DATE_FORMAT       = 'yyyy-MM-dd HH:mm:ss',
       DATE_FORMAT_SHORT = 'yyyy-MM-dd HH:mm',
 
-      createAnchor = function createAnchor(text, href, title, icon) {
-        return {
-          'text'  : text,
-          'href'  : href,
-          'title' : title,
-          'icon'  : icon
-        };
+      createAnchor = function createAnchor(text, href, title, icon, anchor) {
+        if (!anchor) {
+          anchor = {};
+        }
+
+        anchor.text  = text;
+        anchor.href  = href;
+        anchor.title = title;
+        anchor.icon  = icon;
+
+        return anchor;
       },
 
       setMenu = function setMenu() {
         anchors.push(createAnchor('/reg',         '#!/register',  'Register spendings'));
         // anchors.push(createAnchor('/stat',        '#!/statistic', 'View statistics'));
         anchors.push(createAnchor('/data',        '#!/data',      'Export/import data'));
-        anchors.push(createAnchor('expendebles',  '#!/',          'About', 'bank'));
+
+        createAnchor('expendebles', '#!/', 'About', 'bank', rootAnchor);
       },
 
       debug = function debug($event, msg, startDebug) {
@@ -43,8 +49,12 @@ define(['app'], function (app) {
         return anchor.href === path;
       },
 
-      isAnchorTextShown = function isAnchorTextShown(anchor) {
-        return !anchor.icon || isSelected(anchor);
+      isRootAnchorSelected = function isRootAnchorSelected() {
+        return isSelected(rootAnchor);
+      },
+
+      getSelectedAnchor = function getSelectedAnchor() {
+        return anchors.find(isSelected);
       },
 
       onBodyClick = function onBodyClick() {
@@ -56,14 +66,15 @@ define(['app'], function (app) {
 
         $rootScope.$on('debug', debug);
 
-        ctrl.anchors            = anchors;
-        ctrl.emptyDebug         = emptyDebug;
-        ctrl.isSelected         = isSelected;
-        ctrl.onBodyClick        = onBodyClick;
-        ctrl.isAnchorTextShown  = isAnchorTextShown;
+        ctrl.anchors              = anchors;
+        ctrl.emptyDebug           = emptyDebug;
+        ctrl.isRootAnchorSelected = isRootAnchorSelected;
+        ctrl.onBodyClick          = onBodyClick;
+        ctrl.getSelectedAnchor    = getSelectedAnchor;
+        ctrl.rootAnchor           = rootAnchor;
 
-        ctrl.DATE_FORMAT       = DATE_FORMAT;
-        ctrl.DATE_FORMAT_SHORT = DATE_FORMAT_SHORT;
+        ctrl.DATE_FORMAT          = DATE_FORMAT;
+        ctrl.DATE_FORMAT_SHORT    = DATE_FORMAT_SHORT;
 
         //
         // $window.d = debugService;

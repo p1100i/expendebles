@@ -2,17 +2,44 @@
   <tbody>
     <tr>
       <td
-        data-ng-repeat="anchor in app.anchors"
-        data-ng-class="{ 'text-right max last' : $last, 'selected' : app.isSelected(anchor) }">
+        data-ng-if="app.isRootAnchorSelected()"
+        data-ng-repeat="anchor in app.anchors">
         <a class="anchor" href="{{anchor.href}}" title="{{anchor.title}}">
-          <i
-            data-ng-if="anchor.icon"
-            class="icon fa"
-            data-ng-class="'fa-' + anchor.icon"></i>
           <span
-            data-ng-if="app.isAnchorTextShown(anchor)"
             class="anchor-title"
             data-ng-bind="anchor.text"></span>
+        </a>
+      </td>
+
+      <td
+        class="icon"
+        data-ng-if="!app.isRootAnchorSelected()">
+        <a class="anchor" href="{{app.rootAnchor.href}}" title="{{app.rootAnchor.title}}">
+          <i class="icon fa fa-chevron-up"></i>
+        </a>
+      </td>
+
+      <td
+        data-ng-if="!app.isRootAnchorSelected()"
+        data-ng-init="anchor = app.getSelectedAnchor()">
+        <a class="anchor" href="{{anchor.href}}" title="{{anchor.title}}">
+          <span
+            class="anchor-title"
+            data-ng-bind="anchor.text"></span>
+        </a>
+      </td>
+
+      <td
+        class="text-right max icon"
+        data-ng-class="{ 'selected' : app.isRootAnchorSelected() }">
+        <a class="anchor" href="{{app.rootAnchor.href}}" title="{{app.rootAnchor.title}}">
+          <i
+            class="icon fa"
+            data-ng-class="'fa-' + app.rootAnchor.icon"></i>
+          <span
+            data-ng-if="app.isRootAnchorSelected(app.rootAnchor)"
+            class="anchor-title"
+            data-ng-bind="app.rootAnchor.text"></span>
         </a>
       </td>
     </tr>
