@@ -4,7 +4,14 @@ define(['app'], function (app) {
       CATEGORIES = [
         ['gro', 'groceries',  'shopping-cart'],
         ['uti', 'utility',    'wrench'],
-        ['sal', 'salary',     'money']
+        ['sal', 'salary',     'money'],
+        ['inv', 'investment', 'diamond'],
+        ['sho', 'shopping',   'shopping-bag'],
+        ['eat', 'eating',     'cutlery'],
+        ['hea', 'healthcare', 'medkit'],
+        ['fue', 'fuel',       'car'],
+        ['tra', 'transport',  'train'],
+        ['hol', 'holiday',    'suitcase']
       ],
 
       categories = [],

@@ -11,9 +11,9 @@
     + change every repeatable property to one character
     + use id-s instead of strings for category
 
-  - add favicon
+  + add more categories
 
-  - add more categories
+  - add favicon
 
   - basic statistics page
     - list cumulated sums for each category

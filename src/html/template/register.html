@@ -69,11 +69,12 @@
       </tr>
 
       <!-- register:ext category rows -->
-      <tr data-ng-if="register.ext" data-ng-repeat="category in register.categories">
-        <td class="text-left" colspan="4">
+      <tr data-ng-if="register.ext">
+        <td colspan="4">
           <span
             class="bubble category"
-            data-ng-class="{ 'bg-solarized-12' : category.name === register.selectedItem.category }"
+            data-ng-repeat="category in register.categories"
+            data-ng-class="{ 'bold bg-solarized-12' : category.id === register.selectedItem.category }"
             data-ng-click="register.setCategory($event, register.selectedItem, category)">
             <i class="fa" data-ng-class="'fa-' + category.icon"></i>
             <span data-ng-bind="category.name"></span>
