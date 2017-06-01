@@ -13,7 +13,7 @@
 
   + add more categories
 
-  - add favicon
+  + add favicon
 
   - basic statistics page
     - list cumulated sums for each category
