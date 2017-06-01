@@ -79,6 +79,10 @@ define(['app'], function (app) {
           $event.stopPropagation();
         }
 
+        if (ctrl.ext) {
+          return;
+        }
+
         if (item !== selectedItem || item !== undefined) {
           setSelectedItem(item);
         }

@@ -93,7 +93,7 @@
     </tbody>
   </table>
 
-  <table class="items" data-ng-if="register.items">
+  <table class="items" data-ng-class="{ 'disabled' : register.ext }" data-ng-if="register.items">
     <tbody>
       <tr
         data-ng-class="{ 'selected' : item === register.selectedItem }"
