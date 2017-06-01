@@ -7,17 +7,17 @@
     + header bar should display selected register month in mid
     + header bar should have arrows to paginate register month
 
+  - reduce persisted data size
+    + change every repeatable property to one character
+    - use id-s instead of strings for category
+
   - add favicon
 
-  - reduce persisted data size
-    - change every repeatable property to one syllable
-    - use id-s instead of strings
+  - add more categories
 
   - basic statistics page
     - list cumulated sums for each category
     - list full sum for the month (+/- bar)
-
-  - add more categories
 
   + after /data-clear the finance manager should be synced
 

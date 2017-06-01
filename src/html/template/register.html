@@ -24,7 +24,7 @@
             data-ng-disabled="!register.isAmountValid(register.amount)"
             type="button"
             value="+"
-            data-ng-click="register.setExpense($event, register.selectedItem, false)">
+            data-ng-click="register.setExpense($event, register.selectedItem, 0)">
         </td>
 
         <td>
@@ -34,7 +34,7 @@
             data-ng-disabled="!register.isAmountValid(register.amount)"
             type="button"
             value="-"
-            data-ng-click="register.setExpense($event, register.selectedItem, true)">
+            data-ng-click="register.setExpense($event, register.selectedItem, 1)">
         </td>
 
         <td>

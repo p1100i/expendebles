@@ -1,8 +1,8 @@
 define(['app'], function (app) {
   app.factory('financeService', ['$rootScope', 'settingService', 'storageService', function financeServiceFactory($rootScope, settingService, storageService) {
     var
-      items,
-      finance,
+      items = [],
+
       defaultCategoryName,
 
       save = function save() {
@@ -15,10 +15,10 @@ define(['app'], function (app) {
           item = items[len];
 
           serializedItems.push({
-            'amount'    : item.amount,
-            'category'  : item.category,
-            'expense'   : item.expense,
-            'timestamp' : item.timestamp
+            'a' : item.amount,
+            'c' : item.category,
+            'e' : item.expense ? 1 : 0,
+            't' : item.timestamp
           });
         }
 
@@ -28,11 +28,10 @@ define(['app'], function (app) {
       },
 
       getItems = function getItems() {
-        return finance.items;
+        return items;
       },
 
-      extendItem = function extendItem(item, amount) {
-
+      createItem = function createItem(item, amount) {
         if (!item) {
           item = {};
         }
@@ -60,6 +59,15 @@ define(['app'], function (app) {
         return item;
       },
 
+      deserialize = function deserialize(itemData) {
+        return {
+          'amount'    : itemData.a,
+          'category'  : itemData.c,
+          'expense'   : !!itemData.e,
+          'timestamp' : itemData.t
+        };
+      },
+
       addItem = function addItem(amount) {
         amount = parseFloat(amount);
 
@@ -68,7 +76,7 @@ define(['app'], function (app) {
         }
 
         var
-          item = extendItem({}, amount);
+          item = createItem({}, amount);
 
         items.push(item);
 
@@ -76,25 +84,25 @@ define(['app'], function (app) {
       },
 
       getSum = function getSum() {
-        return finance.items.sum('amount');
+        return items.sum('amount');
       },
 
       sync = function sync() {
         defaultCategoryName = settingService.getDefaultCategory().name;
-        finance             = storageService.get('finance');
-        items               = finance.items;
 
-        if (!items) {
-          items = finance.items = [];
+        var
+          serializedFinance = storageService.get('finance'),
+          serializedItems   = serializedFinance.items;
 
-          save();
+        if (!serializedItems) {
+          return;
         }
 
         var
-          len = items.length;
+          len = serializedItems.length;
 
         while (len--) {
-          extendItem(items[len]);
+          items.push(createItem(deserialize(serializedItems[len])));
         }
       },
 
