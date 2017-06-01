@@ -97,7 +97,7 @@
     <tbody>
       <tr
         data-ng-class="{ 'selected' : item === register.selectedItem }"
-        data-ng-repeat="item in register.items | orderBy : 'timestamp' : true"
+        data-ng-repeat="item in register.items | filter:register.isInInterval | orderBy : 'timestamp' : true"
         data-ng-click="register.selectItem($event, item)">
         <td class="text-right amount-cell">
           <span class="bubble amount" data-ng-class="{ true : 'expense', false : 'income'}[item.expense]">

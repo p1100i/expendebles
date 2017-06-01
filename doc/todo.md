@@ -1,11 +1,11 @@
 - 1.0.0
-  - month based register
+  + month based register
     + /about page link should shrink on icon if not selected
     + on normal page header menu should shrink
       + icon ^ to view all menu again
       + /<current-page> should be displayed
-    - header bar should display selected register month in mid
-    - header bar should have arrows to paginate register month
+    + header bar should display selected register month in mid
+    + header bar should have arrows to paginate register month
 
   - add favicon
 

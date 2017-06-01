@@ -1,7 +1,9 @@
 define(['app'], function (app) {
-  app.controller('registerController', ['$scope', '$window', 'financeService', 'settingService', function registerControllerFactory($scope, $window, financeService, settingService) {
+  app.controller('registerController', ['$scope', '$window', 'timeService', 'financeService', 'settingService', function registerControllerFactory($scope, $window, timeService, financeService, settingService) {
     var
       ctrl = this,
+
+      interval = timeService.getInterval(),
 
       items,
       categories,
@@ -162,6 +164,10 @@ define(['app'], function (app) {
         $event.stopPropagation();
       },
 
+      isInInterval = function isInInterval(item) {
+        return interval.beg <= item.timestamp && item.timestamp <= interval.end;
+      },
+
       init = function init() {
         $scope.$on('bodyClick', selectItem);
 
@@ -170,6 +176,7 @@ define(['app'], function (app) {
         ctrl.getCategoryIcon    = getCategoryIcon;
         ctrl.hideItemExtra      = hideItemExtra;
         ctrl.isAmountValid      = isAmountValid;
+        ctrl.isInInterval       = isInInterval;
         ctrl.onAmountChanged    = onAmountChanged;
         ctrl.onItemDateChanged  = onItemDateChanged;
         ctrl.selectItem         = selectItem;

@@ -104,7 +104,8 @@ var
       'factory/debug-service',
       'factory/finance-service',
       'factory/setting-service',
-      'factory/storage-service'
+      'factory/storage-service',
+      'factory/time-service'
     ], function (angular, app) {
       app.config(['$httpProvider', '$routeProvider', 'routeConfig', 'localStorageServiceProvider', function ($httpProvider, $routeProvider, routeConfig, localStorageServiceProvider) {
         var

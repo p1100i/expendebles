@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('appController', ['$rootScope', '$location', '$window', 'debugService', function appControllerFactory($rootScope, $location, $window, debugService) {
+  app.controller('appController', ['$rootScope', '$location', '$window', 'timeService', 'debugService', function appControllerFactory($rootScope, $location, $window, timeService, debugService) {
     var
       ctrl = this,
 
@@ -61,10 +61,25 @@ define(['app'], function (app) {
         $rootScope.$broadcast('bodyClick');
       },
 
+      stepInterval = function stepInterval(step) {
+        timeService.stepInterval(step);
+      },
+
+      onLocationChangeSuccess = function onLocationChangeSuccess() {
+        if (isRootAnchorSelected()) {
+          delete ctrl.interval;
+
+          return;
+        }
+
+        ctrl.interval = timeService.getInterval();
+      },
+
       init = function init() {
         setMenu();
 
-        $rootScope.$on('debug', debug);
+        $rootScope.$on('debug',                   debug);
+        $rootScope.$on('$locationChangeSuccess',  onLocationChangeSuccess);
 
         ctrl.anchors              = anchors;
         ctrl.emptyDebug           = emptyDebug;
@@ -72,10 +87,12 @@ define(['app'], function (app) {
         ctrl.onBodyClick          = onBodyClick;
         ctrl.getSelectedAnchor    = getSelectedAnchor;
         ctrl.rootAnchor           = rootAnchor;
+        ctrl.stepInterval         = stepInterval;
 
         ctrl.DATE_FORMAT          = DATE_FORMAT;
         ctrl.DATE_FORMAT_SHORT    = DATE_FORMAT_SHORT;
 
+        ctrl.selectedMonth = 'sep';
         //
         // $window.d = debugService;
         //
