@@ -20,6 +20,7 @@
       </td>
 
       <td
+        class="selected"
         data-ng-if="!app.isRootAnchorSelected()"
         data-ng-init="anchor = app.getSelectedAnchor()">
         <a class="anchor" href="{{anchor.href}}" title="{{anchor.title}}">
@@ -38,7 +39,7 @@
         </a>
         <!-- <a data-ng-if="app.interval" class="anchor"> -->
         <span
-          class="anchor-title"
+          class="bold"
           data-ng-if="app.interval"
           data-ng-bind="app.interval.title">
         </span>

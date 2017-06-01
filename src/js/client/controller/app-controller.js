@@ -42,7 +42,7 @@ define(['app'], function (app) {
         ctrl.debug = undefined;
       },
 
-      isSelected = function isSelected(anchor) {
+      isAnchorSelected = function isAnchorSelected(anchor) {
         var
           path = '#!' + $location.path();
 
@@ -50,11 +50,11 @@ define(['app'], function (app) {
       },
 
       isRootAnchorSelected = function isRootAnchorSelected() {
-        return isSelected(rootAnchor);
+        return isAnchorSelected(rootAnchor);
       },
 
       getSelectedAnchor = function getSelectedAnchor() {
-        return anchors.find(isSelected);
+        return anchors.find(isAnchorSelected);
       },
 
       onBodyClick = function onBodyClick() {
