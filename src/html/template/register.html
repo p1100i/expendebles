@@ -7,7 +7,7 @@
         <td colspan="4">
           <input
             id="amount"
-            class="sum"
+            class="amount"
             type="number"
             placeholder="Amount"
             data-ng-model="register.amount"
@@ -15,44 +15,45 @@
         </td>
       </tr>
 
-      <!-- register 4-buttons: +/-/del/ext -->
+      <!-- register 4-buttons: +/-/?/x -->
       <tr data-ng-if="!register.ext">
         <td>
-          <input
+          <button
             class="submit plus"
             data-ng-class="{ 'selected' : register.selectedItem && !register.selectedItem.expense }"
             data-ng-disabled="!register.isAmountValid(register.amount)"
-            type="button"
-            value="+"
+            type="submit"
             data-ng-click="register.setExpense($event, register.selectedItem, 0)">
+            <i class="fa fa-plus"></i>
         </td>
 
         <td>
-          <input
+          <button
             class="submit minus"
             data-ng-class="{ 'selected' : register.selectedItem && register.selectedItem.expense }"
             data-ng-disabled="!register.isAmountValid(register.amount)"
-            type="button"
-            value="-"
+            type="submit"
             data-ng-click="register.setExpense($event, register.selectedItem, 1)">
+            <i class="fa fa-minus"></i>
+          </button>
         </td>
 
         <td>
-          <input
+          <button
             class="submit ext"
             data-ng-disabled="!register.isAmountValid(register.amount)"
-            type="button"
-            value="?"
+            type="submit"
             data-ng-click="register.showItemExtra($event, register.selectedItem)">
+            <i class="fa fa-list"></i>
         </td>
 
         <td>
-          <input
+          <button
             class="submit delete"
             data-ng-disabled="!register.isAmountValid(register.amount)"
-            type="button"
-            value="x"
+            type="submit"
             data-ng-click="register.deleteItem($event, register.selectedItem)">
+            <i class="fa fa-trash-o"></i>
         </td>
       </tr>
 
@@ -83,11 +84,13 @@
       <!-- register:ext done -->
       <tr data-ng-if="register.ext">
         <td colspan="4">
-          <input
+          <button
             class="submit submit-wide"
-            type="button"
+            type="submit"
             value="/done"
             data-ng-click="register.hideItemExtra($event, register.selectedItem)">
+            <i class="fa fa-check-square-o"></i>Done
+          </button>
         </td>
       </tr>
     </tbody>
