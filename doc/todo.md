@@ -7,9 +7,9 @@
     + header bar should display selected register month in mid
     + header bar should have arrows to paginate register month
 
-  - reduce persisted data size
+  + reduce persisted data size
     + change every repeatable property to one character
-    - use id-s instead of strings for category
+    + use id-s instead of strings for category
 
   - add favicon
 

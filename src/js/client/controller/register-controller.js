@@ -19,7 +19,9 @@ define(['app'], function (app) {
       focusInputAmount = function focusInputAmount() {
         setAmountInput();
 
-        amountInput.focus();
+        if (amountInput) {
+          amountInput.focus();
+        }
       },
 
       setInputAmount = function setInputAmount(amount) {
@@ -148,14 +150,14 @@ define(['app'], function (app) {
         financeService.save();
       },
 
-      getCategoryIcon = function getCategoryIcon(name) {
-        return settingService.getCategoryIcon(name) || 'calendar';
+      getCategoryIcon = function getCategoryIcon(id) {
+        return settingService.getCategoryIcon(id) || 'calendar';
       },
 
       setCategory = function setCategory($event, item, category) {
         $event.stopPropagation();
 
-        item.category = category.name;
+        item.category = category.id;
 
         financeService.save();
       },

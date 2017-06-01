@@ -1,20 +1,27 @@
 define(['app'], function (app) {
   app.factory('settingService', ['storageService', function settingServiceFactory(storageService) {
     var
+      CATEGORIES = [
+        ['gro', 'groceries',  'shopping-cart'],
+        ['uti', 'utility',    'wrench'],
+        ['sal', 'salary',     'money']
+      ],
+
       categories = [],
 
       defaultCategory,
 
-      createCategory = function createCategory(name, icon) {
+      createCategory = function createCategory(id, name, icon) {
         return {
-          'name' : name,
-          'icon' : icon
+          'id'    : id,
+          'name'  : name,
+          'icon'  : icon
         };
       },
 
-      addCategory = function addCategory(name, icon) {
+      addCategory = function addCategory(id, name, icon) {
         var
-          category = createCategory(name, icon);
+          category = createCategory(id, name, icon);
 
         categories.push(category);
 
@@ -29,18 +36,26 @@ define(['app'], function (app) {
         return categories;
       },
 
-      getCategoryIcon = function getCategoryIcon(name) {
+      getCategoryIcon = function getCategoryIcon(id) {
         var
-          category = categories.get(name, 'name');
+          category = categories.get(id, 'id');
 
         return category && category.icon;
       },
 
       init = function init() {
-        defaultCategory = addCategory('groceries', 'shopping-cart');
+        var
+          i,
+          data,
+          len = CATEGORIES.length;
 
-        addCategory('utility', 'wrench');
-        addCategory('salary', 'money');
+        for (i = 0; i < len; i++) {
+          data = CATEGORIES[i];
+
+          addCategory(data[0], data[1], data[2]);
+        }
+
+        defaultCategory = categories[0];
       };
 
     init();

@@ -3,7 +3,7 @@ define(['app'], function (app) {
     var
       items = [],
 
-      defaultCategoryName,
+      defaultCategoryId,
 
       save = function save() {
         var
@@ -53,7 +53,7 @@ define(['app'], function (app) {
         }
 
         if (item.category === undefined) {
-          item.category = defaultCategoryName;
+          item.category = defaultCategoryId;
         }
 
         return item;
@@ -88,7 +88,7 @@ define(['app'], function (app) {
       },
 
       sync = function sync() {
-        defaultCategoryName = settingService.getDefaultCategory().name;
+        defaultCategoryId = settingService.getDefaultCategory().id;
 
         var
           serializedFinance = storageService.get('finance'),
