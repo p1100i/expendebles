@@ -1,4 +1,10 @@
 - 1.0.0
+  - basic statistics page
+    - list cumulated sums for each category
+    - list full sum for the month (+/- bar)
+
+  - add demo-data injection
+
   + month based register
     + /about page link should shrink on icon if not selected
     + on normal page header menu should shrink
@@ -14,10 +20,6 @@
   + add more categories
 
   + add favicon
-
-  - basic statistics page
-    - list cumulated sums for each category
-    - list full sum for the month (+/- bar)
 
   + after /data-clear the finance manager should be synced
 
@@ -51,3 +53,5 @@
 
 - roadmap
   - switchable profiles
+  - customizable month interval
+  - customizable categories
