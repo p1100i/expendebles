@@ -3,8 +3,6 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
-      interval = timeService.getInterval(),
-
       items,
       categories,
       selectedItem,
@@ -57,23 +55,6 @@ define(['app'], function (app) {
         }
       },
 
-      parseAmount = function parseAmount(amount) {
-        return Math.abs(parseFloat(amount) || 0);
-      },
-
-      sanitizeAmount = function sanitizeAmount(amount) {
-        amount = parseAmount(amount);
-
-        var
-          amountStr = amount.toString();
-
-        if (amountStr.length > 9) {
-          amount = parseAmount(amountStr.substring(0, 9));
-        }
-
-        return amount;
-      },
-
       selectItem = function selectItem($event, item) {
         if ($event && $event.stopPropagation) {
           $event.stopPropagation();
@@ -98,7 +79,7 @@ define(['app'], function (app) {
 
         setAmountInput();
 
-        amount = sanitizeAmount(amount);
+        amount = financeService.sanitizeAmount(amount);
         len    = lastValidAmount ? lastValidAmount.toString().length : 0;
 
         if (!amount && len > 1) {
@@ -110,7 +91,7 @@ define(['app'], function (app) {
         if (selectedItem) {
           selectedItem.amount = amount;
         } else {
-          setSelectedItem(financeService.addItem(amount));
+          setSelectedItem(financeService.addAmount(amount));
         }
 
         financeService.save();
@@ -126,14 +107,6 @@ define(['app'], function (app) {
         }
 
         financeService.save();
-      },
-
-      formatAmount = function formatAmount(amount) {
-        //
-        // amount = sanitizeAmount(amount).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-        //
-
-        return sanitizeAmount(amount).toLocaleString();
       },
 
       showItemExtra = function showItemExtra($event, item) {
@@ -154,14 +127,10 @@ define(['app'], function (app) {
         financeService.save();
       },
 
-      getCategoryIcon = function getCategoryIcon(id) {
-        return settingService.getCategoryIcon(id) || 'calendar';
-      },
-
       setCategory = function setCategory($event, item, category) {
         $event.stopPropagation();
 
-        item.category = category.id;
+        item.category = category;
 
         financeService.save();
       },
@@ -170,19 +139,12 @@ define(['app'], function (app) {
         $event.stopPropagation();
       },
 
-      isInInterval = function isInInterval(item) {
-        return interval.beg <= item.timestamp && item.timestamp <= interval.end;
-      },
-
       init = function init() {
         $scope.$on('bodyClick', selectItem);
 
         ctrl.deleteItem         = deleteItem;
-        ctrl.formatAmount       = formatAmount;
-        ctrl.getCategoryIcon    = getCategoryIcon;
         ctrl.hideItemExtra      = hideItemExtra;
         ctrl.isAmountValid      = isAmountValid;
-        ctrl.isInInterval       = isInInterval;
         ctrl.onAmountChanged    = onAmountChanged;
         ctrl.onItemDateChanged  = onItemDateChanged;
         ctrl.selectItem         = selectItem;

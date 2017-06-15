@@ -1,26 +1,19 @@
-Statistics
-<table>
-  <thead>
-    <tr>
-      <th>
-      </th>
-    </tr>
-  </thead>
+<div class="statistic-wrapper">
+  <ul>
+    <li class="statistic-type">
+      <span>Incomes</span><i class="icon right fa fa-plus-circle text-solarized-2"></i>
+    </li>
 
-  <tfoot>
-    <tr>
-      <td>
-      </td>
-    </tr>
-  </tfoot>
+    <li>
+      <div data-statistic-groups="" data-groups="statistic.incomeGroups"  data-color="'bg-solarized-2'"></div>
+    </li>
 
-  <tbody>
-    <tr>
-      <td>
-        Sum
-      </td>
-      <td data-ng-bind="statistic.sum">
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <li class="statistic-type">
+      <span>Expenses</span><i class="icon right fa fa-minus-circle text-solarized-1"></i>
+    </li>
+
+    <li>
+      <div data-statistic-groups="" data-groups="statistic.expenseGroups" data-color="'bg-solarized-1'"></div>
+    </li>
+  </ul>
+</div>

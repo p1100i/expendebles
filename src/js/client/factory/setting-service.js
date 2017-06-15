@@ -35,6 +35,14 @@ define(['app'], function (app) {
         return category;
       },
 
+      getDateFormat = function getDateFormat(short) {
+        if (short) {
+          return 'yyyy-MM-dd HH:mm';
+        }
+
+        return 'yyyy-MM-dd HH:mm:ss';
+      },
+
       getDefaultCategory = function getDefaultCategory() {
         return defaultCategory;
       },
@@ -43,11 +51,14 @@ define(['app'], function (app) {
         return categories;
       },
 
-      getCategoryIcon = function getCategoryIcon(id) {
+      getCategory = function getCategory(id) {
         var
           category = categories.get(id, 'id');
 
-        return category && category.icon;
+        if (!category) {
+          console.error('no category w/ id:', id);
+        }
+        return category;
       },
 
       init = function init() {
@@ -69,7 +80,8 @@ define(['app'], function (app) {
 
     return {
       'getCategories'       : getCategories,
-      'getCategoryIcon'     : getCategoryIcon,
+      'getCategory'         : getCategory,
+      'getDateFormat'       : getDateFormat,
       'getDefaultCategory'  : getDefaultCategory
     };
   }]);

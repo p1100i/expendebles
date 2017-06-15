@@ -72,12 +72,13 @@
       <tr data-ng-if="register.ext">
         <td colspan="4">
           <span
-            class="bubble category"
+            data-category-bubble=""
             data-ng-repeat="category in register.categories"
-            data-ng-class="{ 'bold bg-solarized-12' : category.id === register.selectedItem.category }"
-            data-ng-click="register.setCategory($event, register.selectedItem, category)">
-            <i class="fa" data-ng-class="'fa-' + category.icon"></i>
-            <span data-ng-bind="category.name"></span>
+            data-ng-click="register.setCategory($event, register.selectedItem, category)"
+            data-icon="category.icon"
+            data-name="category.name"
+            data-highlighted="category === register.selectedItem.category"
+            class="text-right date-cell">
           </span>
         </td>
       </tr>
@@ -101,19 +102,19 @@
     <tbody>
       <tr
         data-ng-class="{ 'selected' : item === register.selectedItem }"
-        data-ng-repeat="item in register.items | filter:register.isInInterval | orderBy : 'timestamp' : true"
+        data-ng-repeat="item in register.items | orderBy : 'timestamp' : true"
         data-ng-click="register.selectItem($event, item)">
-        <td class="text-right amount-cell">
-          <span class="bubble amount" data-ng-class="{ true : 'expense', false : 'income'}[item.expense]">
-            <i class="fa" data-ng-class="{ true : 'fa-minus-circle', false : 'fa-plus-circle'}[item.expense]"></i>
-            <span data-ng-bind="register.formatAmount(item.amount)"></span>
-          </span>
+        <td
+          data-amount-bubble=""
+          data-amount="item.amount"
+          data-expense="item.expense"
+          class="text-right amount-cell">
         </td>
-        <td class="text-right date-cell">
-          <span class="bubble date">
-            <span data-ng-bind="item.timestamp | date:app.DATE_FORMAT_SHORT"></span>
-            <i class="fa" data-ng-class="'fa-' + register.getCategoryIcon(item.category)"></i>
-          </span>
+        <td
+          data-category-bubble=""
+          data-timestamp="item.timestamp"
+          data-icon="item.category.icon"
+          class="text-right date-cell">
         </td>
       </tr>
     </tbody>

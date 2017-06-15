@@ -14,6 +14,8 @@ define(['app'], function (app) {
         interval.beg    = begDate.getTime();
         interval.end    = endDate.getTime() - 1;
         interval.title  = date.toLocaleString(undefined, LOCALE_MONTH_CONFIG);
+
+        $rootScope.$broadcast('intervalSet', interval);
       },
 
       backwardInterval = function backwardInterval() {

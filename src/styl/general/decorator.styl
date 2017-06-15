@@ -116,6 +116,14 @@
   mix-border-bl-radius($border-radius)
   mix-border-br-radius($border-radius)
 
+.border-l-radius
+  mix-border-tl-radius($border-radius)
+  mix-border-bl-radius($border-radius)
+
+.border-r-radius
+  mix-border-tr-radius($border-radius)
+  mix-border-br-radius($border-radius)
+
 .border-tl-radius
   mix-border-tl-radius($border-radius)
 
@@ -136,3 +144,14 @@
 
 .footer-height
   height $footer-height
+
+.bubble
+  mix-border-radius($border-radius)
+  margin        0 5px
+  padding       1px 6px
+  color         white
+  font-size     12px
+  display       block
+  height        18px
+  line-height   18px
+  text-align    center

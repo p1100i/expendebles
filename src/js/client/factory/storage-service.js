@@ -2,7 +2,7 @@ define(['app'], function (app) {
   app.factory('storageService', ['$rootScope', 'localStorageService', function storageServiceFactory($rootScope, localStorageService) {
     var
       DEFAULTS = {
-        'finance' : {}
+        'finance' : { 'items' : [] }
       },
 
       CURRENT_VERSION = 1,

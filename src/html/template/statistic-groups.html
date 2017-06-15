@@ -1,0 +1,26 @@
+<table class="statistic-groups">
+  <tbody>
+    <tr data-ng-repeat="group in groups">
+      <td class="progress-cell">
+        <span class="progress progress-side border-l-radius"></span>
+        <span class="progress progress-wrapper bg-solarized-7">
+          <span
+            class="progress-mark"
+            data-ng-class="color"
+            data-ng-style="{ 'width' : group.width + 'px', 'margin-left' : group.left + 'px' }">
+          </span>
+        </span>
+        <span class="progress progress-side border-r-radius"></span>
+      </td>
+
+      <td class="amount-cell">
+        <span
+          data-category-bubble=""
+          data-amount="group.amount"
+          data-icon="group.category.icon"
+          class="text-right date-cell">
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>

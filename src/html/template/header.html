@@ -1,6 +1,13 @@
 <table class="header shadow-bottom" role="navigation">
   <tbody>
     <tr>
+      <td class="icon">
+        <a class="anchor first-anchor" href="{{app.rootAnchor.href}}" title="{{app.rootAnchor.title}}">
+          <i class="icon fa"
+            data-ng-class="{ true : 'fa-question-circle', false : 'fa-chevron-up' }[app.isRootAnchorSelected()]"></i>
+        </a>
+      </td>
+
       <td
         data-ng-if="app.isRootAnchorSelected()"
         data-ng-repeat="anchor in app.anchors">
@@ -8,14 +15,6 @@
           <span
             class="anchor-title"
             data-ng-bind="anchor.text"></span>
-        </a>
-      </td>
-
-      <td
-        class="icon"
-        data-ng-if="!app.isRootAnchorSelected()">
-        <a class="anchor" href="{{app.rootAnchor.href}}" title="{{app.rootAnchor.title}}">
-          <i class="icon fa fa-chevron-up"></i>
         </a>
       </td>
 

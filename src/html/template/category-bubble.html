@@ -1,0 +1,6 @@
+<span class="bubble category-bubble" data-ng-class="{ 'highlighted' : highlighted }">
+  <span data-ng-if="amount" data-ng-bind="formatAmount(amount)"></span>
+  <span data-ng-if="timestamp" data-ng-bind="timestamp | date:format"></span>
+  <i class="fa" data-ng-class="'fa-' + icon"></i>
+  <span data-ng-if="name" data-ng-bind="name"></span>
+</span>

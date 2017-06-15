@@ -43,6 +43,11 @@ div.register-wrapper
   table.control, table.items
     width $content-width
 
+  table.control
+    span.bubble
+      width   110px
+      display inline-block
+
   table.items
     &.disabled
       opacity 0.4
@@ -61,34 +66,8 @@ div.register-wrapper
           mix-border-tr-radius(10px)
           mix-border-br-radius(10px)
 
-
     td.date-cell
       width 160px
-
-  span.bubble
-    mix-border-radius($border-radius)
-    margin        0 5px
-    padding       1px 6px
-    color         white
-    font-size     12px
-    display       block
-    height        18px
-    line-height   18px
-    text-align    center
-
-
-  span.category
-    width   110px
-    display inline-block
-
-  span.date, span.category
-    background-color  $solarized-4
-
-  span.expense
-    background-color  $solarized-1
-
-  span.income
-    background-color  $solarized-2
 
   span.edit
     background-color  $solarized-8

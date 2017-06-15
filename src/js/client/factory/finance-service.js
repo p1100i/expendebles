@@ -1,25 +1,75 @@
 define(['app'], function (app) {
-  app.factory('financeService', ['$rootScope', 'settingService', 'storageService', function financeServiceFactory($rootScope, settingService, storageService) {
+  app.factory('financeService', ['$rootScope', 'timeService', 'settingService', 'storageService', function financeServiceFactory($rootScope, timeService, settingService, storageService) {
     var
+      interval = timeService.getInterval(),
+
+      nextId = 1,
+
       items = [],
 
-      defaultCategoryId,
+      defaultCategory = settingService.getDefaultCategory(),
+
+      isAfterInterval = function isAfterInterval(serializedItem) {
+        return interval.end <= serializedItem.t;
+      },
+
+      isInInterval = function isInInterval(serializedItem) {
+        return interval.beg <= serializedItem.t && serializedItem.t <= interval.end;
+      },
+
+      getCategory = function getCategory(id) {
+        return settingService.getCategory(id);
+      },
+
+      deserialize = function deserialize(itemData) {
+        return {
+          'amount'    : parseFloat(itemData.a),
+          'category'  : getCategory(itemData.c),
+          'expense'   : !!itemData.e,
+          'id'        : itemData.i,
+          'timestamp' : itemData.t
+        };
+      },
+
+      serialize = function serialize(item) {
+        return {
+          'a' : item.amount,
+          'c' : item.category.id,
+          'e' : item.expense ? 1 : 0,
+          'i' : item.id,
+          't' : item.timestamp
+        };
+      },
 
       save = function save() {
         var
+          i,
+          len,
           item,
-          len = items.length,
-          serializedItems = [];
+          instertIndex,
+          serializedFinance = storageService.get('finance'),
+          serializedItems   = serializedFinance.items;
+
+        i = 0;
+
+        while (i < serializedItems.length) {
+          item = serializedItems[i];
+
+          if (isInInterval(item)) {
+            serializedItems.removeAt(i);
+          } else if (isAfterInterval(item)) {
+            break;
+          } else {
+            i++;
+          }
+        }
+
+        instertIndex = i;
+
+        len = items.length;
 
         while (len--) {
-          item = items[len];
-
-          serializedItems.push({
-            'a' : item.amount,
-            'c' : item.category,
-            'e' : item.expense ? 1 : 0,
-            't' : item.timestamp
-          });
+          serializedItems.splice(instertIndex, 0, serialize(items[len]));
         }
 
         storageService.set('finance', {
@@ -31,13 +81,28 @@ define(['app'], function (app) {
         return items;
       },
 
+      getNewTimestamp = function getNewTimestamp() {
+        var
+          timestamp = Date.now();
+
+        if (timestamp < interval.beg || interval.end < timestamp) {
+          timestamp = (interval.end - interval.beg) / 2 + interval.beg;
+        }
+
+        return timestamp;
+      },
+
       createItem = function createItem(item, amount) {
         if (!item) {
           item = {};
         }
 
         if (!item.timestamp) {
-          item.timestamp  = Date.now();
+          item.timestamp  = getNewTimestamp();
+        }
+
+        if (item.id === undefined) {
+          item.id = nextId++;
         }
 
         if (item.expense === undefined) {
@@ -53,22 +118,13 @@ define(['app'], function (app) {
         }
 
         if (item.category === undefined) {
-          item.category = defaultCategoryId;
+          item.category = defaultCategory;
         }
 
         return item;
       },
 
-      deserialize = function deserialize(itemData) {
-        return {
-          'amount'    : itemData.a,
-          'category'  : itemData.c,
-          'expense'   : !!itemData.e,
-          'timestamp' : itemData.t
-        };
-      },
-
-      addItem = function addItem(amount) {
+      addAmount = function addAmount(amount) {
         amount = parseFloat(amount);
 
         if (isNaN(amount)) {
@@ -88,36 +144,73 @@ define(['app'], function (app) {
       },
 
       sync = function sync() {
-        defaultCategoryId = settingService.getDefaultCategory().id;
+        items.clear();
 
         var
+          i,
+          len,
           serializedFinance = storageService.get('finance'),
-          serializedItems   = serializedFinance.items;
+          serializedItems   = serializedFinance.items,
+          serializedItem;
 
         if (!serializedItems) {
           return;
         }
 
-        var
-          len = serializedItems.length;
+        len = serializedItems.length;
 
-        while (len--) {
-          items.push(createItem(deserialize(serializedItems[len])));
+        for (i = 0; i < len; i++) {
+          serializedItem = serializedItems[i];
+
+          nextId = Math.max(nextId, serializedItem.i + 1);
+
+          if (isInInterval(serializedItem)) {
+            items.push(createItem(deserialize(serializedItem)));
+          }
         }
       },
 
+      parseAmount = function parseAmount(amount) {
+        return Math.abs(parseFloat(amount) || 0);
+      },
+
+      sanitizeAmount = function sanitizeAmount(amount) {
+        amount = parseAmount(amount);
+
+        var
+          amountStr = amount.toString();
+
+        if (amountStr.length > 9) {
+          amount = parseAmount(amountStr.substring(0, 9));
+        }
+
+        return amount;
+      },
+
+      formatAmount = function formatAmount(amount) {
+        //
+        // amount = sanitizeAmount(amount).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+        //
+
+        return sanitizeAmount(amount).toLocaleString();
+      },
+
       init = function init() {
+        $rootScope.$on('intervalSet', sync);
+
         sync();
       };
 
     init();
 
     return {
-      'addItem'   : addItem,
-      'getItems'  : getItems,
-      'getSum'    : getSum,
-      'save'      : save,
-      'sync'      : sync
+      'addAmount'       : addAmount,
+      'formatAmount'    : formatAmount,
+      'getItems'        : getItems,
+      'getSum'          : getSum,
+      'save'            : save,
+      'sanitizeAmount'  : sanitizeAmount,
+      'sync'            : sync
     };
   }]);
 });

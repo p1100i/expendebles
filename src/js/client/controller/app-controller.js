@@ -3,13 +3,14 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
+      regAnchor,
+      statAnchor,
+      dataAnchor,
+
       anchors     = [],
       rootAnchor  = {},
 
-      DATE_FORMAT       = 'yyyy-MM-dd HH:mm:ss',
-      DATE_FORMAT_SHORT = 'yyyy-MM-dd HH:mm',
-
-      createAnchor = function createAnchor(text, href, title, icon, anchor) {
+      createAnchor = function createAnchor(anchor, text, href, title, icon) {
         if (!anchor) {
           anchor = {};
         }
@@ -23,11 +24,13 @@ define(['app'], function (app) {
       },
 
       setMenu = function setMenu() {
-        anchors.push(createAnchor('/reg',         '#!/register',  'Register spendings'));
-        // anchors.push(createAnchor('/stat',        '#!/statistic', 'View statistics'));
-        anchors.push(createAnchor('/data',        '#!/data',      'Export/import data'));
+        regAnchor   = createAnchor({}, '/reg',         '#!/register',  'Register spendings');
+        statAnchor  = createAnchor({}, '/stat',        '#!/statistic', 'View statistics');
+        dataAnchor  = createAnchor({}, '/data',        '#!/data',      'Export/import data');
 
-        createAnchor('expendebles', '#!/', 'About', 'bank', rootAnchor);
+        anchors.push(regAnchor, statAnchor, dataAnchor);
+
+        createAnchor(rootAnchor, '/home', '#!/', 'About', 'bank');
       },
 
       debug = function debug($event, msg, startDebug) {
@@ -65,14 +68,16 @@ define(['app'], function (app) {
         timeService.stepInterval(step);
       },
 
+      isAnchorIntervalRelated = function isAnchorIntervalRelated() {
+        return isAnchorSelected(regAnchor) || isAnchorSelected(statAnchor);
+      },
+
       onLocationChangeSuccess = function onLocationChangeSuccess() {
-        if (isRootAnchorSelected()) {
-          delete ctrl.interval;
+        delete ctrl.interval;
 
-          return;
+        if (isAnchorIntervalRelated()) {
+          ctrl.interval = timeService.getInterval();
         }
-
-        ctrl.interval = timeService.getInterval();
       },
 
       init = function init() {
@@ -89,10 +94,6 @@ define(['app'], function (app) {
         ctrl.rootAnchor           = rootAnchor;
         ctrl.stepInterval         = stepInterval;
 
-        ctrl.DATE_FORMAT          = DATE_FORMAT;
-        ctrl.DATE_FORMAT_SHORT    = DATE_FORMAT_SHORT;
-
-        ctrl.selectedMonth = 'sep';
         //
         // $window.d = debugService;
         //

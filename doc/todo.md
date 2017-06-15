@@ -1,6 +1,6 @@
 - 1.0.0
   - basic statistics page
-    - list cumulated sums for each category
+    + list cumulated sums for each category
     - list full sum for the month (+/- bar)
 
   - add demo-data injection
@@ -52,6 +52,7 @@
   + highlight selected/current anchor
 
 - roadmap
+  - amount-edit only on double-click on item
   - switchable profiles
   - customizable month interval
   - customizable categories
