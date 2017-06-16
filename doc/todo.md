@@ -52,6 +52,7 @@
   + highlight selected/current anchor
 
 - roadmap
+  - implements basic protractor testing
   - amount-edit only on double-click on item
   - switchable profiles
   - customizable month interval
