@@ -145,6 +145,9 @@
 .footer-height
   height $footer-height
 
+.font-size-0
+  font-size 0
+
 .bubble
   mix-border-radius($border-radius)
   margin        0 5px
@@ -155,3 +158,17 @@
   height        18px
   line-height   18px
   text-align    center
+
+.side-left, .side-right
+    display inline-block
+    background-color $solarized-16
+    width 10px
+    height 20px
+
+.side-left
+  mix-border-tl-radius($border-radius)
+  mix-border-bl-radius($border-radius)
+
+.side-right
+  mix-border-tr-radius($border-radius)
+  mix-border-br-radius($border-radius)

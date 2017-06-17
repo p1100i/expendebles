@@ -1,9 +1,9 @@
 - 1.0.0
-  - basic statistics page
+  + basic statistics page
     + list cumulated sums for each category
-    - list full sum for the month (+/- bar)
+    + list full sum for the month (+/- bar)
 
-  - add demo-data injection
+  - add basic FAQ page
 
   + month based register
     + /about page link should shrink on icon if not selected
@@ -52,6 +52,7 @@
   + highlight selected/current anchor
 
 - roadmap
+  - add demo-data injection
   - implements basic protractor testing
   - amount-edit only on double-click on item
   - switchable profiles

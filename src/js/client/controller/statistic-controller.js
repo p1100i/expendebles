@@ -1,11 +1,24 @@
 define(['app'], function (app) {
-  app.controller('statisticController', ['$scope', 'financeService', 'storageService', function statisticControllerFactory($scope, financeService, storageService) {
+  app.controller('statisticController', ['$rootScope', '$scope', 'financeService', 'storageService', function statisticControllerFactory($rootScope, $scope, financeService, storageService) {
     var
       ctrl = this,
 
       items,
+      expenses,
+      expenseGroups,
+      incomes,
+      incomeGroups,
 
-      MAX_WIDTH = 140,
+      sum = {
+        'expense'       : 0,
+        'expenseWidth'  : 0,
+        'income'        : 0,
+        'incomeWidth'   : 0,
+        'total'         : 0
+      },
+
+      MAX_GROUP_WIDTH = 120,
+      MAX_SUM_WIDTH   = 260,
 
       isItemGreater = function isItemGreater(itemA, itemB) {
         return itemB.amount - itemA.amount;
@@ -63,17 +76,13 @@ define(['app'], function (app) {
 
           group.left    = left;
           group.percent = group.amount / sum;
-          group.width   = Math.round(group.percent * MAX_WIDTH);
+          group.width   = Math.round(group.percent * MAX_GROUP_WIDTH);
 
           left += group.width;
         }
       },
 
       setTopExpenseGroups = function setTopExpenseGroups() {
-        var
-          expenses,
-          expenseGroups;
-
         expenses      = items.clone().filter(isExpense);
         expenseGroups = getSortedGroups(expenses);
 
@@ -83,10 +92,6 @@ define(['app'], function (app) {
       },
 
       setTopIncomeGroups = function setTopIncomeGroups() {
-        var
-          incomes,
-          incomeGroups;
-
         incomes      = items.clone().filter(isIncome);
         incomeGroups = getSortedGroups(incomes);
 
@@ -99,10 +104,39 @@ define(['app'], function (app) {
         items = financeService.getItems();
       },
 
-      init = function init() {
+      setSumWidths = function setSumWidths() {
+        var
+          incomeSum   = incomes.sum('amount'),
+          expenseSum  = expenses.sum('amount'),
+          total       = incomeSum + expenseSum;
+
+        sum.income  = incomeSum;
+        sum.expense = expenseSum;
+        sum.total   = total;
+
+        if (total === 0) {
+          sum.incomeWidth   = 0;
+          sum.expenseWidth  = 0;
+          return;
+        }
+
+        sum.incomeWidth  = Math.floor((incomeSum / total) * MAX_SUM_WIDTH);
+        sum.expenseWidth = MAX_SUM_WIDTH - sum.incomeWidth;
+      },
+
+      sync = function sync() {
         setItems();
         setTopExpenseGroups();
         setTopIncomeGroups();
+        setSumWidths();
+      },
+
+      init = function init() {
+        $rootScope.$on('intervalSet', sync);
+
+        ctrl.sum = sum;
+
+        sync();
       };
 
     init();

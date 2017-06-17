@@ -1,7 +1,14 @@
 <div class="statistic-wrapper">
-  <ul>
+  <div data-ng-if="!statistic.sum.total">
+    <p>You have no entries for this interval.</p>
+    <br>
+    <p><b>Use</b> the <a href="#!/register">/reg</a> page to add some!</p>
+  </div>
+
+  <ul data-ng-if="statistic.sum.income">
     <li class="statistic-type">
-      <span>Incomes</span><i class="icon right fa fa-plus-circle text-solarized-2"></i>
+      <i class="fa fa-plus-circle text-solarized-2"></i>
+      <span>Incomes</span>
     </li>
 
     <li>
@@ -9,11 +16,56 @@
     </li>
 
     <li class="statistic-type">
-      <span>Expenses</span><i class="icon right fa fa-minus-circle text-solarized-1"></i>
+      <i class="fa fa-minus-circle text-solarized-1"></i>
+      <span>Expenses</span>
     </li>
+  </ul>
 
+  <ul data-ng-if="statistic.sum.expense">
     <li>
       <div data-statistic-groups="" data-groups="statistic.expenseGroups" data-color="'bg-solarized-1'"></div>
+    </li>
+
+    <li class="statistic-type">
+      <div>
+        Summary
+      </div>
+    </li>
+
+  </ul>
+
+  <ul data-ng-if="statistic.sum.total">
+    <li>
+      <div class="font-size-0">
+        <span class="side-left"></span>
+        <span class="bar-wrapper wide bg-solarized-7">
+          <span
+            class="inline-block bar-mark bg-solarized-2"
+            data-ng-style="{ 'width' : statistic.sum.incomeWidth + 'px' }">
+          </span>
+          <span
+            class="inline-block bar-mark bg-solarized-1"
+            data-ng-style="{ 'width' : statistic.sum.expenseWidth + 'px' }">
+          </span>
+        </span>
+        <span class="side-right"></span>
+      </div>
+
+      <div class="sum-amount-wrapper text-center">
+        <span
+          class="sum-amount"
+          data-amount-bubble=""
+          data-amount="statistic.sum.income"
+          data-expense="false">
+        </span>
+        <span class="separator">vs.</span>
+        <span
+          class="sum-amount"
+          data-amount-bubble=""
+          data-amount="statistic.sum.expense"
+          data-expense="true">
+        </span>
+      </div>
     </li>
   </ul>
 </div>

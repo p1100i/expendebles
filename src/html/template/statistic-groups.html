@@ -1,16 +1,16 @@
 <table class="statistic-groups">
   <tbody>
     <tr data-ng-repeat="group in groups">
-      <td class="progress-cell">
-        <span class="progress progress-side border-l-radius"></span>
-        <span class="progress progress-wrapper bg-solarized-7">
+      <td class="font-size-0">
+        <span class="side-left"></span>
+        <span class="bar-wrapper bg-solarized-7">
           <span
-            class="progress-mark"
+            class="inline-block bar-mark"
             data-ng-class="color"
             data-ng-style="{ 'width' : group.width + 'px', 'margin-left' : group.left + 'px' }">
           </span>
         </span>
-        <span class="progress progress-side border-r-radius"></span>
+        <span class="side-right"></span>
       </td>
 
       <td class="amount-cell">
