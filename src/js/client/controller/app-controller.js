@@ -60,6 +60,13 @@ define(['app'], function (app) {
         return anchors.find(isAnchorSelected);
       },
 
+      isNormalAnchorSelected = function isNormalAnchorSelected() {
+        var
+          selectedAnchor = getSelectedAnchor();
+
+        return selectedAnchor && selectedAnchor !== rootAnchor;
+      },
+
       onBodyClick = function onBodyClick() {
         $rootScope.$broadcast('bodyClick');
       },
@@ -86,13 +93,14 @@ define(['app'], function (app) {
         $rootScope.$on('debug',                   debug);
         $rootScope.$on('$locationChangeSuccess',  onLocationChangeSuccess);
 
-        ctrl.anchors              = anchors;
-        ctrl.emptyDebug           = emptyDebug;
-        ctrl.isRootAnchorSelected = isRootAnchorSelected;
-        ctrl.onBodyClick          = onBodyClick;
-        ctrl.getSelectedAnchor    = getSelectedAnchor;
-        ctrl.rootAnchor           = rootAnchor;
-        ctrl.stepInterval         = stepInterval;
+        ctrl.anchors                = anchors;
+        ctrl.emptyDebug             = emptyDebug;
+        ctrl.isRootAnchorSelected   = isRootAnchorSelected;
+        ctrl.onBodyClick            = onBodyClick;
+        ctrl.getSelectedAnchor      = getSelectedAnchor;
+        ctrl.isNormalAnchorSelected = isNormalAnchorSelected;
+        ctrl.rootAnchor             = rootAnchor;
+        ctrl.stepInterval           = stepInterval;
 
         //
         // $window.d = debugService;

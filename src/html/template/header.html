@@ -1,10 +1,15 @@
 <table class="header shadow-bottom" role="navigation">
   <tbody>
     <tr>
-      <td class="icon">
-        <a class="anchor first-anchor" href="{{app.rootAnchor.href}}" title="{{app.rootAnchor.title}}">
-          <i class="icon fa"
-            data-ng-class="{ true : 'fa-question-circle', false : 'fa-chevron-up' }[app.isRootAnchorSelected()]"></i>
+      <td data-ng-if="app.isRootAnchorSelected()" class="icon">
+        <a class="anchor first-anchor" href="#!/help" title="Help">
+          <i class="icon fa fa-question-circle"></i>
+        </a>
+      </td>
+
+      <td data-ng-if="!app.isRootAnchorSelected()" class="icon">
+        <a class="anchor first-anchor" href="#!/" title="/home">
+          <i class="icon fa fa-chevron-up"></i>
         </a>
       </td>
 
@@ -20,7 +25,7 @@
 
       <td
         class="selected"
-        data-ng-if="!app.isRootAnchorSelected()"
+        data-ng-if="app.isNormalAnchorSelected()"
         data-ng-init="anchor = app.getSelectedAnchor()">
         <a class="anchor" href="{{anchor.href}}" title="{{anchor.title}}">
           <span

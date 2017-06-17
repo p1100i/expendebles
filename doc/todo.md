@@ -3,7 +3,7 @@
     + list cumulated sums for each category
     + list full sum for the month (+/- bar)
 
-  - add basic FAQ page
+  + add basic FAQ page
 
   + month based register
     + /about page link should shrink on icon if not selected

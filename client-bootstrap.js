@@ -98,6 +98,7 @@ var
       'controller/about-controller',
       'controller/app-controller',
       'controller/data-controller',
+      'controller/help-controller',
       'controller/register-controller',
       'controller/statistic-controller',
       'directive/amount-bubble-directive',
