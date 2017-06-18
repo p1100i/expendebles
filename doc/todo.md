@@ -5,9 +5,9 @@
 
   - add message to /reg if no item is present
 
-  - add gift / entertainement category
-
   - show menu items always if window is wide enough
+
+  + add gift / entertainement category
 
 + 1.0.0
   + basic statistics page

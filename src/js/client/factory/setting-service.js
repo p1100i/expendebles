@@ -11,7 +11,11 @@ define(['app'], function (app) {
         ['hea', 'healthcare', 'medkit'],
         ['fue', 'fuel',       'car'],
         ['tra', 'transport',  'train'],
-        ['hol', 'holiday',    'suitcase']
+        ['hol', 'holiday',    'suitcase'],
+        ['gif', 'gift',       'gift'],
+        ['spo', 'sport',      'soccer-ball-o'],
+        ['fun', 'fun',        'glass'],
+        ['cul', 'culture',    'ticket']
       ],
 
       categories = [],
