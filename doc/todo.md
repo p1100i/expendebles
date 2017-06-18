@@ -5,7 +5,7 @@
 
   - add message to /reg if no item is present
 
-  - show menu items always if window is wide enough
+  + show menu items always if window is wide enough
 
   + add gift / entertainement category
 

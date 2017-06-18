@@ -1,14 +1,19 @@
-define(['app'], function (app) {
-  app.controller('appController', ['$rootScope', '$location', '$window', 'timeService', 'debugService', function appControllerFactory($rootScope, $location, $window, timeService, debugService) {
+define(['app', 'angular'], function (app, angular) {
+  app.controller('appController', ['$rootScope', '$location', '$window', '$timeout', 'timeService', 'debugService', function appControllerFactory($rootScope, $location, $window, $timeout, timeService, debugService) {
     var
       ctrl = this,
 
       regAnchor,
       statAnchor,
       dataAnchor,
+      windowWidth,
+      anchorsWidth,
+      settingWidths,
 
       anchors     = [],
       rootAnchor  = {},
+
+      MAX_ANCHOR_WIDTH = 60,
 
       createAnchor = function createAnchor(anchor, text, href, title, icon) {
         if (!anchor) {
@@ -67,6 +72,10 @@ define(['app'], function (app) {
         return selectedAnchor && selectedAnchor !== rootAnchor;
       },
 
+      anchorsDisplayable = function anchorsDisplayable() {
+        return isRootAnchorSelected() || anchorsWidth < windowWidth;
+      },
+
       onBodyClick = function onBodyClick() {
         $rootScope.$broadcast('bodyClick');
       },
@@ -87,18 +96,35 @@ define(['app'], function (app) {
         }
       },
 
+      setWidths = function setWidths() {
+        windowWidth   = $window.innerWidth || document.body.clientWidth;
+        anchorsWidth  = anchors.length * MAX_ANCHOR_WIDTH * 2;
+      },
+
+      enqueueSetWidths = function enqueueSetWidths() {
+        if (settingWidths) {
+          $timeout.cancel(settingWidths);
+        }
+
+        settingWidths = $timeout(setWidths, 500);
+      },
+
       init = function init() {
         setMenu();
+        setWidths();
+
+        angular.element($window).on('resize', enqueueSetWidths);
 
         $rootScope.$on('debug',                   debug);
         $rootScope.$on('$locationChangeSuccess',  onLocationChangeSuccess);
 
         ctrl.anchors                = anchors;
+        ctrl.anchorsDisplayable     = anchorsDisplayable;
         ctrl.emptyDebug             = emptyDebug;
-        ctrl.isRootAnchorSelected   = isRootAnchorSelected;
-        ctrl.onBodyClick            = onBodyClick;
         ctrl.getSelectedAnchor      = getSelectedAnchor;
         ctrl.isNormalAnchorSelected = isNormalAnchorSelected;
+        ctrl.isRootAnchorSelected   = isRootAnchorSelected;
+        ctrl.onBodyClick            = onBodyClick;
         ctrl.rootAnchor             = rootAnchor;
         ctrl.stepInterval           = stepInterval;
 
