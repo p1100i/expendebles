@@ -1,7 +1,7 @@
 {
   "name": "expendebles",
   "version": "0.1.0",
-  "description": "Track/stat your personal finances.",
+  "description": "Your personal privacy-respecting cashflow app.",
   "scripts": {
     "start": "./start.sh",
     "test": "./test.sh"
