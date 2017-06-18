@@ -1,4 +1,15 @@
-- 1.0.0
+- 1.1.0
+  - statistics should display title if only one type of item is registered
+
+  - income/expense in a category should cancel out one-another on statistics
+
+  - add message to /reg if no item is present
+
+  - add gift / entertainement category
+
+  - show menu items always if window is wide enough
+
++ 1.0.0
   + basic statistics page
     + list cumulated sums for each category
     + list full sum for the month (+/- bar)

@@ -1,6 +1,6 @@
 # expendebles [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 
-A free, privacy-respecting, <b>personal cashflow</b> webapp, use it on my [GitHub IO Page (p1100i.github.io/expendebles)][github-io].
+A free, privacy-respecting, <b>personal cashflow</b> webapp, use it on my [GitHub IO Page][github-io].
 
 ## About
 `expendebles` uses [localStorage][mozilla-localStorage] for saving your data, hence it stays on your machine/phone.
@@ -10,7 +10,7 @@ A free, privacy-respecting, <b>personal cashflow</b> webapp, use it on my [GitHu
 Refresh the page any time you like, to get the newest features (your data storage is versioned so the app will know how to upgrade).
 
 ## Features
-- <b>add/manage</b> your transactions
+- <b>register</b> your transactions
 - <b>cashflow statistics</b> view
 - <b>full privacy</b> (no tracking cookies, etc.)
 - <b>pure client-side</b> app (w/o internetz)
