@@ -63,6 +63,7 @@
   + highlight selected/current anchor
 
 - roadmap
+  - add changelog to help page
   - add demo-data injection
   - implements basic protractor testing
   - amount-edit only on double-click on item
