@@ -14,9 +14,10 @@
       </td>
 
       <td
-        data-ng-if="app.isRootAnchorSelected()"
+        data-ng-if="app.anchorsDisplayable()"
+        data-ng-class="{ 'selected' : anchor === app.getSelectedAnchor() }"
         data-ng-repeat="anchor in app.anchors">
-        <a class="anchor" href="{{anchor.href}}" title="{{anchor.title}}">
+        <a class="anchor normal-anchor" href="{{anchor.href}}" title="{{anchor.title}}">
           <span
             class="anchor-title"
             data-ng-bind="anchor.text"></span>
@@ -25,12 +26,12 @@
 
       <td
         class="selected"
-        data-ng-if="app.isNormalAnchorSelected()"
-        data-ng-init="anchor = app.getSelectedAnchor()">
-        <a class="anchor" href="{{anchor.href}}" title="{{anchor.title}}">
+        data-ng-init="selectedAnchor = app.getSelectedAnchor()"
+        data-ng-if="app.isNormalAnchorSelected() && !app.anchorsDisplayable()">
+        <a class="anchor" href="{{selectedAnchor.href}}" title="{{selectedAnchor.title}}">
           <span
             class="anchor-title"
-            data-ng-bind="anchor.text"></span>
+            data-ng-bind="selectedAnchor.text"></span>
         </a>
       </td>
 
