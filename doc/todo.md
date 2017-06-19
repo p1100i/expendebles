@@ -3,7 +3,7 @@
 
   - income/expense in a category should cancel out one-another on statistics
 
-  - add message to /reg if no item is present
+  + add message to /reg if no item is present
 
   + show menu items always if window is wide enough
 
