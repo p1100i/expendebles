@@ -1,3 +1,16 @@
+- 1.2.0
+  - navigate back to /home on selected-menu item href
+
+  - fix redundant item registering on not current interval item-creation
+
+  - add changelog to help page
+
+  - mask values after timeout
+    - add icon for hide/show
+    - centerize interval select element on header
+
+  - add FAQ item about category balancing
+
 + 1.1.0
   + statistics should display title if only one type of item is registered
 
@@ -62,11 +75,11 @@
 
   + highlight selected/current anchor
 
-- roadmap
-  - add changelog to help page
+- icebox
+  - measure/show client side data storage size
+  - add info from balanced categories on statistic
   - add demo-data injection
-  - implements basic protractor testing
+  - implement basic protractor testing
   - amount-edit only on double-click on item
-  - switchable profiles
   - customizable month interval
   - customizable categories
