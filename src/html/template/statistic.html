@@ -14,27 +14,26 @@
     <li>
       <div data-statistic-groups="" data-groups="statistic.incomeGroups"  data-color="'bg-solarized-2'"></div>
     </li>
+  </ul>
 
+  <ul data-ng-if="statistic.sum.expense">
     <li class="statistic-type">
       <i class="fa fa-minus-circle text-solarized-1"></i>
       <span>Expenses</span>
     </li>
-  </ul>
 
-  <ul data-ng-if="statistic.sum.expense">
     <li>
       <div data-statistic-groups="" data-groups="statistic.expenseGroups" data-color="'bg-solarized-1'"></div>
     </li>
+  </ul>
 
+  <ul data-ng-if="statistic.sum.total">
     <li class="statistic-type">
       <div>
         Summary
       </div>
     </li>
 
-  </ul>
-
-  <ul data-ng-if="statistic.sum.total">
     <li>
       <div class="font-size-0">
         <span class="side-left"></span>
