@@ -4,10 +4,6 @@ define(['app'], function (app) {
       ctrl = this,
 
       items,
-      expenses,
-      expenseGroups,
-      incomes,
-      incomeGroups,
 
       sum = {
         'expense'       : 0,
@@ -32,7 +28,7 @@ define(['app'], function (app) {
         return !item.expense;
       },
 
-      getSortedGroups = function getSortedGroups(items) {
+      getGroups = function getGroups(items) {
         var
           item,
           group,
@@ -55,8 +51,6 @@ define(['app'], function (app) {
             });
           }
         }
-
-        groups.sort(isItemGreater);
 
         return groups;
       },
@@ -82,33 +76,95 @@ define(['app'], function (app) {
         }
       },
 
-      setTopExpenseGroups = function setTopExpenseGroups() {
-        expenses      = items.clone().filter(isExpense);
-        expenseGroups = getSortedGroups(expenses);
+      getExpenseGroups = function getExpenseGroups() {
+        var
+          expenses = items.clone().filter(isExpense);
 
-        weighGroups(expenseGroups);
-
-        ctrl.expenseGroups = expenseGroups;
+        return getGroups(expenses);
       },
 
-      setTopIncomeGroups = function setTopIncomeGroups() {
-        incomes      = items.clone().filter(isIncome);
-        incomeGroups = getSortedGroups(incomes);
+      getIncomeGroups = function getIncomeGroups() {
+        var
+          incomes = items.clone().filter(isIncome);
 
-        weighGroups(incomeGroups);
-
-        ctrl.incomeGroups = incomeGroups;
+        return getGroups(incomes);
       },
 
       setItems = function setItems() {
         items = financeService.getItems();
       },
 
-      setSumWidths = function setSumWidths() {
+      balanceGroups = function balanceGroups(groups, otherGroups) {
         var
-          incomeSum   = incomes.sum('amount'),
-          expenseSum  = expenses.sum('amount'),
-          total       = incomeSum + expenseSum;
+          group,
+          amount,
+          otherGroup,
+          len = groups.length;
+
+        while (len--) {
+          group = groups[len];
+
+          if (group.balanced) {
+            continue;
+          }
+
+          group.balanced = true;
+
+          otherGroup = otherGroups.get(group.id, 'id');
+
+          if (!otherGroup) {
+            continue;
+          }
+
+          otherGroup.balanced = true;
+
+          amount = Math.min(group.amount, otherGroup.amount);
+
+          group.amount      -= amount;
+          otherGroup.amount -= amount;
+        }
+      },
+
+      sanitizeGroups = function sanitizeGroups(groups) {
+        var
+          len = groups.length,
+          group;
+
+        while (len--) {
+          group = groups[len];
+
+          if (group.amount <= 0) {
+            groups.remove(group);
+          }
+        }
+      },
+
+      getWeighedGroups = function getWeighedGroups() {
+        var
+          expenseGroups  = getExpenseGroups(),
+          incomeGroups   = getIncomeGroups();
+
+        balanceGroups(incomeGroups,   expenseGroups);
+        balanceGroups(expenseGroups,  incomeGroups);
+
+        sanitizeGroups(incomeGroups);
+        sanitizeGroups(expenseGroups);
+
+        incomeGroups.sort(isItemGreater);
+        expenseGroups.sort(isItemGreater);
+
+        weighGroups(expenseGroups);
+        weighGroups(incomeGroups);
+
+        return {
+          'expense' : expenseGroups,
+          'income'  : incomeGroups
+        };
+      },
+
+      setSum = function setSum(incomeSum, expenseSum) {
+        var
+          total = incomeSum + expenseSum;
 
         sum.income  = incomeSum;
         sum.expense = expenseSum;
@@ -126,9 +182,16 @@ define(['app'], function (app) {
 
       sync = function sync() {
         setItems();
-        setTopExpenseGroups();
-        setTopIncomeGroups();
-        setSumWidths();
+
+        var
+          groups      = getWeighedGroups(),
+          incomeSum   = groups.income.sum('amount'),
+          expenseSum  = groups.expense.sum('amount');
+
+        setSum(incomeSum, expenseSum);
+
+        ctrl.expenseGroups  = groups.expense;
+        ctrl.incomeGroups   = groups.income;
       },
 
       init = function init() {

@@ -1,7 +1,7 @@
 - 1.1.0
   - statistics should display title if only one type of item is registered
 
-  - income/expense in a category should cancel out one-another on statistics
+  + income/expense in a category should cancel out one-another on statistics
 
   + add message to /reg if no item is present
 
