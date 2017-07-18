@@ -1,4 +1,6 @@
 - 1.2.0
+  + measure/show client side data storage size
+
   - navigate back to /home on selected-menu item href
 
   - fix redundant item registering on not current interval item-creation
@@ -76,7 +78,6 @@
   + highlight selected/current anchor
 
 - icebox
-  - measure/show client side data storage size
   - add info from balanced categories on statistic
   - add demo-data injection
   - implement basic protractor testing

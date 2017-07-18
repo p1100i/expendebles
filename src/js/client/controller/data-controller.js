@@ -54,6 +54,14 @@ define(['app'], function (app) {
         ctrl.json = exportJSON();
       },
 
+      setUsage = function setUsage() {
+        var
+          usage = storageService.getUsage();
+
+        ctrl.usageHuman   = usage.human;
+        ctrl.usagePercent = usage.percent.toFixed(2) + '%';
+      },
+
       clear = function clear() {
         var
           confirmMessage,
@@ -71,6 +79,7 @@ define(['app'], function (app) {
           financeService.sync();
         }
 
+        setUsage();
         setJSON();
       },
 
@@ -79,6 +88,7 @@ define(['app'], function (app) {
         ctrl.copyJSON   = copyJSON;
         ctrl.clear      = clear;
 
+        setUsage();
         setJSON();
       };
 
