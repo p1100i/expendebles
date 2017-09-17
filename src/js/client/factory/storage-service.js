@@ -1,11 +1,13 @@
 define(['app'], function (app) {
-  app.factory('storageService', ['$rootScope', 'localStorageService', function storageServiceFactory($rootScope, localStorageService) {
+  app.factory('storageService', ['$rootScope', '$window', 'localStorageService', function storageServiceFactory($rootScope, $window, localStorageService) {
     var
       DEFAULTS = {
         'finance' : { 'items' : [] }
       },
 
       CURRENT_VERSION = 1,
+
+      MAX_STORAGE_IN_BYTES = 1024 * 1024 * 5,
 
       get = function get(key) {
         var
@@ -40,6 +42,35 @@ define(['app'], function (app) {
         upgrade();
       },
 
+      getBytesHumanReadable = function getBytesHumanReadable(bytes) {
+        var
+          kbytes = bytes  / 1024,
+          mbytes = kbytes / 1024;
+
+        if (mbytes > 1) {
+          return mbytes + ' MiB(s)';
+        }
+
+        if (kbytes > 1) {
+          return kbytes + ' KiB(s)';
+        }
+
+        return bytes + ' byte(s)';
+      },
+
+      getUsage = function getUsage() {
+        var
+          bytes   = JSON.stringify($window.localStorage).length * 2,
+          percent = bytes / MAX_STORAGE_IN_BYTES,
+          human   = getBytesHumanReadable(bytes);
+
+        return {
+          'bytes'   : bytes,
+          'human'   : human,
+          'percent' : percent
+        };
+      },
+
       init = function init() {
         upgrade();
       };
@@ -47,9 +78,10 @@ define(['app'], function (app) {
     init();
 
     return {
-      'clear' : clear,
-      'get'   : get,
-      'set'   : set
+      'clear'     : clear,
+      'get'       : get,
+      'getUsage'  : getUsage,
+      'set'       : set
     };
   }]);
 });
