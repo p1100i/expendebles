@@ -1,6 +1,4 @@
-- 1.2.0
-  + measure/show client side data storage size
-
+- 1.3.0
   - navigate back to /home on selected-menu item href
 
   - fix redundant item registering on not current interval item-creation
@@ -12,6 +10,10 @@
     - centerize interval select element on header
 
   - add FAQ item about category balancing
+
+
++ 1.2.0
+  + measure/show client side data storage size
 
 + 1.1.0
   + statistics should display title if only one type of item is registered
