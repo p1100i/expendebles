@@ -1,4 +1,8 @@
 - 1.3.0
+  - use icons instead of strings in menubar
+
+  - fix displayed json importing
+
   - navigate back to /home on selected-menu item href
 
   - fix redundant item registering on not current interval item-creation
