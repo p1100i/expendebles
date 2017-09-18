@@ -1,9 +1,9 @@
 - 1.3.0
-  - use icons instead of strings in menubar
-
   - customizable month interval
 
   - add option to register current cache state on the start of the interval
+
+  + use icons instead of strings in menubar
 
   + fix displayed json importing
 

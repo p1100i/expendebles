@@ -29,13 +29,13 @@ define(['app', 'angular'], function (app, angular) {
       },
 
       setMenu = function setMenu() {
-        regAnchor   = createAnchor({}, '/reg',         '#!/register',  'Register spendings');
-        statAnchor  = createAnchor({}, '/stat',        '#!/statistic', 'View statistics');
-        dataAnchor  = createAnchor({}, '/data',        '#!/data',      'Export/import data');
+        regAnchor   = createAnchor({}, 'reg',   '#!/register',  'Register spendings',  'plus-circle');
+        statAnchor  = createAnchor({}, 'stat',  '#!/statistic', 'View statistics',     'pie-chart');
+        dataAnchor  = createAnchor({}, 'data',  '#!/data',      'Export/import data',  'cog');
 
         anchors.push(regAnchor, statAnchor, dataAnchor);
 
-        createAnchor(rootAnchor, '/home', '#!/', 'About', 'bank');
+        createAnchor(rootAnchor, 'about', '#!/', 'About', 'bank');
       },
 
       debug = function debug($event, msg, startDebug) {

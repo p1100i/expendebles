@@ -70,16 +70,20 @@ table.header
     font-weight bold
 
   i.icon
-    height $header-height
+    height      $header-height
+    width       20px
+    text-align  center
     line-height $header-height
-    font-size 18px
+    font-size   18px
 
-  td.icon
-    a
-      background-color $solarized-16
+  td.icon-text-wrapper
+    i.icon
+      float left
 
     span.anchor-title
-      font-size 16px
+      display       inline-block
+      padding-right 20px
+      margin-left   6px
 
   td.selected a
     background-color  $grey
