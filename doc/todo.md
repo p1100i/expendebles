@@ -3,6 +3,7 @@
 
   - add option to register current cache state on the start of the interval
 
++ 1.2.1
   + use icons instead of strings in menubar
 
   + fix displayed json importing
