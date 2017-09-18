@@ -1,34 +1,42 @@
 <table class="header shadow-bottom" role="navigation">
   <tbody>
     <tr>
-      <td data-ng-if="app.isRootAnchorSelected()" class="icon">
+      <td data-ng-if="app.isRootAnchorSelected()" class="bg-solarized-16">
         <a class="anchor first-anchor" href="#!/help" title="Help">
           <i class="icon fa fa-question-circle"></i>
         </a>
       </td>
 
-      <td data-ng-if="!app.isRootAnchorSelected()" class="icon">
+      <td data-ng-if="!app.isRootAnchorSelected()" class="bg-solarized-16">
         <a class="anchor first-anchor" href="#!/" title="/home">
           <i class="icon fa fa-chevron-up"></i>
         </a>
       </td>
 
       <td
+        class="icon-text-wrapper"
         data-ng-if="app.anchorsDisplayable()"
         data-ng-class="{ 'selected' : anchor === app.getSelectedAnchor() }"
         data-ng-repeat="anchor in app.anchors">
         <a class="anchor normal-anchor" href="{{anchor.href}}" title="{{anchor.title}}">
+          <i
+            class="icon fa"
+            data-ng-class="'fa-' + anchor.icon"></i>
           <span
             class="anchor-title"
+            data-ng-if="anchor === app.getSelectedAnchor()"
             data-ng-bind="anchor.text"></span>
         </a>
       </td>
 
       <td
-        class="selected"
+        class="selected icon-text-wrapper"
         data-ng-init="selectedAnchor = app.getSelectedAnchor()"
         data-ng-if="app.isNormalAnchorSelected() && !app.anchorsDisplayable()">
         <a class="anchor" href="{{selectedAnchor.href}}" title="{{selectedAnchor.title}}">
+          <i
+            class="icon fa"
+            data-ng-class="'fa-' + selectedAnchor.icon"></i>
           <span
             class="anchor-title"
             data-ng-bind="selectedAnchor.text"></span>
@@ -42,13 +50,13 @@
           data-ng-click="app.stepInterval(-1)">
           <i class="icon fa fa-chevron-left"></i>
         </a>
-        <!-- <a data-ng-if="app.interval" class="anchor"> -->
+
         <span
-          class="bold"
+          class="bold interval-title"
           data-ng-if="app.interval"
           data-ng-bind="app.interval.title">
         </span>
-        <!-- </a> -->
+
         <a
           class="anchor"
           data-ng-if="app.interval"
@@ -58,13 +66,14 @@
       </td>
 
       <td
-        class="text-right icon"
+        class="text-right bg-solarized-16 icon-text-wrapper"
         data-ng-class="{ 'selected' : app.isRootAnchorSelected() }">
         <a class="anchor" href="{{app.rootAnchor.href}}" title="{{app.rootAnchor.title}}">
           <i
             class="icon fa"
             data-ng-class="'fa-' + app.rootAnchor.icon"></i>
           <span
+            class="anchor-title"
             data-ng-if="app.isRootAnchorSelected(app.rootAnchor)"
             data-ng-bind="app.rootAnchor.text"></span>
         </a>

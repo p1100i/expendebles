@@ -10,19 +10,22 @@ div.register-wrapper
   input.datetime
     font-size     12px
     margin-bottom 5px
-    width $content-width - 4
+    width         $content-width - 4
 
   button.submit
-    margin 5px 0 10px
-    size2($content-width / 4 - 10, 40px)
+    margin      5px 0 10px
+    text-align  center
+    size2($content-width / 4 - 22, 40px)
 
     &.selected
       font-weight bold
       font-size 30px
 
     &.plus, &.minus
+      size2($content-width / 4 + 18, 40px)
+
       &:not([disabled])
-        font-size 22px
+        font-size 20px
 
     &.delete:not([disabled])
       color $solarized-5

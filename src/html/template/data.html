@@ -1,11 +1,16 @@
 <div class="data-wrapper">
   <div class="text-content">
-    <h4>Data</h4>
+    <h3>Data</h3>
     <ul class="data-info">
       <li>
-          - used space:
-          <span class="text-white bubble inline-block bg-solarized-5" data-ng-bind="data.usageHuman"></span>
-          <span class="text-white bubble inline-block bg-solarized-6" data-ng-bind="data.usagePercent"></span>
+        <i class="fa fa-info-circle"></i>
+        <span>used space</span>
+      </li>
+
+      <li>
+        <span class="text-white bubble inline-block bg-solarized-5" data-ng-bind="data.usageHuman"></span>
+        <span class="text-white bubble inline-block bg-solarized-6" data-ng-bind="data.usagePercent"></span>
+      </li>
       </li>
     </ul>
   </div>
@@ -14,7 +19,7 @@
     <tbody>
       <tr>
         <td colspan="2">
-          <span>Serialized data:</span>
+          <h4>Serialized</h4>
         </td>
       </tr>
 
@@ -31,7 +36,7 @@
             type="button"
             value="Import"
             title="Import the serialized data displayed in the textarea above."
-            data-ng-click="data.importJSON(data.importedJSON)">
+            data-ng-click="data.importJSON(data.json)">
         </td>
         <td>
           <input

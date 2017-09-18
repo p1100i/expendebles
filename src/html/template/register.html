@@ -24,6 +24,7 @@
             data-ng-disabled="!register.isAmountValid(register.amount)"
             type="submit"
             data-ng-click="register.setExpense($event, register.selectedItem, 0)">
+            <i class="fa fa-money"></i>
             <i class="fa fa-plus"></i>
         </td>
 
@@ -34,6 +35,7 @@
             data-ng-disabled="!register.isAmountValid(register.amount)"
             type="submit"
             data-ng-click="register.setExpense($event, register.selectedItem, 1)">
+            <i class="fa fa-money"></i>
             <i class="fa fa-minus"></i>
           </button>
         </td>
@@ -64,7 +66,7 @@
             class="datetime"
             type="datetime-local"
             data-ng-change="register.onItemDateChanged(register.selectedItem)"
-            data-ng-model="register.selectedItem.date" >
+            data-ng-model="register.selectedItem.date">
         </td>
       </tr>
 

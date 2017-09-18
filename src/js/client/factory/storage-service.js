@@ -48,11 +48,11 @@ define(['app'], function (app) {
           mbytes = kbytes / 1024;
 
         if (mbytes > 1) {
-          return mbytes + ' MiB(s)';
+          return mbytes.toFixed(2) + ' MiB(s)';
         }
 
         if (kbytes > 1) {
-          return kbytes + ' KiB(s)';
+          return kbytes.toFixed(2) + ' KiB(s)';
         }
 
         return bytes + ' byte(s)';
