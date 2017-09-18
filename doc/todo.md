@@ -1,20 +1,11 @@
 - 1.3.0
   - use icons instead of strings in menubar
 
-  - fix displayed json importing
+  - customizable month interval
 
-  - navigate back to /home on selected-menu item href
+  - add option to register current cache state on the start of the interval
 
-  - fix redundant item registering on not current interval item-creation
-
-  - add changelog to help page
-
-  - mask values after timeout
-    - add icon for hide/show
-    - centerize interval select element on header
-
-  - add FAQ item about category balancing
-
+  + fix displayed json importing
 
 + 1.2.0
   + measure/show client side data storage size
@@ -84,9 +75,26 @@
   + highlight selected/current anchor
 
 - icebox
-  - add info from balanced categories on statistic
-  - add demo-data injection
+  - mask values after timeout
+    - add icon for hide/show
+    - centerize interval select element on header
+
+  - add FAQ item about category balancing
+
+  - add changelog to help page
+
+  - fix redundant item registering on not current interval item-creation
+    - repro steps needed
+
+  - navigate back to /home on selected-menu item href
+
   - implement basic protractor testing
+    - add a spec to create some items modify the serialized data, import, check item
+
+  - add info from balanced categories on statistic
+
+  - add demo-data injection
+
   - amount-edit only on double-click on item
-  - customizable month interval
+
   - customizable categories
