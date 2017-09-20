@@ -1,7 +1,9 @@
 - 1.3.0
-  - customizable month interval
+  - customizable month start day
 
-  - add option to register current cache state on the start of the interval
+  - summed up finance
+    - add option to register finance state on month start
+    - see unexplained entry about diff between two month
 
 + 1.2.1
   + use icons instead of strings in menubar
