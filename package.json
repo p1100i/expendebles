@@ -3,8 +3,8 @@
   "version": "1.2.1",
   "description": "Your personal privacy-respecting cashflow app.",
   "scripts": {
-    "start": "./start.sh",
-    "test": "./test.sh"
+    "start": "./run-start.sh",
+    "test": "./run-test.sh"
   },
   "repository": {
     "type": "git",
