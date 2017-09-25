@@ -1,5 +1,5 @@
 - 1.3.0
-  - customizable month start day
+  + customizable month start day
 
   - summed up finance
     - add option to register finance state on month start

@@ -1,19 +1,40 @@
 define(['app'], function (app) {
-  app.factory('timeService', ['$rootScope', 'storageService', function timeServiceFactory($rootScope, storageService) {
+  app.factory('timeService', ['$rootScope', 'storageService', 'formatService', function timeServiceFactory($rootScope, storageService, formatService) {
     var
-      interval = {},
+      MAX_MONTH_BEG = 28,
 
-      LOCALE_MONTH_CONFIG = { 'month' : 'short' },
+      interval  = {},
+      monthBegs = [MAX_MONTH_BEG],
+      monthBeg  = storageService.get('monthBeg'),
+
+      lastIntervalTimestamp,
+
+      setLastSetIntervalTimestamp = function setLastSetIntervalTimestamp() {
+        lastIntervalTimestamp = parseInt(storageService.get('lastIntervalTimestamp'));
+
+        if (isNaN(lastIntervalTimestamp)) {
+          lastIntervalTimestamp = Date.now();
+        }
+      },
 
       setInterval = function setInterval(timestamp) {
-        var
-          date      = new Date(timestamp),
-          begDate   = new Date(date.getFullYear(), date.getMonth(), 1),
-          endDate   = new Date(date.getFullYear(), date.getMonth() + 1);
+        if (!timestamp) {
+          timestamp = lastIntervalTimestamp;
+        }
 
-        interval.beg    = begDate.getTime();
-        interval.end    = endDate.getTime() - 1;
-        interval.title  = date.toLocaleString(undefined, LOCALE_MONTH_CONFIG);
+        var
+          date            = new Date(timestamp),
+          days            = date.getDate(),
+          monthTranslate  = days < monthBeg ? 0 : 1,
+          begDate         = new Date(date.getFullYear(), date.getMonth() - 1 + monthTranslate, monthBeg),
+          endDate         = new Date(date.getFullYear(), date.getMonth() + monthTranslate,     monthBeg);
+
+        interval.beg      = begDate.getTime();
+        interval.end      = endDate.getTime() - 1;
+        interval.title    = formatService.getIntervalTitle(begDate, endDate);
+        interval.subtitle = formatService.getIntervalSubtitle(begDate, endDate);
+
+        lastIntervalTimestamp = timestamp;
 
         $rootScope.$broadcast('intervalSet', interval);
       },
@@ -43,22 +64,46 @@ define(['app'], function (app) {
         return interval;
       },
 
-      init = function init() {
-        var
-          timestamp = parseInt(storageService.get('lastIntervalTime'));
+      getMonthBeg = function getMonthBeg() {
+        return monthBeg;
+      },
 
-        if (isNaN(timestamp)) {
-          timestamp = Date.now();
+      setMonthBeg = function setMonthBeg(newMonthBeg) {
+        if (!newMonthBeg || monthBegs.indexOf(newMonthBeg) === -1) {
+          return;
         }
 
-        setInterval(timestamp);
+        monthBeg = newMonthBeg;
+
+        storageService.set('monthBeg', monthBeg);
+
+        setInterval();
+      },
+
+      getPossibleMonthBegs = function getPossibleMonthBegs() {
+        return monthBegs;
+      },
+
+      init = function init() {
+        var
+          maxMonthBeg = MAX_MONTH_BEG;
+
+        while (--maxMonthBeg) {
+          monthBegs.unshift(maxMonthBeg);
+        }
+
+        setLastSetIntervalTimestamp();
+        setInterval();
       };
 
     init();
 
     return {
-      'getInterval'   : getInterval,
-      'stepInterval'  : stepInterval
+      'getInterval'           : getInterval,
+      'getMonthBeg'           : getMonthBeg,
+      'setMonthBeg'           : setMonthBeg,
+      'getPossibleMonthBegs'  : getPossibleMonthBegs,
+      'stepInterval'          : stepInterval
     };
   }]);
 });

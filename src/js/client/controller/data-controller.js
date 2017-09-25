@@ -1,5 +1,5 @@
 define(['app'], function (app) {
-  app.controller('dataController', ['$document', '$window', 'financeService', 'storageService', function DataControllerFactory($document, $window, financeService, storageService) {
+  app.controller('dataController', ['$document', '$window', 'financeService', 'storageService', 'timeService', function DataControllerFactory($document, $window, financeService, storageService, timeService) {
     var
       ctrl = this,
 
@@ -83,11 +83,23 @@ define(['app'], function (app) {
         setJSON();
       },
 
-      init = function init() {
-        ctrl.importJSON = importJSON;
-        ctrl.copyJSON   = copyJSON;
-        ctrl.clear      = clear;
+      setMonthBeg = function setMonthBeg() {
+        ctrl.monthBeg   = timeService.getMonthBeg();
+        ctrl.monthBegs  = timeService.getPossibleMonthBegs();
+      },
 
+      onMonthBegChanged = function onMonthBegChanged(newMonthBeg) {
+        timeService.setMonthBeg(newMonthBeg);
+        setMonthBeg();
+      },
+
+      init = function init() {
+        ctrl.clear                  = clear;
+        ctrl.copyJSON               = copyJSON;
+        ctrl.importJSON             = importJSON;
+        ctrl.onMonthBegChanged      = onMonthBegChanged;
+
+        setMonthBeg();
         setUsage();
         setJSON();
       };
