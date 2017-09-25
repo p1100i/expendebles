@@ -1,0 +1,35 @@
+<tr>
+  <td colspan="4">
+    <input
+      class="datetime"
+      type="datetime-local"
+      data-ng-change="register.onItemDateChanged(register.selectedItem)"
+      data-ng-model="register.selectedItem.date">
+  </td>
+</tr>
+
+<tr>
+  <td colspan="4">
+    <span
+      data-category-bubble=""
+      data-ng-repeat="category in register.categories"
+      data-ng-click="register.setCategory($event, register.selectedItem, category)"
+      data-icon="category.icon"
+      data-name="category.name"
+      data-highlighted="category === register.selectedItem.category"
+      class="text-right date-cell">
+    </span>
+  </td>
+</tr>
+
+<tr>
+  <td colspan="4">
+    <button
+      class="submit submit-wide"
+      type="submit"
+      value="/done"
+      data-ng-click="register.hideItemExtra($event, register.selectedItem)">
+      <i class="fa fa-check-square-o"></i>Done
+    </button>
+  </td>
+</tr>
