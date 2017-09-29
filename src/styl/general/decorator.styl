@@ -1,14 +1,14 @@
 .shadow
-  mix-box-shadow 0 0 10px 3px $shadow-color
+  mix-box-shadow(0 0 10px 3px $shadow-color)
 
 .shadow-bottom
-  mix-box-shadow 0 5px 10px 3px $shadow-color
+  mix-box-shadow(0 5px 10px 3px $shadow-color)
 
 .shadow-top
-  mix-box-shadow 0 -5px 10px 3px $shadow-color
+  mix-box-shadow(0 -5px 10px 3px $shadow-color)
 
 .shadow-bottom-inner
-  mix-box-shadow inset 0 -12px 12px -12px $shadow-color
+  mix-box-shadow(inset 0 -12px 12px -12px $shadow-color)
 
 .width-30p
   width 30% !important
@@ -67,6 +67,9 @@
 
 .text-right
   text-align right !important
+
+.faded
+  opacity 0.4 !important
 
 .normalcase
   text-transform initial !important
