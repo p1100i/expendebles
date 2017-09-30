@@ -1,9 +1,14 @@
-- 1.3.0
++ 1.3.0
   + customizable month start day
 
-  - summed up finance
-    - add option to register finance state on month start
-    - see unexplained entry about diff between two month
+  + summed up finance
+    + add option to register balances per month
+      + UI / controller logic to register balances
+      + storage upgrade
+        + allowing balances in finance
+        + rename items to transactions
+
+    + see unexplained entry about diff between two month
 
 + 1.2.1
   + use icons instead of strings in menubar
@@ -78,6 +83,8 @@
   + highlight selected/current anchor
 
 - icebox
+  - import/export w/ base64 encoded string (extra field for verbose display)
+
   - mask values after timeout
     - add icon for hide/show
     - centerize interval select element on header
