@@ -3,7 +3,9 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
-      items,
+      transactions,
+
+      TOP_GROUPS_COUNT = 5,
 
       sum = {
         'expense'       : 0,
@@ -16,38 +18,38 @@ define(['app'], function (app) {
       MAX_GROUP_WIDTH = 120,
       MAX_SUM_WIDTH   = 260,
 
-      isItemGreater = function isItemGreater(itemA, itemB) {
-        return itemB.amount - itemA.amount;
+      isItemGreater = function isItemGreater(transactionA, transactionB) {
+        return transactionB.amount - transactionA.amount;
       },
 
-      isExpense = function isExpense(item) {
-        return item.expense;
+      isExpense = function isExpense(transaction) {
+        return transaction.expense;
       },
 
-      isIncome = function isIncome(item) {
-        return !item.expense;
+      isIncome = function isIncome(transaction) {
+        return !transaction.expense;
       },
 
-      getGroups = function getGroups(items) {
+      getGroups = function getGroups(transactions) {
         var
-          item,
+          transaction,
           group,
           categoryId,
-          len = items.length,
-          groups = [];
+          len     = transactions.length,
+          groups  = [];
 
         while (len--) {
-          item        = items[len];
-          categoryId  = item.category.id;
+          transaction = transactions[len];
+          categoryId  = transaction.category.id;
           group       = groups.get(categoryId, 'id');
 
           if (group) {
-            group.amount += item.amount;
+            group.amount += transaction.amount;
           } else {
             groups.push({
               'id'        : categoryId,
-              'amount'    : item.amount,
-              'category'  : item.category
+              'amount'    : transaction.amount,
+              'category'  : transaction.category
             });
           }
         }
@@ -60,7 +62,7 @@ define(['app'], function (app) {
           i,
           group,
           sum   = groups.sum('amount'),
-          len   = Math.min(groups.length, 5),
+          len   = Math.min(groups.length, TOP_GROUPS_COUNT),
           left  = 0;
 
         groups.splice(len);
@@ -78,20 +80,20 @@ define(['app'], function (app) {
 
       getExpenseGroups = function getExpenseGroups() {
         var
-          expenses = items.clone().filter(isExpense);
+          expenses = transactions.clone().filter(isExpense);
 
         return getGroups(expenses);
       },
 
       getIncomeGroups = function getIncomeGroups() {
         var
-          incomes = items.clone().filter(isIncome);
+          incomes = transactions.clone().filter(isIncome);
 
         return getGroups(incomes);
       },
 
-      setItems = function setItems() {
-        items = financeService.getItems();
+      setTransactions = function setTransactions() {
+        transactions = financeService.getTransactions();
       },
 
       balanceGroups = function balanceGroups(groups, otherGroups) {
@@ -162,13 +164,19 @@ define(['app'], function (app) {
         };
       },
 
-      setSum = function setSum(incomeSum, expenseSum) {
+      setSum = function setSum(incomeSum, expenseSum, currentBalancesSum, nextBalancesSum) {
         var
           total = incomeSum + expenseSum;
 
         sum.income  = incomeSum;
         sum.expense = expenseSum;
         sum.total   = total;
+
+        delete sum.diff;
+
+        if (currentBalancesSum !== undefined && nextBalancesSum !== undefined) {
+          sum.diff = nextBalancesSum - (currentBalancesSum + incomeSum - expenseSum);
+        }
 
         if (total === 0) {
           sum.incomeWidth   = 0;
@@ -181,14 +189,16 @@ define(['app'], function (app) {
       },
 
       sync = function sync() {
-        setItems();
+        setTransactions();
 
         var
-          groups      = getWeighedGroups(),
-          incomeSum   = groups.income.sum('amount'),
-          expenseSum  = groups.expense.sum('amount');
+          groups              = getWeighedGroups(),
+          incomeSum           = groups.income.sum('amount'),
+          expenseSum          = groups.expense.sum('amount'),
+          currentBalancesSum  = financeService.getCurrentBalancesSum(),
+          nextBalancesSum     = financeService.getNextBalancesSum();
 
-        setSum(incomeSum, expenseSum);
+        setSum(incomeSum, expenseSum, currentBalancesSum, nextBalancesSum);
 
         ctrl.expenseGroups  = groups.expense;
         ctrl.incomeGroups   = groups.income;

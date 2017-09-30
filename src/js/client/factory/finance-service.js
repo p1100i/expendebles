@@ -1,12 +1,12 @@
 define(['app'], function (app) {
   app.factory('financeService', ['$rootScope', 'timeService', 'settingService', 'storageService', function financeServiceFactory($rootScope, timeService, settingService, storageService) {
     var
-      interval = timeService.getInterval(),
+      balances          = [],
+      transactions      = [],
+      nextTransactionId = 1,
+      nextBalanceId     = 1,
 
-      nextId = 1,
-
-      items = [],
-
+      interval        = timeService.getInterval(),
       defaultCategory = settingService.getDefaultCategory(),
 
       isAfterInterval = function isAfterInterval(serializedItem) {
@@ -17,38 +17,88 @@ define(['app'], function (app) {
         return interval.beg <= serializedItem.t && serializedItem.t <= interval.end;
       },
 
+      isSameMonthAsIntervalBeg = function isSameMonthAsIntervalBeg(serializedItem) {
+        var
+          itemDate = new Date(serializedItem.t);
+
+        return interval.begDate.getMonth() === itemDate.getMonth();
+      },
+
+      isSameMonthAsIntervalEnd = function isSameMonthAsIntervalEnd(serializedItem) {
+        var
+          itemDate = new Date(serializedItem.t);
+
+        return interval.endDate.getMonth() === itemDate.getMonth();
+      },
+
       getCategory = function getCategory(id) {
         return settingService.getCategory(id);
       },
 
       deserialize = function deserialize(itemData) {
-        return {
-          'amount'    : parseFloat(itemData.a),
-          'category'  : getCategory(itemData.c),
-          'expense'   : !!itemData.e,
-          'id'        : itemData.i,
-          'timestamp' : itemData.t
-        };
+        var
+          item = {};
+
+        if (itemData.a !== undefined) {
+          item.amount = parseFloat(itemData.a);
+        }
+
+        if (itemData.c !== undefined) {
+          item.category = getCategory(itemData.c);
+        }
+
+        if (itemData.e !== undefined) {
+          item.expense = !!itemData.e;
+        }
+
+        if (itemData.i !== undefined) {
+          item.id = itemData.i;
+        }
+
+        if (itemData.t !== undefined) {
+          item.timestamp = itemData.t;
+        }
+
+        return item;
       },
 
       serialize = function serialize(item) {
-        return {
-          'a' : item.amount,
-          'c' : item.category.id,
-          'e' : item.expense ? 1 : 0,
-          'i' : item.id,
-          't' : item.timestamp
-        };
+        var
+          serializedItem = {};
+
+        if (item.amount !== undefined) {
+          serializedItem.a = item.amount;
+        }
+
+        if (item.category !== undefined) {
+          serializedItem.c = item.category.id;
+        }
+
+        if (item.expense !== undefined) {
+          serializedItem.e = item.expense ? 1 : 0;
+        }
+
+        if (item.id !== undefined) {
+          serializedItem.i = item.id;
+        }
+
+        if (item.timestamp !== undefined) {
+          serializedItem.t = item.timestamp;
+        }
+
+        return serializedItem;
       },
 
-      save = function save() {
+      saveItems = function saveItems(serializedItems, items) {
+        if (!serializedItems) {
+          return;
+        }
+
         var
           i,
           len,
           item,
-          instertIndex,
-          serializedFinance = storageService.get('finance'),
-          serializedItems   = serializedFinance.items;
+          instertIndex;
 
         i = 0;
 
@@ -72,37 +122,58 @@ define(['app'], function (app) {
           serializedItems.splice(instertIndex, 0, serialize(items[len]));
         }
 
+        return serializedItems;
+      },
+
+      save = function save() {
+        var
+          serializedFinance       = storageService.get('finance'),
+          serializedTransactions  = serializedFinance.transactions,
+          serializedBalances      = serializedFinance.balances;
+
+        saveItems(serializedTransactions, transactions);
+        saveItems(serializedBalances,     balances);
+
         storageService.set('finance', {
-          'items' : serializedItems
+          'transactions'  : serializedTransactions,
+          'balances'      : serializedBalances
         });
       },
 
-      getItems = function getItems() {
-        return items;
+      getBalances = function getBalances() {
+        return balances;
       },
 
-      getNewTimestamp = function getNewTimestamp() {
+      getTransactions = function getTransactions() {
+        return transactions;
+      },
+
+      getIntervalMiddleTimestamp = function getIntervalMiddleTimestamp() {
+        return Math.floor((interval.end - interval.beg) / 2 + interval.beg);
+      },
+
+      getCurrentTimestamp = function getCurrentTimestamp(forceIntervalMiddle) {
         var
           timestamp = Date.now();
 
         if (timestamp < interval.beg || interval.end < timestamp) {
-          timestamp = (interval.end - interval.beg) / 2 + interval.beg;
+          timestamp = getIntervalMiddleTimestamp();
         }
 
         return timestamp;
       },
 
-      createItem = function createItem(item, amount) {
+      createTransaction = function createTransaction(item, amount) {
         if (!item) {
           item = {};
         }
 
         if (!item.timestamp) {
-          item.timestamp  = getNewTimestamp();
+          item.timestamp  = getCurrentTimestamp();
         }
 
         if (item.id === undefined) {
-          item.id = nextId++;
+          item.id = nextTransactionId++;
         }
 
         if (item.expense === undefined) {
@@ -124,7 +195,35 @@ define(['app'], function (app) {
         return item;
       },
 
-      addAmount = function addAmount(amount) {
+      createBalance = function createBalance(balance, amount) {
+        if (!balance) {
+          balance = {};
+        }
+
+        if (!balance.timestamp) {
+          balance.timestamp  = getIntervalMiddleTimestamp();
+        }
+
+        if (balance.id === undefined) {
+          balance.id = nextBalanceId++;
+        }
+
+        if (balance.expense === undefined) {
+          balance.expense = true;
+        }
+
+        if (balance.amount === undefined) {
+          balance.amount = amount;
+        }
+
+        if (balance.date === undefined) {
+          balance.date = new Date(balance.timestamp);
+        }
+
+        return balance;
+      },
+
+      addBalance = function addBalance(amount) {
         amount = parseFloat(amount);
 
         if (isNaN(amount)) {
@@ -132,42 +231,104 @@ define(['app'], function (app) {
         }
 
         var
-          item = createItem({}, amount);
+          balance = createBalance({}, amount);
 
-        items.push(item);
+        balances.push(balance);
 
-        return item;
+        return balance;
+      },
+
+      addTransaction = function addTransaction(amount) {
+        amount = parseFloat(amount);
+
+        if (isNaN(amount)) {
+          throw new Error('invalid_amount');
+        }
+
+        var
+          transaction = createTransaction({}, amount);
+
+        transactions.push(transaction);
+
+        return transaction;
       },
 
       getSum = function getSum() {
-        return items.sum('amount');
+        return transactions.sum('amount');
       },
 
-      sync = function sync() {
-        items.clear();
-
-        var
-          i,
-          len,
-          serializedFinance = storageService.get('finance'),
-          serializedItems   = serializedFinance.items,
-          serializedItem;
-
+      fillItems = function fillItems(items, createItem, serializedItems, isActual, maxId) {
         if (!serializedItems) {
           return;
         }
 
-        len = serializedItems.length;
+        if (maxId === undefined) {
+          maxId = 0;
+        }
+
+        var
+          i,
+          serializedItem,
+          len = serializedItems.length;
 
         for (i = 0; i < len; i++) {
           serializedItem = serializedItems[i];
 
-          nextId = Math.max(nextId, serializedItem.i + 1);
+          maxId = Math.max(maxId, serializedItem.i + 1);
 
-          if (isInInterval(serializedItem)) {
+          if (isActual(serializedItem)) {
             items.push(createItem(deserialize(serializedItem)));
           }
         }
+
+        return maxId;
+      },
+
+      getBalancesSum = function getBalancesSum(isCurrent) {
+        var
+          currentBalances   = [],
+          serializedFinance = storageService.get('finance');
+
+        fillItems(
+          currentBalances,
+          createBalance,
+          serializedFinance.balances,
+          isCurrent
+        );
+
+        return currentBalances.length ? currentBalances.sum('amount') : undefined;
+      },
+
+      getCurrentBalancesSum = function getCurrentBalancesSum() {
+        return getBalancesSum(isSameMonthAsIntervalBeg);
+      },
+
+      getNextBalancesSum = function getNextBalancesSum() {
+        return getBalancesSum(isSameMonthAsIntervalEnd);
+      },
+
+      sync = function sync() {
+        transactions.clear();
+        balances.clear();
+
+        var
+          serializedFinance = storageService.get('finance');
+
+        nextTransactionId = fillItems(
+          transactions,
+          createTransaction,
+          serializedFinance.transactions,
+          isInInterval,
+          nextTransactionId
+        );
+
+        nextBalanceId = fillItems(
+          balances,
+          createBalance,
+          serializedFinance.balances,
+          isSameMonthAsIntervalBeg,
+          nextBalanceId
+        );
       },
 
       parseAmount = function parseAmount(amount) {
@@ -204,13 +365,17 @@ define(['app'], function (app) {
     init();
 
     return {
-      'addAmount'       : addAmount,
-      'formatAmount'    : formatAmount,
-      'getItems'        : getItems,
-      'getSum'          : getSum,
-      'save'            : save,
-      'sanitizeAmount'  : sanitizeAmount,
-      'sync'            : sync
+      'addBalance'            : addBalance,
+      'addTransaction'        : addTransaction,
+      'formatAmount'          : formatAmount,
+      'getBalances'           : getBalances,
+      'getCurrentBalancesSum' : getCurrentBalancesSum,
+      'getNextBalancesSum'    : getNextBalancesSum,
+      'getSum'                : getSum,
+      'getTransactions'       : getTransactions,
+      'sanitizeAmount'        : sanitizeAmount,
+      'save'                  : save,
+      'sync'                  : sync
     };
   }]);
 });

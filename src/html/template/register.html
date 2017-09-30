@@ -1,35 +1,64 @@
 <div class="register-wrapper" data-ng-click="register.stopEvent($event)">
   <table class="control">
-    <tbody data-ng-if="!register.ext" data-ng-include="'register-amount-new.html'">
+    <tbody data-ng-if="!register.editMode" data-ng-include="'register-amount-new.html'">
     </tbody>
 
-    <tbody data-ng-if="register.ext"  data-ng-include="'register-amount-edit.html'">
-    </tbody>
-  </table>
-
-  <table class="items" data-ng-class="{ 'disabled' : register.ext }" data-ng-if="register.items">
-    <tbody>
-      <tr
-        data-ng-class="{ 'selected' : item === register.selectedItem }"
-        data-ng-repeat="item in register.items | orderBy : 'timestamp' : true"
-        data-ng-click="register.selectItem($event, item)">
-        <td
-          data-amount-bubble=""
-          data-amount="item.amount"
-          data-expense="item.expense"
-          class="text-right amount-cell">
-        </td>
-        <td
-          data-category-bubble=""
-          data-timestamp="item.timestamp"
-          data-icon="item.category.icon"
-          class="text-right date-cell">
-        </td>
-      </tr>
+    <tbody data-ng-if="register.editMode"  data-ng-include="'register-amount-edit.html'">
     </tbody>
   </table>
 
-  <div class="text-content" data-ng-if="!register.items.length">
+  <div class="text-content" data-ng-if="!register.transactions.length">
     <p>Enter amount to register an item!</p>
+  </div>
+
+  <div data-ng-if="register.transactions.length" data-ng-class="{ 'faded' : register.editMode }">
+    <table class="items">
+      <tbody>
+        <tr
+          data-ng-class="{ 'selected' : item === register.selectedItem }"
+          data-ng-repeat="item in register.transactions | orderBy : 'timestamp' : true"
+          data-ng-click="register.selectItem($event, item)">
+          <td
+            data-amount-bubble=""
+            data-amount="item.amount"
+            data-expense="item.expense"
+            class="text-right amount-cell">
+          </td>
+          <td
+            data-category-bubble=""
+            data-timestamp="item.timestamp"
+            data-icon="item.category.icon"
+            class="text-right date-cell">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div>
+      <button
+        class="submit-wide"
+        data-ng-disabled="register.editMode"
+        data-ng-class="{ 'faded' : !register.balanceMode }"
+        data-ng-click="register.toggleBalanceMode($event)">
+        <i class="fa fa-balance-scale"></i>
+        Edit monthly starting balance
+      </button>
+    </div>
+
+    <table class="items">
+      <tbody>
+        <tr
+          data-ng-class="{ 'selected' : item === register.selectedItem }"
+          data-ng-repeat="item in register.balances | orderBy : 'timestamp' : true"
+          data-ng-click="register.selectItem($event, item)">
+          <td
+            data-amount-bubble=""
+            data-amount="item.amount"
+            data-expense="item.expense"
+            class="text-right amount-cell">
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

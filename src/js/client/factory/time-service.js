@@ -29,6 +29,8 @@ define(['app'], function (app) {
           begDate         = new Date(date.getFullYear(), date.getMonth() - 1 + monthTranslate, monthBeg),
           endDate         = new Date(date.getFullYear(), date.getMonth() + monthTranslate,     monthBeg);
 
+        interval.begDate  = begDate;
+        interval.endDate  = endDate;
         interval.beg      = begDate.getTime();
         interval.end      = endDate.getTime() - 1;
         interval.title    = formatService.getIntervalTitle(begDate, endDate);

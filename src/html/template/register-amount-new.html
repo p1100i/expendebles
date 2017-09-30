@@ -4,7 +4,7 @@
       id="amount"
       class="amount"
       type="number"
-      placeholder="Amount"
+      placeholder="{{ register.balanceMode ? 'Balance' : 'Amount' }}"
       data-ng-model="register.amount"
       data-ng-change="register.onAmountChanged(register.amount)">
   </td>
@@ -39,7 +39,7 @@
       class="submit ext"
       data-ng-disabled="!register.isAmountValid(register.amount)"
       type="submit"
-      data-ng-click="register.showItemExtra($event, register.selectedItem)">
+      data-ng-click="register.setEditMode($event, true)">
       <i class="fa fa-list"></i>
   </td>
 
