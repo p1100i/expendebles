@@ -1,3 +1,14 @@
+- 1.3.1
+  - if registering not into the current month use translate by month beg not month half
+
+  - fix registering an item in a month w/ a different month date (create multiple items)
+
+  - fix setting month starting day (makes offset error of one)
+
+  - edit balance button string to long for mobile
+
+  - showing year for interval
+
 + 1.3.0
   + customizable month start day
 
