@@ -20,7 +20,7 @@ describe('storageService', function () {
 
     describe('with finance (a property w/ default value)', function () {
       it('should return the default value', function () {
-        expect(this.service.get('finance')).toEqual({ 'items' : [] });
+        expect(this.service.get('finance')).toEqual({ 'transactions' : [], 'balances' : [] });
       });
 
       describe('with a set on that property', function () {

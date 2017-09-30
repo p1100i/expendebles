@@ -8,7 +8,7 @@ describe('financeService', function () {
 
     var
       data = {
-        'itemsSerialized' : [
+        'transactionsSerialized' : [
           {
             'a' : 2,
             'c' : 2,
@@ -39,7 +39,8 @@ describe('financeService', function () {
       storageService = {
         'get' : function get() {
           return {
-            'items' : data.itemsSerialized.clone()
+            'transactions'  : data.transactionsSerialized.clone(),
+            'balances'      : []
           };
         },
 
@@ -92,10 +93,10 @@ describe('financeService', function () {
     expect(test.spies.storageService.get).toHaveBeenCalledWith('finance');
   });
 
-  describe('.getItems()', function () {
+  describe('.getTransactions()', function () {
     describe('with data in local storage in the given time', function () {
       beforeEach(function () {
-        test.result = test.service.getItems();
+        test.result = test.service.getTransactions();
       });
 
       it('should return one element', function () {
@@ -112,7 +113,8 @@ describe('financeService', function () {
 
       it('should store all data', function () {
         expect(test.spies.storageService.set).toHaveBeenCalledWith('finance', {
-          'items' : test.data.itemsSerialized
+          'transactions'  : test.data.transactionsSerialized,
+          'balances'      : []
         });
       });
     });

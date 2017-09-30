@@ -3,7 +3,7 @@
     <h3>Data</h3>
     <ul class="data-info">
       <li>
-        <i class="fa fa-info-circle"></i>
+        <i class="fa fa-database"></i>
         <span>used space</span>
       </li>
 
@@ -11,6 +11,18 @@
         <span class="text-white bubble inline-block bg-solarized-5" data-ng-bind="data.usageHuman"></span>
         <span class="text-white bubble inline-block bg-solarized-6" data-ng-bind="data.usagePercent"></span>
       </li>
+
+      <li class="next-item">
+        <i class="fa fa-calendar"></i>
+        <span>month starting day</span>
+      </li>
+
+      <li>
+        <select
+          data-ng-change="data.onMonthBegChanged(data.monthBeg)"
+          data-ng-options="i for i in data.monthBegs"
+          data-ng-model="data.monthBeg"></select>
+
       </li>
     </ul>
   </div>

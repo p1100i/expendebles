@@ -2,39 +2,73 @@ define(['app'], function (app) {
   app.factory('storageService', ['$rootScope', '$window', 'localStorageService', function storageServiceFactory($rootScope, $window, localStorageService) {
     var
       DEFAULTS = {
-        'finance' : { 'items' : [] }
+        'finance'   : { 'transactions' : [], 'balances' : [] },
+        'monthBeg'  : 1,
+        'version'   : 2
       },
 
-      CURRENT_VERSION = 1,
+      CURRENT_VERSION = 2,
 
       MAX_STORAGE_IN_BYTES = 1024 * 1024 * 5,
+
+      upgrades = {},
+
+      getValue = function getValue(key) {
+        return localStorageService.get(key);
+      },
+
+      setValue = function setValue(key, value) {
+        localStorageService.set(key, value);
+
+        return getValue(key);
+      },
+
 
       get = function get(key) {
         var
           value = localStorageService.get(key);
 
         if (value === null && DEFAULTS[key]) {
-          localStorageService.set(key, DEFAULTS[key]);
-
-          value = localStorageService.get(key);
+          value = setValue(key, DEFAULTS[key]);
         }
 
         return value;
       },
 
       set = function set(key, value) {
-        localStorageService.set(key, value);
+        setValue(key, value);
 
         $rootScope.$broadcast('storageChanged', key, value);
       },
 
       upgrade = function upgrade() {
         var
-          version = localStorageService.get('version');
+          version = get('version');
 
         if (!version) {
-          localStorageService.set('version', CURRENT_VERSION);
+          throw Error('undefined_version');
         }
+
+        while (version !== CURRENT_VERSION) {
+          version++;
+          upgrades[version]();
+          setValue('version', version);
+        }
+      },
+
+      upgradeTo2 = function upgradeTo2() {
+        var
+          finance   = getValue('finance'),
+          items     = finance.items;
+
+        if (items) {
+          delete finance.items;
+          finance.transactions = items;
+        }
+
+        finance.balances = [];
+
+        setValue('finance', finance);
       },
 
       clear = function clear() {
@@ -72,6 +106,8 @@ define(['app'], function (app) {
       },
 
       init = function init() {
+        upgrades['2'] = upgradeTo2;
+
         upgrade();
       };
 

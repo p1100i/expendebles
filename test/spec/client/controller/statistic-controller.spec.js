@@ -32,12 +32,14 @@ describe('statisticController', function () {
       },
 
       financeService = {
-        'getItems' : function getItems() { return []; }
+        'getTransactions'       : function getTransactions() { return []; },
+        'getNextBalancesSum'    : function getNextBalancesSum() {},
+        'getCurrentBalancesSum' : function getCurrentBalancesSum() {}
       },
 
       spies = {
         'financeService' : {
-          'getItems' : spyOn(financeService, 'getItems').and.callThrough()
+          'getTransactions' : spyOn(financeService, 'getTransactions').and.callThrough()
         }
       },
 
@@ -70,9 +72,9 @@ describe('statisticController', function () {
     });
   });
 
-  describe('with an item', function () {
+  describe('with an transaction', function () {
     beforeEach(function () {
-      test.spies.financeService.getItems.and.returnValue([
+      test.spies.financeService.getTransactions.and.returnValue([
         {
           'amount'    : 10,
           'category'  : test.data.categories.sport,
@@ -100,9 +102,9 @@ describe('statisticController', function () {
     });
   });
 
-  describe('with opposite equal-category items', function () {
+  describe('with opposite equal-category transactions', function () {
     beforeEach(function () {
-      test.spies.financeService.getItems.and.returnValue([
+      test.spies.financeService.getTransactions.and.returnValue([
         {
           'amount'    : 10,
           'category'  : test.data.categories.sport,
@@ -136,9 +138,9 @@ describe('statisticController', function () {
     });
   });
 
-  describe('with equal / mixed items', function () {
+  describe('with equal / mixed transactions', function () {
     beforeEach(function () {
-      test.spies.financeService.getItems.and.returnValue([
+      test.spies.financeService.getTransactions.and.returnValue([
         {
           'amount'    : 40,
           'category'  : test.data.categories.fun,

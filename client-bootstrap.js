@@ -107,6 +107,7 @@ var
       'directive/statistic-groups-directive',
       'factory/debug-service',
       'factory/finance-service',
+      'factory/format-service',
       'factory/setting-service',
       'factory/storage-service',
       'factory/time-service'

@@ -1,0 +1,54 @@
+<tr>
+  <td colspan="4">
+    <input
+      id="amount"
+      class="amount"
+      type="number"
+      placeholder="{{ register.balanceMode ? 'Balance' : 'Amount' }}"
+      data-ng-model="register.amount"
+      data-ng-change="register.onAmountChanged(register.amount)">
+  </td>
+</tr>
+
+<tr>
+  <td>
+    <button
+      class="submit plus"
+      data-ng-class="{ 'selected' : register.selectedItem && !register.selectedItem.expense }"
+      data-ng-disabled="!register.isAmountValid(register.amount)"
+      type="submit"
+      data-ng-click="register.setExpense($event, register.selectedItem, 0)">
+      <i class="fa fa-money"></i>
+      <i class="fa fa-plus"></i>
+  </td>
+
+  <td>
+    <button
+      class="submit minus"
+      data-ng-class="{ 'selected' : register.selectedItem && register.selectedItem.expense }"
+      data-ng-disabled="!register.isAmountValid(register.amount)"
+      type="submit"
+      data-ng-click="register.setExpense($event, register.selectedItem, 1)">
+      <i class="fa fa-money"></i>
+      <i class="fa fa-minus"></i>
+    </button>
+  </td>
+
+  <td>
+    <button
+      class="submit ext"
+      data-ng-disabled="!register.isAmountValid(register.amount)"
+      type="submit"
+      data-ng-click="register.setEditMode($event, true)">
+      <i class="fa fa-list"></i>
+  </td>
+
+  <td>
+    <button
+      class="submit delete"
+      data-ng-disabled="!register.isAmountValid(register.amount)"
+      type="submit"
+      data-ng-click="register.deleteItem($event, register.selectedItem)">
+      <i class="fa fa-trash-o"></i>
+  </td>
+</tr>

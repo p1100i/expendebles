@@ -3,11 +3,14 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
-      items,
-      categories,
-      selectedItem,
-
       amountInput,
+      balanceMode,
+      balances,
+      categories,
+      editMode,
+      selectedItem,
+      transactions,
+
       lastValidAmount = 0,
 
       setAmountInput = function setAmountInput() {
@@ -38,6 +41,10 @@ define(['app'], function (app) {
         }
       },
 
+      save = function save() {
+        financeService.save();
+      },
+
       setExpense = function setExpense($event, item, expense) {
         if (!item) {
           throw new Error('item_needed');
@@ -49,7 +56,7 @@ define(['app'], function (app) {
 
         if (item.expense !== expense) {
           item.expense = expense;
-          financeService.save();
+          save();
         } else if (item === selectedItem) {
           setSelectedItem();
         }
@@ -60,7 +67,7 @@ define(['app'], function (app) {
           $event.stopPropagation();
         }
 
-        if (ctrl.ext) {
+        if (editMode) {
           return;
         }
 
@@ -71,6 +78,19 @@ define(['app'], function (app) {
 
       isAmountValid = function isAmountValid(amount) {
         return amount !== undefined;
+      },
+
+      registerAmount = function registerAmount(amount) {
+        var
+          item;
+
+        if (balanceMode) {
+          item = financeService.addBalance(amount);
+        } else {
+          item = financeService.addTransaction(amount);
+        }
+
+        setSelectedItem(item);
       },
 
       onAmountChanged = function onAmountChanged(amount) {
@@ -91,70 +111,84 @@ define(['app'], function (app) {
         if (selectedItem) {
           selectedItem.amount = amount;
         } else {
-          setSelectedItem(financeService.addAmount(amount));
+          registerAmount(amount);
         }
 
-        financeService.save();
+        save();
       },
 
       deleteItem = function deleteItem($event, item) {
         $event.stopPropagation();
 
-        items.remove(item);
+        if (balanceMode) {
+          balances.remove(item);
+        } else {
+          transactions.remove(item);
+        }
 
         if (item === selectedItem) {
           setSelectedItem();
         }
 
-        financeService.save();
+        save();
       },
 
-      showItemExtra = function showItemExtra($event, item) {
+      setEditMode = function setEditMode($event, newEditMode) {
         $event.stopPropagation();
 
-        ctrl.ext = true;
-      },
-
-      hideItemExtra = function hideItemExtra($event, item) {
-        $event.stopPropagation();
-
-        ctrl.ext = false;
+        ctrl.editMode = editMode = newEditMode;
       },
 
       onItemDateChanged = function onItemDateChanged(item) {
         item.timestamp = item.date.getTime();
 
-        financeService.save();
+        save();
       },
 
       setCategory = function setCategory($event, item, category) {
         $event.stopPropagation();
 
+        if (balanceMode) {
+          return;
+        }
+
         item.category = category;
 
-        financeService.save();
+        save();
       },
 
       stopEvent = function stopEvent($event) {
         $event.stopPropagation();
       },
 
+      setBalanceMode = function setBalanceMode(newBalanceMode) {
+        ctrl.balanceMode = balanceMode = newBalanceMode;
+      },
+
+      toggleBalanceMode = function toggleBalanceMode($event) {
+        setSelectedItem();
+        setBalanceMode(!balanceMode);
+      },
+
       init = function init() {
+        setBalanceMode(false);
+
         $scope.$on('bodyClick', selectItem);
 
         ctrl.deleteItem         = deleteItem;
-        ctrl.hideItemExtra      = hideItemExtra;
         ctrl.isAmountValid      = isAmountValid;
         ctrl.onAmountChanged    = onAmountChanged;
         ctrl.onItemDateChanged  = onItemDateChanged;
         ctrl.selectItem         = selectItem;
         ctrl.setCategory        = setCategory;
+        ctrl.setEditMode        = setEditMode        ;
         ctrl.setExpense         = setExpense;
-        ctrl.showItemExtra      = showItemExtra;
         ctrl.stopEvent          = stopEvent;
+        ctrl.toggleBalanceMode  = toggleBalanceMode;
 
-        ctrl.categories = categories  = settingService.getCategories();
-        ctrl.items      = items       = financeService.getItems();
+        ctrl.categories   = categories    = settingService.getCategories();
+        ctrl.transactions = transactions  = financeService.getTransactions();
+        ctrl.balances     = balances      = financeService.getBalances();
       };
 
     init();

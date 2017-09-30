@@ -44,25 +44,31 @@
       </td>
 
       <td class="text-center width-99p">
-        <a
-          class="anchor"
-          data-ng-if="app.interval"
-          data-ng-click="app.stepInterval(-1)">
-          <i class="icon fa fa-chevron-left"></i>
-        </a>
+        <div class="interval-wrapper" data-ng-if="app.interval">
+          <a
+            class="anchor float-left"
+            data-ng-click="app.stepInterval(-1)">
+            <i class="icon fa fa-chevron-left"></i>
+          </a>
 
-        <span
-          class="bold interval-title"
-          data-ng-if="app.interval"
-          data-ng-bind="app.interval.title">
-        </span>
+          <div class="inline-block">
+            <span
+              class="bold interval-title"
+              data-ng-bind="app.interval.title">
+            </span>
 
-        <a
-          class="anchor"
-          data-ng-if="app.interval"
-          data-ng-click="app.stepInterval(1)">
-          <i class="icon fa fa-chevron-right"></i>
-        </a>
+            <span
+              class="interval-subtitle"
+              data-ng-bind="app.interval.subtitle">
+            </span>
+          </div>
+
+          <a
+            class="anchor float-right"
+            data-ng-click="app.stepInterval(1)">
+            <i class="icon fa fa-chevron-right"></i>
+          </a>
+        </div>
       </td>
 
       <td

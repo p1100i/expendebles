@@ -396,17 +396,17 @@ module.exports = function runGrunt(grunt) {
       'coverage' : [
         'clean:coverage',
         'env:coverage',
-        'instrument',
-        'jasmine-node',
-        'storeCoverage',
+        // 'instrument',
+        // 'jasmine-node',
+        // 'storeCoverage',
         'karma',
         'replace:coverage_client',
         'makeReport'
       ],
 
       'test:core' : [
-        'jshint:default',
-        'jasmine-node'
+        'jshint:default'
+        // 'jasmine-node'
       ],
 
       'test:style' : [
