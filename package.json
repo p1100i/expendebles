@@ -4,7 +4,8 @@
   "description": "Your personal privacy-respecting cashflow app.",
   "scripts": {
     "start": "./run-start.sh",
-    "test": "./run-test.sh"
+    "integration": "./run-integration-test.sh",
+    "test": "./run-unit-test.sh"
   },
   "repository": {
     "type": "git",
