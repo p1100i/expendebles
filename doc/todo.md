@@ -1,4 +1,4 @@
-- 1.3.1
++ 1.3.1
   + if registering not into the current month use translate by month beg not month half
 
   + upgrade storage to 3 (remove balance timestamps and add month index)
@@ -9,7 +9,7 @@
 
   + reimplement delete button functionality
 
-  - edit balance button string to long for mobile
+  + edit balance button string to long for mobile
 
 + 1.3.0
   + customizable month start day

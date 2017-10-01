@@ -36,7 +36,7 @@
 
     <div>
       <button
-        class="submit-wide"
+        class="toggle-balance submit-wide"
         data-ng-disabled="register.editMode"
         data-ng-class="{ 'faded' : !register.balanceMode }"
         data-ng-click="register.toggleBalanceMode($event)">
@@ -55,7 +55,7 @@
             data-amount-bubble=""
             data-amount="balance.amount"
             data-expense="balance.expense"
-            class="text-right amount-cell">
+            class="text-right amount-cell date-cell">
           </td>
         </tr>
       </tbody>
