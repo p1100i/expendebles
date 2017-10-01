@@ -105,15 +105,6 @@ define(['app'], function (app) {
         serializedItems.push(newSerializedItem);
       },
 
-      // TODO implement me
-      destroy = function destroy() {
-        // if (balanceMode) {
-        //   balances.remove(item);
-        // } else {
-        //   transactions.remove(item);
-        // }
-      },
-
       getBalances = function getBalances() {
         return balances;
       },
@@ -331,6 +322,30 @@ define(['app'], function (app) {
           'balances'      : serializedBalances
         });
       },
+
+      destroy = function destroy(item) {
+        var
+          serializedItem,
+          serializedFinance       = storageService.get('finance'),
+          serializedTransactions  = serializedFinance.transactions,
+          serializedBalances      = serializedFinance.balances;
+
+        if (item.type === 'balance') {
+          balances.remove(item);
+          serializedItem = serializedBalances.get(item.id, 'i');
+          serializedBalances.remove(serializedItem);
+        } else {
+          serializedItem = serializedTransactions.get(item.id, 'i');
+          serializedTransactions.remove(serializedItem);
+          transactions.remove(item);
+        }
+
+        storageService.set('finance', {
+          'transactions'  : serializedTransactions,
+          'balances'      : serializedBalances
+        });
+      },
+
 
       parseAmount = function parseAmount(amount) {
         return Math.abs(parseFloat(amount) || 0);

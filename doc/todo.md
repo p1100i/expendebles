@@ -7,7 +7,7 @@
 
   + fix setting month starting day (makes offset error of one)
 
-  - reimplement delete button functionality
+  + reimplement delete button functionality
 
   - edit balance button string to long for mobile
 
