@@ -4,10 +4,10 @@ define(['app'], function (app) {
       DEFAULTS = {
         'finance'   : { 'transactions' : [], 'balances' : [] },
         'monthBeg'  : 1,
-        'version'   : 2
+        'version'   : 3
       },
 
-      CURRENT_VERSION = 2,
+      CURRENT_VERSION = 3,
 
       MAX_STORAGE_IN_BYTES = 1024 * 1024 * 5,
 
@@ -71,6 +71,29 @@ define(['app'], function (app) {
         setValue('finance', finance);
       },
 
+      upgradeTo3 = function upgradeTo3() {
+        var
+          month,
+          balance,
+          finance   = getValue('finance'),
+          balances  = finance.balances,
+          len       = balances.length;
+
+        while (len--) {
+          balance = balances[len];
+
+          if (balance.t) {
+            month = new Date(balance.t);
+            month = month.getMonth();
+
+            delete balance.t;
+            balance.m = month;
+          }
+        }
+
+        setValue('finance', finance);
+      },
+
       clear = function clear() {
         localStorageService.clearAll();
         upgrade();
@@ -107,6 +130,7 @@ define(['app'], function (app) {
 
       init = function init() {
         upgrades['2'] = upgradeTo2;
+        upgrades['3'] = upgradeTo3;
 
         upgrade();
       };

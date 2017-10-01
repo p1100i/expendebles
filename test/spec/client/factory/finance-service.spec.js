@@ -23,6 +23,20 @@ describe('financeService', function () {
             'i' : 4,
             't' : 50
           }
+        ],
+
+        'transactions' : [
+          {
+            'amount'    : 2,
+            'category'  : {
+              'id'    : 2,
+              'name'  : 'some',
+              'icon'  : 'icon'
+            },
+            'expense'   : true,
+            'id'        : 1,
+            'timestamp' : 9
+          }
         ]
       },
 
@@ -105,10 +119,10 @@ describe('financeService', function () {
     });
   });
 
-  describe('.save()', function () {
+  describe('.update()', function () {
     describe('with more data in local storage than in the selected interval', function () {
       beforeEach(function () {
-        test.service.save();
+        test.service.update(test.data.transactions[0]);
       });
 
       it('should store all data', function () {
