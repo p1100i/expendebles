@@ -8,26 +8,26 @@
   </table>
 
   <div class="text-content" data-ng-if="!register.transactions.length">
-    <p>Enter amount to register an item!</p>
+    <p>Enter amount to register a transaction!</p>
   </div>
 
   <div data-ng-if="register.transactions.length" data-ng-class="{ 'faded' : register.editMode }">
     <table class="items">
       <tbody>
         <tr
-          data-ng-class="{ 'selected' : item === register.selectedItem }"
-          data-ng-repeat="item in register.transactions | orderBy : 'timestamp' : true"
-          data-ng-click="register.selectItem($event, item)">
+          data-ng-class="{ 'selected' : transaction === register.selectedItem }"
+          data-ng-repeat="transaction in register.transactions | orderBy : 'timestamp' : true"
+          data-ng-click="register.selectItem($event, transaction)">
           <td
             data-amount-bubble=""
-            data-amount="item.amount"
-            data-expense="item.expense"
+            data-amount="transaction.amount"
+            data-expense="transaction.expense"
             class="text-right amount-cell">
           </td>
           <td
             data-category-bubble=""
-            data-timestamp="item.timestamp"
-            data-icon="item.category.icon"
+            data-timestamp="transaction.timestamp"
+            data-icon="transaction.category.icon"
             class="text-right date-cell">
           </td>
         </tr>
@@ -36,7 +36,7 @@
 
     <div>
       <button
-        class="submit-wide"
+        class="toggle-balance submit-wide"
         data-ng-disabled="register.editMode"
         data-ng-class="{ 'faded' : !register.balanceMode }"
         data-ng-click="register.toggleBalanceMode($event)">
@@ -48,14 +48,14 @@
     <table class="items">
       <tbody>
         <tr
-          data-ng-class="{ 'selected' : item === register.selectedItem }"
-          data-ng-repeat="item in register.balances | orderBy : 'timestamp' : true"
-          data-ng-click="register.selectItem($event, item)">
+          data-ng-class="{ 'selected' : balance === register.selectedItem }"
+          data-ng-repeat="balance in register.balances"
+          data-ng-click="register.selectItem($event, balance)">
           <td
             data-amount-bubble=""
-            data-amount="item.amount"
-            data-expense="item.expense"
-            class="text-right amount-cell">
+            data-amount="balance.amount"
+            data-expense="balance.expense"
+            class="text-right amount-cell date-cell">
           </td>
         </tr>
       </tbody>

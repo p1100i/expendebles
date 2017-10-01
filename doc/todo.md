@@ -1,3 +1,16 @@
++ 1.3.1
+  + if registering not into the current month use translate by month beg not month half
+
+  + upgrade storage to 3 (remove balance timestamps and add month index)
+
+  + fix registering an item in a month w/ a different month date (creates multiple items)
+
+  + fix setting month starting day (makes offset error of one)
+
+  + reimplement delete button functionality
+
+  + edit balance button string to long for mobile
+
 + 1.3.0
   + customizable month start day
 
@@ -83,6 +96,12 @@
   + highlight selected/current anchor
 
 - icebox
+  - finalize basic integration coverage
+
+  - showing year for interval
+
+  - remove unnecessary .finance meta level from storage object
+
   - import/export w/ base64 encoded string (extra field for verbose display)
 
   - mask values after timeout

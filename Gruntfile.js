@@ -193,9 +193,13 @@ module.exports = function runGrunt(grunt) {
         'jshint' : {
           'options': {
             'globals'     : {
-              'define'    : false,
-              'requirejs' : false,
-              'inject'    : false
+              'browser'     : false,
+              'by'          : false,
+              'define'      : false,
+              'element'     : false,
+              'inject'      : false,
+              'protractor'  : false,
+              'requirejs'   : false
             },
 
             'jasmine'     : true,
@@ -281,6 +285,21 @@ module.exports = function runGrunt(grunt) {
         'notify_hooks' : {
           'options' : {
             'success' : true
+          }
+        },
+
+        'protractor' : {
+          'options' : {
+            'keepAlive' : true
+
+            //
+            // To update webdriver:
+            //
+            // 'webdriverManagerUpdate' : true
+          },
+
+          'default' : {
+            'configFile'  : 'test/protractor.conf.js'
           }
         },
 
@@ -492,26 +511,27 @@ module.exports = function runGrunt(grunt) {
 
       grunt.initConfig(taskConfig);
 
-      grunt.loadNpmTasks('grunt-contrib-concat');
-      grunt.loadNpmTasks('grunt-contrib-clean');
-      grunt.loadNpmTasks('grunt-contrib-jshint');
-      grunt.loadNpmTasks('grunt-contrib-watch');
-      grunt.loadNpmTasks('grunt-jscs');
-      grunt.loadNpmTasks('grunt-notify');
-      grunt.loadNpmTasks('grunt-istanbul');
-      grunt.loadNpmTasks('grunt-env');
       grunt.loadNpmTasks('grunt-angular-templates');
       grunt.loadNpmTasks('grunt-bower-task');
       grunt.loadNpmTasks('grunt-browserify');
-      grunt.loadNpmTasks('grunt-contrib-jasmine-node');
+      grunt.loadNpmTasks('grunt-contrib-clean');
+      grunt.loadNpmTasks('grunt-contrib-concat');
       grunt.loadNpmTasks('grunt-contrib-copy');
       grunt.loadNpmTasks('grunt-contrib-cssmin');
       grunt.loadNpmTasks('grunt-contrib-htmlmin');
+      grunt.loadNpmTasks('grunt-contrib-jasmine-node');
+      grunt.loadNpmTasks('grunt-contrib-jshint');
       grunt.loadNpmTasks('grunt-contrib-requirejs');
       grunt.loadNpmTasks('grunt-contrib-stylus');
+      grunt.loadNpmTasks('grunt-contrib-watch');
+      grunt.loadNpmTasks('grunt-env');
       grunt.loadNpmTasks('grunt-gh-pages');
+      grunt.loadNpmTasks('grunt-istanbul');
+      grunt.loadNpmTasks('grunt-jscs');
       grunt.loadNpmTasks('grunt-karma');
       grunt.loadNpmTasks('grunt-md5symlink');
+      grunt.loadNpmTasks('grunt-notify');
+      grunt.loadNpmTasks('grunt-protractor-runner');
       grunt.loadNpmTasks('grunt-replace');
       grunt.loadNpmTasks('grunt-symlinkassets');
 

@@ -9,26 +9,16 @@ define(['app'], function (app) {
       interval        = timeService.getInterval(),
       defaultCategory = settingService.getDefaultCategory(),
 
-      isAfterInterval = function isAfterInterval(serializedItem) {
-        return interval.end <= serializedItem.t;
-      },
-
       isInInterval = function isInInterval(serializedItem) {
         return interval.beg <= serializedItem.t && serializedItem.t <= interval.end;
       },
 
       isSameMonthAsIntervalBeg = function isSameMonthAsIntervalBeg(serializedItem) {
-        var
-          itemDate = new Date(serializedItem.t);
-
-        return interval.begDate.getMonth() === itemDate.getMonth();
+        return interval.begDate.getMonth() === serializedItem.m;
       },
 
       isSameMonthAsIntervalEnd = function isSameMonthAsIntervalEnd(serializedItem) {
-        var
-          itemDate = new Date(serializedItem.t);
-
-        return interval.endDate.getMonth() === itemDate.getMonth();
+        return interval.endDate.getMonth() === serializedItem.m;
       },
 
       getCategory = function getCategory(id) {
@@ -86,58 +76,29 @@ define(['app'], function (app) {
           serializedItem.t = item.timestamp;
         }
 
+        if (item.month !== undefined) {
+          serializedItem.m = item.month;
+        }
+
         return serializedItem;
       },
 
-      saveItems = function saveItems(serializedItems, items) {
-        if (!serializedItems) {
-          return;
-        }
-
+      updateItem = function updateItem(serializedItems, newSerializedItem) {
         var
-          i,
-          len,
-          item,
-          instertIndex;
+          len = serializedItems.length,
+          serializedItem;
 
-        i = 0;
+        while (len--) {
+          serializedItem = serializedItems[len];
 
-        while (i < serializedItems.length) {
-          item = serializedItems[i];
+          if (serializedItem.i === newSerializedItem.i) {
+            serializedItems[len] = newSerializedItem;
 
-          if (isInInterval(item)) {
-            serializedItems.removeAt(i);
-          } else if (isAfterInterval(item)) {
-            break;
-          } else {
-            i++;
+            return;
           }
         }
 
-        instertIndex = i;
-
-        len = items.length;
-
-        while (len--) {
-          serializedItems.splice(instertIndex, 0, serialize(items[len]));
-        }
-
-        return serializedItems;
-      },
-
-      save = function save() {
-        var
-          serializedFinance       = storageService.get('finance'),
-          serializedTransactions  = serializedFinance.transactions,
-          serializedBalances      = serializedFinance.balances;
-
-        saveItems(serializedTransactions, transactions);
-        saveItems(serializedBalances,     balances);
-
-        storageService.set('finance', {
-          'transactions'  : serializedTransactions,
-          'balances'      : serializedBalances
-        });
+        serializedItems.push(newSerializedItem);
       },
 
       getBalances = function getBalances() {
@@ -152,7 +113,7 @@ define(['app'], function (app) {
         return Math.floor((interval.end - interval.beg) / 2 + interval.beg);
       },
 
-      getCurrentTimestamp = function getCurrentTimestamp(forceIntervalMiddle) {
+      getTransactionTimestamp = function getTransactionTimestamp(forceIntervalMiddle) {
         var
           timestamp = Date.now();
 
@@ -163,36 +124,38 @@ define(['app'], function (app) {
         return timestamp;
       },
 
-      createTransaction = function createTransaction(item, amount) {
-        if (!item) {
-          item = {};
+      createTransaction = function createTransaction(transaction, amount) {
+        if (!transaction) {
+          transaction = {};
         }
 
-        if (!item.timestamp) {
-          item.timestamp  = getCurrentTimestamp();
+        transaction.type = 'transaction';
+
+        if (!transaction.timestamp) {
+          transaction.timestamp  = getTransactionTimestamp();
         }
 
-        if (item.id === undefined) {
-          item.id = nextTransactionId++;
+        if (transaction.id === undefined) {
+          transaction.id = nextTransactionId++;
         }
 
-        if (item.expense === undefined) {
-          item.expense = true;
+        if (transaction.expense === undefined) {
+          transaction.expense = true;
         }
 
-        if (item.amount === undefined) {
-          item.amount = amount;
+        if (transaction.amount === undefined) {
+          transaction.amount = amount;
         }
 
-        if (item.date === undefined) {
-          item.date = new Date(item.timestamp);
+        if (transaction.date === undefined) {
+          transaction.date = new Date(transaction.timestamp);
         }
 
-        if (item.category === undefined) {
-          item.category = defaultCategory;
+        if (transaction.category === undefined) {
+          transaction.category = defaultCategory;
         }
 
-        return item;
+        return transaction;
       },
 
       createBalance = function createBalance(balance, amount) {
@@ -200,12 +163,14 @@ define(['app'], function (app) {
           balance = {};
         }
 
-        if (!balance.timestamp) {
-          balance.timestamp  = getIntervalMiddleTimestamp();
-        }
+        balance.type = 'balance';
 
         if (balance.id === undefined) {
           balance.id = nextBalanceId++;
+        }
+
+        if (balance.month === undefined) {
+          balance.month = interval.begDate.getMonth();
         }
 
         if (balance.expense === undefined) {
@@ -214,10 +179,6 @@ define(['app'], function (app) {
 
         if (balance.amount === undefined) {
           balance.amount = amount;
-        }
-
-        if (balance.date === undefined) {
-          balance.date = new Date(balance.timestamp);
         }
 
         return balance;
@@ -331,6 +292,57 @@ define(['app'], function (app) {
         );
       },
 
+      update = function update(item) {
+        var
+          serializedFinance       = storageService.get('finance'),
+          serializedTransactions  = serializedFinance.transactions,
+          serializedBalances      = serializedFinance.balances,
+          serializedItem          = serialize(item);
+
+        if (item.type === 'balance') {
+          updateItem(serializedBalances, serializedItem);
+
+          if (!isSameMonthAsIntervalBeg(serializedItem)) {
+            balances.remove(item);
+          }
+        } else {
+          updateItem(serializedTransactions, serializedItem);
+
+          if (!isInInterval(serializedItem)) {
+            transactions.remove(item);
+          }
+        }
+
+        storageService.set('finance', {
+          'transactions'  : serializedTransactions,
+          'balances'      : serializedBalances
+        });
+      },
+
+      destroy = function destroy(item) {
+        var
+          serializedItem,
+          serializedFinance       = storageService.get('finance'),
+          serializedTransactions  = serializedFinance.transactions,
+          serializedBalances      = serializedFinance.balances;
+
+        if (item.type === 'balance') {
+          balances.remove(item);
+          serializedItem = serializedBalances.get(item.id, 'i');
+          serializedBalances.remove(serializedItem);
+        } else {
+          serializedItem = serializedTransactions.get(item.id, 'i');
+          serializedTransactions.remove(serializedItem);
+          transactions.remove(item);
+        }
+
+        storageService.set('finance', {
+          'transactions'  : serializedTransactions,
+          'balances'      : serializedBalances
+        });
+      },
+
+
       parseAmount = function parseAmount(amount) {
         return Math.abs(parseFloat(amount) || 0);
       },
@@ -367,6 +379,7 @@ define(['app'], function (app) {
     return {
       'addBalance'            : addBalance,
       'addTransaction'        : addTransaction,
+      'destroy'               : destroy,
       'formatAmount'          : formatAmount,
       'getBalances'           : getBalances,
       'getCurrentBalancesSum' : getCurrentBalancesSum,
@@ -374,7 +387,7 @@ define(['app'], function (app) {
       'getSum'                : getSum,
       'getTransactions'       : getTransactions,
       'sanitizeAmount'        : sanitizeAmount,
-      'save'                  : save,
+      'update'                : update,
       'sync'                  : sync
     };
   }]);

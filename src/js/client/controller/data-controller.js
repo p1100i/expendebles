@@ -89,7 +89,7 @@ define(['app'], function (app) {
       },
 
       onMonthBegChanged = function onMonthBegChanged(newMonthBeg) {
-        timeService.setMonthBeg(newMonthBeg);
+        timeService.setMonthBeg(parseInt(newMonthBeg));
         setMonthBeg();
       },
 

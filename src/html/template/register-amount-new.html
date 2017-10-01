@@ -36,9 +36,9 @@
 
   <td>
     <button
-      class="submit ext"
-      data-ng-disabled="!register.isAmountValid(register.amount)"
+      class="submit edit"
       type="submit"
+      data-ng-disabled="!register.isEditable()"
       data-ng-click="register.setEditMode($event, true)">
       <i class="fa fa-list"></i>
   </td>
@@ -48,7 +48,7 @@
       class="submit delete"
       data-ng-disabled="!register.isAmountValid(register.amount)"
       type="submit"
-      data-ng-click="register.deleteItem($event, register.selectedItem)">
+      data-ng-click="register.destroyItem($event, register.selectedItem)">
       <i class="fa fa-trash-o"></i>
   </td>
 </tr>
