@@ -17,8 +17,9 @@ describe('/', function () {
     }).then(function () {
       var
         amount  = element(by.id('amount')),
-        edit    = element(by.css('.edit')),
-        left    = element(by.css('[title="Previous month"]'));
+        edit    = element(by.css('.edit'));
+
+      // left    = element(by.css('[title="Previous month"]'));
 
       amount.sendKeys('111');
 

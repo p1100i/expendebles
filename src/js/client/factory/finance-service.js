@@ -9,10 +9,6 @@ define(['app'], function (app) {
       interval        = timeService.getInterval(),
       defaultCategory = settingService.getDefaultCategory(),
 
-      isAfterInterval = function isAfterInterval(serializedItem) {
-        return interval.end <= serializedItem.t;
-      },
-
       isInInterval = function isInInterval(serializedItem) {
         return interval.beg <= serializedItem.t && serializedItem.t <= interval.end;
       },
