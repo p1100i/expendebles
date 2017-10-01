@@ -90,7 +90,7 @@ define(['app'], function (app) {
         var
           maxMonthBeg = MAX_MONTH_BEG;
 
-        while (--maxMonthBeg) {
+        while (maxMonthBeg--) {
           monthBegs.unshift(maxMonthBeg);
         }
 

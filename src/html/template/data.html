@@ -20,7 +20,7 @@
       <li>
         <select
           data-ng-change="data.onMonthBegChanged(data.monthBeg)"
-          data-ng-options="i for i in data.monthBegs"
+          data-ng-options="(i + 1) for i in data.monthBegs"
           data-ng-model="data.monthBeg"></select>
 
       </li>
