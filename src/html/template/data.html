@@ -37,7 +37,7 @@
 
       <tr>
         <td colspan="2">
-          <textarea class="json" data-ng-model="data.json" rows="12"></textarea>
+          <textarea class="serialized" data-ng-model="data.serialized" rows="12"></textarea>
         </td>
       </tr>
 
@@ -48,7 +48,7 @@
             type="button"
             value="Import"
             title="Import the serialized data displayed in the textarea above."
-            data-ng-click="data.importJSON(data.json)">
+            data-ng-click="data.importSerialized(data.serialized)">
         </td>
         <td>
           <input
@@ -56,7 +56,7 @@
             type="button"
             value="Copy"
             title="Copy the serialized data displayed in the textarea above."
-            data-ng-click="data.copyJSON()">
+            data-ng-click="data.copySerialized()">
         </td>
       </tr>
 

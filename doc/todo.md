@@ -1,6 +1,6 @@
 - 1.4.0
   - import/export
-    - use base64 encoded string (extra field for verbose display)
+    + use base64 encoded string (extra field for verbose display)
     - add monthbeg day to the serialized data
 
   - add protractor specs

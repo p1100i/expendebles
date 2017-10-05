@@ -3,11 +3,11 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
-      importJSON = function importJSON(data) {
+      importSerialized = function importSerialized(data) {
         var
           currentVersion = storageService.get('version');
 
-        data = JSON.parse(data);
+        data = $window.JSON.parse($window.atob(data));
 
         if (data.version !== currentVersion) {
           console.error('Version mismatch imported', data.version, 'current', currentVersion);
@@ -17,20 +17,20 @@ define(['app'], function (app) {
         storageService.set('finance', data.finance);
       },
 
-      exportJSON = function exportJSON() {
+      serialize = function serialize() {
         var
-          result = JSON.stringify({
-            'version' : storageService.get('version'),
-            'finance' : storageService.get('finance')
-          }, 0, 2);
+          result = $window.btoa($window.JSON.stringify({
+            'version'   : storageService.get('version'),
+            'finance'   : storageService.get('finance')
+          }));
 
         return result;
       },
 
-      copyJSON = function copyJSON() {
+      copySerialized = function copySerialized() {
         var
           doc       = $document[0],
-          textarea  = doc.querySelector('textarea.json'),
+          textarea  = doc.querySelector('textarea.serialized'),
           successful;
 
         textarea.select();
@@ -50,8 +50,8 @@ define(['app'], function (app) {
 
       },
 
-      setJSON = function setJSON() {
-        ctrl.json = exportJSON();
+      setSerialized = function setSerialized() {
+        ctrl.serialized = serialize();
       },
 
       setUsage = function setUsage() {
@@ -80,7 +80,7 @@ define(['app'], function (app) {
         }
 
         setUsage();
-        setJSON();
+        setSerialized();
       },
 
       setMonthBeg = function setMonthBeg() {
@@ -95,13 +95,13 @@ define(['app'], function (app) {
 
       init = function init() {
         ctrl.clear                  = clear;
-        ctrl.copyJSON               = copyJSON;
-        ctrl.importJSON             = importJSON;
+        ctrl.copySerialized         = copySerialized;
+        ctrl.importSerialized       = importSerialized;
         ctrl.onMonthBegChanged      = onMonthBegChanged;
 
         setMonthBeg();
         setUsage();
-        setJSON();
+        setSerialized();
       };
 
     init();
