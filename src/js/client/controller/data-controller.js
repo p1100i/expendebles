@@ -14,14 +14,16 @@ define(['app'], function (app) {
           throw new Error('invalid_version');
         }
 
-        storageService.set('finance', data.finance);
+        storageService.set('finance',   data.finance);
+        storageService.set('monthBeg',  data.monthBeg);
       },
 
       serialize = function serialize() {
         var
           result = $window.btoa($window.JSON.stringify({
             'version'   : storageService.get('version'),
-            'finance'   : storageService.get('finance')
+            'finance'   : storageService.get('finance'),
+            'monthBeg'  : storageService.get('monthBeg')
           }));
 
         return result;
@@ -89,7 +91,10 @@ define(['app'], function (app) {
       },
 
       onMonthBegChanged = function onMonthBegChanged(newMonthBeg) {
-        timeService.setMonthBeg(parseInt(newMonthBeg));
+        newMonthBeg = parseInt(newMonthBeg);
+
+        timeService.setMonthBeg(newMonthBeg);
+
         setMonthBeg();
       },
 
