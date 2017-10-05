@@ -1,4 +1,21 @@
+- 1.5.0
+  - showing year for interval
+
+  - remove unnecessary .finance meta level from storage object
+
+  - fix protractor spec to not depend on current date
+
++ 1.4.0
+  + import/export
+    + use base64 encoded string (extra field for verbose display)
+    + add monthbeg day to the serialized data
+
+  + add protractor specs
+    + create some items modify the serialized data, import, check item
+
 + 1.3.1
+  + implement basic protractor testing
+
   + if registering not into the current month use translate by month beg not month half
 
   + upgrade storage to 3 (remove balance timestamps and add month index)
@@ -96,14 +113,6 @@
   + highlight selected/current anchor
 
 - icebox
-  - finalize basic integration coverage
-
-  - showing year for interval
-
-  - remove unnecessary .finance meta level from storage object
-
-  - import/export w/ base64 encoded string (extra field for verbose display)
-
   - mask values after timeout
     - add icon for hide/show
     - centerize interval select element on header
@@ -112,18 +121,6 @@
 
   - add changelog to help page
 
-  - fix redundant item registering on not current interval item-creation
-    - repro steps needed
-
-  - navigate back to /home on selected-menu item href
-
-  - implement basic protractor testing
-    - add a spec to create some items modify the serialized data, import, check item
-
-  - add info from balanced categories on statistic
-
   - add demo-data injection
-
-  - amount-edit only on double-click on item
 
   - customizable categories

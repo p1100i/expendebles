@@ -3,34 +3,21 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
-      importJSON = function importJSON(data) {
+      serialize = function serialize() {
         var
-          currentVersion = storageService.get('version');
-
-        data = JSON.parse(data);
-
-        if (data.version !== currentVersion) {
-          console.error('Version mismatch imported', data.version, 'current', currentVersion);
-          throw new Error('invalid_version');
-        }
-
-        storageService.set('finance', data.finance);
-      },
-
-      exportJSON = function exportJSON() {
-        var
-          result = JSON.stringify({
-            'version' : storageService.get('version'),
-            'finance' : storageService.get('finance')
-          }, 0, 2);
+          result = $window.btoa($window.JSON.stringify({
+            'version'   : storageService.get('version'),
+            'finance'   : storageService.get('finance'),
+            'monthBeg'  : storageService.get('monthBeg')
+          }));
 
         return result;
       },
 
-      copyJSON = function copyJSON() {
+      copySerialized = function copySerialized() {
         var
           doc       = $document[0],
-          textarea  = doc.querySelector('textarea.json'),
+          textarea  = doc.querySelector('textarea.serialized'),
           successful;
 
         textarea.select();
@@ -50,8 +37,8 @@ define(['app'], function (app) {
 
       },
 
-      setJSON = function setJSON() {
-        ctrl.json = exportJSON();
+      setSerialized = function setSerialized() {
+        ctrl.serialized = serialize();
       },
 
       setUsage = function setUsage() {
@@ -60,6 +47,17 @@ define(['app'], function (app) {
 
         ctrl.usageHuman   = usage.human;
         ctrl.usagePercent = usage.percent.toFixed(2) + '%';
+      },
+
+      setMonthBeg = function setMonthBeg() {
+        ctrl.monthBeg   = timeService.getMonthBeg();
+        ctrl.monthBegs  = timeService.getPossibleMonthBegs();
+      },
+
+      sync = function sync() {
+        setMonthBeg();
+        setUsage();
+        setSerialized();
       },
 
       clear = function clear() {
@@ -79,29 +77,41 @@ define(['app'], function (app) {
           financeService.sync();
         }
 
-        setUsage();
-        setJSON();
-      },
-
-      setMonthBeg = function setMonthBeg() {
-        ctrl.monthBeg   = timeService.getMonthBeg();
-        ctrl.monthBegs  = timeService.getPossibleMonthBegs();
+        sync();
       },
 
       onMonthBegChanged = function onMonthBegChanged(newMonthBeg) {
-        timeService.setMonthBeg(parseInt(newMonthBeg));
-        setMonthBeg();
+        newMonthBeg = parseInt(newMonthBeg);
+
+        timeService.setMonthBeg(newMonthBeg);
+
+        sync();
       },
+
+      importSerialized = function importSerialized(data) {
+        var
+          currentVersion = storageService.get('version');
+
+        data = $window.JSON.parse($window.atob(data));
+
+        if (data.version !== currentVersion) {
+          console.error('Version mismatch imported', data.version, 'current', currentVersion);
+          throw new Error('invalid_version');
+        }
+
+        storageService.set('finance', data.finance);
+
+        onMonthBegChanged(data.monthBeg);
+      },
+
 
       init = function init() {
         ctrl.clear                  = clear;
-        ctrl.copyJSON               = copyJSON;
-        ctrl.importJSON             = importJSON;
+        ctrl.copySerialized         = copySerialized;
+        ctrl.importSerialized       = importSerialized;
         ctrl.onMonthBegChanged      = onMonthBegChanged;
 
-        setMonthBeg();
-        setUsage();
-        setJSON();
+        sync();
       };
 
     init();
