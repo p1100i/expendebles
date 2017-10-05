@@ -43,31 +43,31 @@
 
       <tr>
         <td>
-          <input
+          <button
             class="submit"
-            type="button"
-            value="Import"
             title="Import the serialized data displayed in the textarea above."
             data-ng-click="data.importSerialized(data.serialized)">
+            Import
+          </button>
         </td>
         <td>
-          <input
+          <button
             class="submit"
-            type="button"
-            value="Copy"
             title="Copy the serialized data displayed in the textarea above."
             data-ng-click="data.copySerialized()">
+            Copy
+          </button>
         </td>
       </tr>
 
       <tr>
         <td colspan="2">
-          <input
+          <button
             class="submit submit-wide"
-            type="button"
-            value="Clear all APP data!"
             title="Clear all your APP data, careful this is irreversible."
             data-ng-click="data.clear()">
+            Clear all APP data!
+          </button>
         </td>
       </tr>
     </tbody>

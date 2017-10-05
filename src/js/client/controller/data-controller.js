@@ -3,21 +3,6 @@ define(['app'], function (app) {
     var
       ctrl = this,
 
-      importSerialized = function importSerialized(data) {
-        var
-          currentVersion = storageService.get('version');
-
-        data = $window.JSON.parse($window.atob(data));
-
-        if (data.version !== currentVersion) {
-          console.error('Version mismatch imported', data.version, 'current', currentVersion);
-          throw new Error('invalid_version');
-        }
-
-        storageService.set('finance',   data.finance);
-        storageService.set('monthBeg',  data.monthBeg);
-      },
-
       serialize = function serialize() {
         var
           result = $window.btoa($window.JSON.stringify({
@@ -64,6 +49,17 @@ define(['app'], function (app) {
         ctrl.usagePercent = usage.percent.toFixed(2) + '%';
       },
 
+      setMonthBeg = function setMonthBeg() {
+        ctrl.monthBeg   = timeService.getMonthBeg();
+        ctrl.monthBegs  = timeService.getPossibleMonthBegs();
+      },
+
+      sync = function sync() {
+        setMonthBeg();
+        setUsage();
+        setSerialized();
+      },
+
       clear = function clear() {
         var
           confirmMessage,
@@ -81,13 +77,7 @@ define(['app'], function (app) {
           financeService.sync();
         }
 
-        setUsage();
-        setSerialized();
-      },
-
-      setMonthBeg = function setMonthBeg() {
-        ctrl.monthBeg   = timeService.getMonthBeg();
-        ctrl.monthBegs  = timeService.getPossibleMonthBegs();
+        sync();
       },
 
       onMonthBegChanged = function onMonthBegChanged(newMonthBeg) {
@@ -95,8 +85,25 @@ define(['app'], function (app) {
 
         timeService.setMonthBeg(newMonthBeg);
 
-        setMonthBeg();
+        sync();
       },
+
+      importSerialized = function importSerialized(data) {
+        var
+          currentVersion = storageService.get('version');
+
+        data = $window.JSON.parse($window.atob(data));
+
+        if (data.version !== currentVersion) {
+          console.error('Version mismatch imported', data.version, 'current', currentVersion);
+          throw new Error('invalid_version');
+        }
+
+        storageService.set('finance', data.finance);
+
+        onMonthBegChanged(data.monthBeg);
+      },
+
 
       init = function init() {
         ctrl.clear                  = clear;
@@ -104,9 +111,7 @@ define(['app'], function (app) {
         ctrl.importSerialized       = importSerialized;
         ctrl.onMonthBegChanged      = onMonthBegChanged;
 
-        setMonthBeg();
-        setUsage();
-        setSerialized();
+        sync();
       };
 
     init();

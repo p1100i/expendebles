@@ -1,14 +1,17 @@
-- 1.4.0
+- 1.5.0
+  - showing year for interval
+
+  - remove unnecessary .finance meta level from storage object
+
+  - fix protractor spec to not depend on current date
+
++ 1.4.0
   + import/export
     + use base64 encoded string (extra field for verbose display)
     + add monthbeg day to the serialized data
 
-  - add protractor specs
-    - create some items modify the serialized data, import, check item
-
-  - showing year for interval
-
-  - remove unnecessary .finance meta level from storage object
+  + add protractor specs
+    + create some items modify the serialized data, import, check item
 
 + 1.3.1
   + implement basic protractor testing
