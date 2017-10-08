@@ -95,9 +95,6 @@ describe('/', function () {
         showedInterval  = element(by.binding('app.interval.title')),
         right           = element(by.css('[title="Next month"]'));
 
-      // browser.manage().logs().get('browser').then(function(browserLog) {
-      //   console.log(' >>>>>>>>> ' + require('util').inspect(browserLog));
-      // });
 
       expect(showedInterval.getText()).toBe('\'17 Aug');
 

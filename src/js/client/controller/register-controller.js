@@ -110,7 +110,6 @@ define(['app'], function (app) {
         if (selectedItem) {
           selectedItem.amount = amount;
         } else {
-          console.log('register Amount');
           registerAmount(amount);
         }
 

@@ -1,5 +1,5 @@
 - next
-  - remove unnecessary .finance meta level from storage object
+  + remove unnecessary console.log on registering amount
 
   + fix error on typing zero to date-time of expense
 
@@ -117,6 +117,8 @@
   + highlight selected/current anchor
 
 - icebox
+  - remove unnecessary .finance meta level from storage object
+
   - add storage upgrade logic for data import
 
   - compress localstorage data
