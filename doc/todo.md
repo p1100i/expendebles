@@ -1,7 +1,11 @@
 - next
   - remove unnecessary .finance meta level from storage object
 
-  - fix protractor spec to not depend on current date
+  - fix error on typing zero to date-time of expense
+
+  + fix protractor spec to not depend on current date
+
+  + store last selected interval
 
   + showing year for interval
 
@@ -113,6 +117,12 @@
   + highlight selected/current anchor
 
 - icebox
+  - add storage upgrade logic for data import
+
+  - compress localstorage data
+
+  - add option to encrypt localstorage data
+
   - mask values after timeout
     - add icon for hide/show
     - centerize interval select element on header
