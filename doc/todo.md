@@ -1,9 +1,13 @@
-- 1.5.0
-  - showing year for interval
+- next
+  + remove unnecessary console.log on registering amount
 
-  - remove unnecessary .finance meta level from storage object
+  + fix error on typing zero to date-time of expense
 
-  - fix protractor spec to not depend on current date
+  + fix protractor spec to not depend on current date
+
+  + store last selected interval
+
+  + showing year for interval
 
 + 1.4.0
   + import/export
@@ -113,6 +117,14 @@
   + highlight selected/current anchor
 
 - icebox
+  - remove unnecessary .finance meta level from storage object
+
+  - add storage upgrade logic for data import
+
+  - compress localstorage data
+
+  - add option to encrypt localstorage data
+
   - mask values after timeout
     - add icon for hide/show
     - centerize interval select element on header

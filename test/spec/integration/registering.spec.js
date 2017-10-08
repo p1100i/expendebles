@@ -3,6 +3,8 @@ describe('/', function () {
     browser.get('/');
 
     expect(browser.getTitle()).toEqual('expendebles');
+
+    browser.executeScript('localStorage.setItem(\'app.interval\', 1506808800000);');
   });
 
   it('should work', function () {
@@ -24,6 +26,8 @@ describe('/', function () {
         edit    = element(by.css('.edit')),
         left    = element(by.css('[title="Previous month"]'));
 
+      left.click();
+
       amount.sendKeys('111');
 
       edit.click();
@@ -31,7 +35,7 @@ describe('/', function () {
       input           = element(by.model('register.selectedItem.date'));
       showedInterval  = element(by.binding('app.interval.title'));
 
-      expect(showedInterval.getText()).toBe('Sep');
+      expect(showedInterval.getText()).toBe('\'17 Sep');
 
       input.sendKeys('09/10/2017' + protractor.Key.TAB + '08:40');
 
@@ -39,7 +43,7 @@ describe('/', function () {
 
       expect(selected.getText()).toBe('111');
 
-      expect(showedInterval.getText()).toBe('Sep');
+      expect(showedInterval.getText()).toBe('\'17 Sep');
 
       done = element(by.css('[title="Done"]'));
 
@@ -49,7 +53,7 @@ describe('/', function () {
 
       left.click();
 
-      expect(showedInterval.getText()).toBe('Aug');
+      expect(showedInterval.getText()).toBe('\'17 Aug');
 
       expect(element(by.css('table.items')).isPresent()).toBe(true);
       expect(element(by.css('table.items tr td.amount-cell')).getText()).toBe('111');
@@ -87,9 +91,16 @@ describe('/', function () {
 
       return browser.get('/#!/register');
     }).then(function () {
-      var showedInterval = element(by.binding('app.interval.title'));
+      var
+        showedInterval  = element(by.binding('app.interval.title')),
+        right           = element(by.css('[title="Next month"]'));
 
-      expect(showedInterval.getText()).toBe('Sep');
+
+      expect(showedInterval.getText()).toBe('\'17 Aug');
+
+      expect(element(by.css('table.items')).isPresent()).toBe(false);
+
+      right.click();
 
       expect(element(by.css('table.items tr td.amount-cell')).getText()).toBe('111');
     });

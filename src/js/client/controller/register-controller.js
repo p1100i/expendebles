@@ -110,7 +110,6 @@ define(['app'], function (app) {
         if (selectedItem) {
           selectedItem.amount = amount;
         } else {
-          console.log('register Amount');
           registerAmount(amount);
         }
 
@@ -128,6 +127,10 @@ define(['app'], function (app) {
       },
 
       onItemDateChanged = function onItemDateChanged(item) {
+        if (!item || !item.date) {
+          return;
+        }
+
         item.timestamp = item.date.getTime();
 
         financeService.update(item);

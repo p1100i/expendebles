@@ -8,7 +8,8 @@ define(['app'], function (app) {
           result = $window.btoa($window.JSON.stringify({
             'version'   : storageService.get('version'),
             'finance'   : storageService.get('finance'),
-            'monthBeg'  : storageService.get('monthBeg')
+            'monthBeg'  : storageService.get('monthBeg'),
+            'interval'  : storageService.get('interval')
           }));
 
         return result;
@@ -100,6 +101,7 @@ define(['app'], function (app) {
         }
 
         storageService.set('finance', data.finance);
+        storageService.set('interval', data.interval);
 
         onMonthBegChanged(data.monthBeg);
       },

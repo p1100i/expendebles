@@ -9,8 +9,21 @@ define(['app'], function (app) {
         return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
       },
 
+      getYear = function getYear(date) {
+        var
+          year = date.getFullYear().toString();
+
+        year = year.substring(year.length - 2);
+
+        return '\'' + year;
+      },
+
+      getMonth = function getMonth(date) {
+        return date.toLocaleString(undefined, LOCALE_MONTH_CONFIG);
+      },
+
       getIntervalTitle = function getIntervalTitle(beg) {
-        return beg.toLocaleString(undefined, LOCALE_MONTH_CONFIG);
+        return getYear(beg) + ' ' + getMonth(beg);
       },
 
       getIntervalSubtitle = function getIntervalSubtitle(beg, end) {

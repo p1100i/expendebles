@@ -2,24 +2,33 @@ define(['app'], function (app) {
   app.factory('timeService', ['$rootScope', 'storageService', 'formatService', function timeServiceFactory($rootScope, storageService, formatService) {
     var
       MAX_MONTH_BEG = 28,
+      MS_IN_DAY     = 24 * 60 * 60 * 1000,
+
 
       interval  = {},
       monthBegs = [MAX_MONTH_BEG],
       monthBeg  = storageService.get('monthBeg'),
 
-      lastIntervalTimestamp,
+      loadSelectedInterval = function loadSelectedInterval() {
+        var
+          selectedInterval = parseInt(storageService.get('interval'));
 
-      setLastSetIntervalTimestamp = function setLastSetIntervalTimestamp() {
-        lastIntervalTimestamp = parseInt(storageService.get('lastIntervalTimestamp'));
-
-        if (isNaN(lastIntervalTimestamp)) {
-          lastIntervalTimestamp = Date.now();
+        if (isNaN(selectedInterval)) {
+          selectedInterval = Date.now();
         }
+
+        return selectedInterval + monthBeg * MS_IN_DAY;
+      },
+
+      saveSelectedInterval = function saveSelectedInterval(date) {
+        date = new Date(date.getFullYear(), date.getMonth());
+
+        storageService.set('interval', date.getTime());
       },
 
       setInterval = function setInterval(timestamp) {
         if (!timestamp) {
-          timestamp = lastIntervalTimestamp;
+          timestamp = loadSelectedInterval();
         }
 
         var
@@ -36,7 +45,7 @@ define(['app'], function (app) {
         interval.title    = formatService.getIntervalTitle(begDate, endDate);
         interval.subtitle = formatService.getIntervalSubtitle(begDate, endDate);
 
-        lastIntervalTimestamp = timestamp;
+        saveSelectedInterval(begDate);
 
         $rootScope.$broadcast('intervalSet', interval);
       },
@@ -94,7 +103,6 @@ define(['app'], function (app) {
           monthBegs.unshift(maxMonthBeg);
         }
 
-        setLastSetIntervalTimestamp();
         setInterval();
       };
 
@@ -102,6 +110,7 @@ define(['app'], function (app) {
 
     return {
       'getInterval'           : getInterval,
+      'setInterval'           : setInterval,
       'getMonthBeg'           : getMonthBeg,
       'setMonthBeg'           : setMonthBeg,
       'getPossibleMonthBegs'  : getPossibleMonthBegs,
