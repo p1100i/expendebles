@@ -1,7 +1,7 @@
 - next
   - remove unnecessary .finance meta level from storage object
 
-  - fix error on typing zero to date-time of expense
+  + fix error on typing zero to date-time of expense
 
   + fix protractor spec to not depend on current date
 

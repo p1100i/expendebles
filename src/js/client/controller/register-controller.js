@@ -128,6 +128,10 @@ define(['app'], function (app) {
       },
 
       onItemDateChanged = function onItemDateChanged(item) {
+        if (!item || !item.date) {
+          return;
+        }
+
         item.timestamp = item.date.getTime();
 
         financeService.update(item);
