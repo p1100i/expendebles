@@ -1,9 +1,9 @@
-- 1.5.0
-  - showing year for interval
-
+- next
   - remove unnecessary .finance meta level from storage object
 
   - fix protractor spec to not depend on current date
+
+  + showing year for interval
 
 + 1.4.0
   + import/export
