@@ -1,6 +1,4 @@
 - next
-  - remove unnecessary .finance meta level from storage object
-
   - add storage upgrade logic for data import
     - prefix exported data with version
     - compress exported string data w/ lz-string
@@ -13,6 +11,8 @@
   - create help content
     - add basic FAQ
     - add changelog
+
+  + remove unnecessary .finance meta level from storage object
 
 + 1.4.1
   + remove unnecessary console.log on registering amount

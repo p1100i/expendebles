@@ -2,12 +2,13 @@ define(['app'], function (app) {
   app.factory('storageService', ['$rootScope', '$window', 'localStorageService', function storageServiceFactory($rootScope, $window, localStorageService) {
     var
       DEFAULTS = {
-        'finance'   : { 'transactions' : [], 'balances' : [] },
-        'monthBeg'  : 1,
-        'version'   : 3
+        'balances'      : [],
+        'transactions'  : [],
+        'monthBeg'      : 1,
+        'version'       : 4
       },
 
-      CURRENT_VERSION = 3,
+      CURRENT_VERSION = 4,
 
       MAX_STORAGE_IN_BYTES = 1024 * 1024 * 5,
 
@@ -22,7 +23,6 @@ define(['app'], function (app) {
 
         return getValue(key);
       },
-
 
       get = function get(key) {
         var
@@ -43,7 +43,8 @@ define(['app'], function (app) {
 
       upgrade = function upgrade() {
         var
-          version = get('version');
+          version = get('version'),
+          upgrader;
 
         if (!version) {
           throw Error('undefined_version');
@@ -51,7 +52,15 @@ define(['app'], function (app) {
 
         while (version !== CURRENT_VERSION) {
           version++;
-          upgrades[version]();
+
+          upgrader = upgrades[version];
+
+          if (upgrader) {
+            upgrader();
+          } else {
+            console.warn('upgrader missing w/ version:', version);
+          }
+
           setValue('version', version);
         }
       },
@@ -94,6 +103,18 @@ define(['app'], function (app) {
         setValue('finance', finance);
       },
 
+      upgradeTo4 = function upgradeTo4() {
+        var
+          finance       = getValue('finance'),
+          balances      = finance.balances,
+          transactions  = finance.transactions;
+
+        setValue('balances',      balances);
+        setValue('transactions',  transactions);
+
+        localStorageService.remove('finance');
+      },
+
       clear = function clear() {
         localStorageService.clearAll();
         upgrade();
@@ -131,6 +152,7 @@ define(['app'], function (app) {
       init = function init() {
         upgrades['2'] = upgradeTo2;
         upgrades['3'] = upgradeTo3;
+        upgrades['4'] = upgradeTo4;
 
         upgrade();
       };

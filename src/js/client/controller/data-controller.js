@@ -6,10 +6,11 @@ define(['app'], function (app) {
       serialize = function serialize() {
         var
           result = $window.btoa($window.JSON.stringify({
-            'version'   : storageService.get('version'),
-            'finance'   : storageService.get('finance'),
-            'monthBeg'  : storageService.get('monthBeg'),
-            'interval'  : storageService.get('interval')
+            'balances'      : storageService.get('balances'),
+            'interval'      : storageService.get('interval'),
+            'monthBeg'      : storageService.get('monthBeg'),
+            'transactions'  : storageService.get('transactions'),
+            'version'       : storageService.get('version')
           }));
 
         return result;
@@ -100,8 +101,9 @@ define(['app'], function (app) {
           throw new Error('invalid_version');
         }
 
-        storageService.set('finance', data.finance);
-        storageService.set('interval', data.interval);
+        storageService.set('balances',      data.balances);
+        storageService.set('transactions',  data.transactions);
+        storageService.set('interval',      data.interval);
 
         onMonthBegChanged(data.monthBeg);
       },

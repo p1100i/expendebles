@@ -51,11 +51,14 @@ describe('financeService', function () {
       },
 
       storageService = {
-        'get' : function get() {
-          return {
-            'transactions'  : data.transactionsSerialized.clone(),
-            'balances'      : []
-          };
+        'get' : function get(type) {
+          if (type === 'transactions') {
+            return data.transactionsSerialized.clone();
+          }
+
+          if (type === 'balances') {
+            return [];
+          }
         },
 
         'set' : function set() {}
@@ -104,7 +107,8 @@ describe('financeService', function () {
   });
 
   it('should sync w/ storage service', function () {
-    expect(test.spies.storageService.get).toHaveBeenCalledWith('finance');
+    expect(test.spies.storageService.get).toHaveBeenCalledWith('balances');
+    expect(test.spies.storageService.get).toHaveBeenCalledWith('transactions');
   });
 
   describe('.getTransactions()', function () {
@@ -126,10 +130,8 @@ describe('financeService', function () {
       });
 
       it('should store all data', function () {
-        expect(test.spies.storageService.set).toHaveBeenCalledWith('finance', {
-          'transactions'  : test.data.transactionsSerialized,
-          'balances'      : []
-        });
+        expect(test.spies.storageService.set).toHaveBeenCalledWith('transactions', test.data.transactionsSerialized);
+        expect(test.spies.storageService.set).toHaveBeenCalledWith('balances', []);
       });
     });
   });

@@ -247,13 +247,13 @@ define(['app'], function (app) {
 
       getBalancesSum = function getBalancesSum(isCurrent) {
         var
-          currentBalances   = [],
-          serializedFinance = storageService.get('finance');
+          currentBalances     = [],
+          serializedBalances  = storageService.get('balances');
 
         fillItems(
           currentBalances,
           createBalance,
-          serializedFinance.balances,
+          serializedBalances,
           isCurrent
         );
 
@@ -273,12 +273,13 @@ define(['app'], function (app) {
         balances.clear();
 
         var
-          serializedFinance = storageService.get('finance');
+          serializedBalances      = storageService.get('balances'),
+          serializedTransactions  = storageService.get('transactions');
 
         nextTransactionId = fillItems(
           transactions,
           createTransaction,
-          serializedFinance.transactions,
+          serializedTransactions,
           isInInterval,
           nextTransactionId
         );
@@ -286,7 +287,7 @@ define(['app'], function (app) {
         nextBalanceId = fillItems(
           balances,
           createBalance,
-          serializedFinance.balances,
+          serializedBalances,
           isSameMonthAsIntervalBeg,
           nextBalanceId
         );
@@ -294,9 +295,8 @@ define(['app'], function (app) {
 
       update = function update(item) {
         var
-          serializedFinance       = storageService.get('finance'),
-          serializedTransactions  = serializedFinance.transactions,
-          serializedBalances      = serializedFinance.balances,
+          serializedBalances      = storageService.get('balances'),
+          serializedTransactions  = storageService.get('transactions'),
           serializedItem          = serialize(item);
 
         if (item.type === 'balance') {
@@ -313,18 +313,15 @@ define(['app'], function (app) {
           }
         }
 
-        storageService.set('finance', {
-          'transactions'  : serializedTransactions,
-          'balances'      : serializedBalances
-        });
+        storageService.set('balances',      serializedBalances);
+        storageService.set('transactions',  serializedTransactions);
       },
 
       destroy = function destroy(item) {
         var
           serializedItem,
-          serializedFinance       = storageService.get('finance'),
-          serializedTransactions  = serializedFinance.transactions,
-          serializedBalances      = serializedFinance.balances;
+          serializedBalances      = storageService.get('balances'),
+          serializedTransactions  = storageService.get('transactions');
 
         if (item.type === 'balance') {
           balances.remove(item);
@@ -336,10 +333,8 @@ define(['app'], function (app) {
           transactions.remove(item);
         }
 
-        storageService.set('finance', {
-          'transactions'  : serializedTransactions,
-          'balances'      : serializedBalances
-        });
+        storageService.set('balances',      serializedBalances);
+        storageService.set('transactions',  serializedTransactions);
       },
 
 
