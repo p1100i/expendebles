@@ -1,9 +1,4 @@
 - next
-  - add storage upgrade logic for data import
-    - prefix exported data with version
-    - compress exported string data w/ lz-string
-      - JSON.stringify -> lz-compress -> base64
-
   - rework header
     - about/register/statistics # interval # [trends]/settings/help
     - remove page-name displacement, always show all points
@@ -11,6 +6,11 @@
   - create help content
     - add basic FAQ
     - add changelog
+
+  + add storage upgrade logic for data import
+    + prefix exported data with version
+    + compress exported string data w/ lz-string
+      + JSON.stringify -> lz-compress -> base64
 
   + remove unnecessary .finance meta level from storage object
 

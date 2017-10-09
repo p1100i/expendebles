@@ -37,8 +37,6 @@ define(['app'], function (app) {
 
       set = function set(key, value) {
         setValue(key, value);
-
-        $rootScope.$broadcast('storageChanged', key, value);
       },
 
       upgrade = function upgrade() {
@@ -117,7 +115,6 @@ define(['app'], function (app) {
 
       clear = function clear() {
         localStorageService.clearAll();
-        upgrade();
       },
 
       getBytesHumanReadable = function getBytesHumanReadable(bytes) {
@@ -163,6 +160,7 @@ define(['app'], function (app) {
       'clear'     : clear,
       'get'       : get,
       'getUsage'  : getUsage,
+      'upgrade'   : upgrade,
       'set'       : set
     };
   }]);

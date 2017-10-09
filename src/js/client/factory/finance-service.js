@@ -364,8 +364,7 @@ define(['app'], function (app) {
       },
 
       init = function init() {
-        $rootScope.$on('intervalSet',     sync);
-        $rootScope.$on('storageChanged',  sync);
+        $rootScope.$on('intervalSet', sync);
 
         sync();
       };

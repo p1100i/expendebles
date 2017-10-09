@@ -2,8 +2,8 @@
   "name": "expendebles",
   "description": "Track/stat your personal finances.",
   "author": {
-    "name" : "p1100i",
-    "email" : "p1100i@gmx.com"
+    "name": "p1100i",
+    "email": "p1100i@gmx.com"
   },
   "license": "MIT",
   "moduleType": [],
@@ -20,6 +20,7 @@
     "angular-mocks": "^1.6.4",
     "angular-route": "^1.6.4",
     "requirejs": "^2.3.3",
-    "angular-local-storage": "^0.6.0"
+    "angular-local-storage": "^0.6.0",
+    "lz-string": "^1.4.4"
   }
 }
