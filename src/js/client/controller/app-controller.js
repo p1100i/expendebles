@@ -27,9 +27,9 @@ define(['app', 'angular'], function (app, angular) {
         );
 
         rightAnchors.push(
-          createAnchor('trend', '#!/trend',     'See trends',    'line-chart', true),
-          createAnchor('data',  '#!/data',      'Manage data',   'cog'),
-          createAnchor('help',  '#!/help',      'Help',          'question-circle')
+          createAnchor('trend', '#!/trend',     'See trends', 'line-chart', true),
+          createAnchor('conf',  '#!/config',    'Configure',  'cog'),
+          createAnchor('help',  '#!/help',      'Help',       'question-circle')
         );
       },
 

@@ -102,7 +102,7 @@ var
       'constant/route-config',
       'controller/about-controller',
       'controller/app-controller',
-      'controller/data-controller',
+      'controller/config-controller',
       'controller/help-controller',
       'controller/register-controller',
       'controller/statistic-controller',

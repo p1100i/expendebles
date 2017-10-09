@@ -1,15 +1,15 @@
-<div class="data-wrapper">
+<div class="config-wrapper">
   <div class="text-content">
     <h3>Data</h3>
-    <ul class="data-info">
+    <ul class="config-info">
       <li>
         <i class="fa fa-database"></i>
         <span>used space</span>
       </li>
 
       <li>
-        <span class="text-white bubble inline-block bg-solarized-5" data-ng-bind="data.usageHuman"></span>
-        <span class="text-white bubble inline-block bg-solarized-6" data-ng-bind="data.usagePercent"></span>
+        <span class="text-white bubble inline-block bg-solarized-5" data-ng-bind="config.usageHuman"></span>
+        <span class="text-white bubble inline-block bg-solarized-6" data-ng-bind="config.usagePercent"></span>
       </li>
 
       <li class="next-item">
@@ -19,9 +19,9 @@
 
       <li>
         <select
-          data-ng-change="data.onMonthBegChanged(data.monthBeg)"
-          data-ng-options="(i + 1) for i in data.monthBegs"
-          data-ng-model="data.monthBeg"></select>
+          data-ng-change="config.onMonthBegChanged(config.monthBeg)"
+          data-ng-options="(i + 1) for i in config.monthBegs"
+          data-ng-model="config.monthBeg"></select>
 
       </li>
     </ul>
@@ -37,7 +37,7 @@
 
       <tr>
         <td colspan="2">
-          <textarea class="serialized" data-ng-model="data.serialized" rows="12"></textarea>
+          <textarea class="serialized" data-ng-model="config.serialized" rows="12"></textarea>
         </td>
       </tr>
 
@@ -46,7 +46,7 @@
           <button
             class="submit"
             title="Import the serialized data displayed in the textarea above."
-            data-ng-click="data.importSerialized(data.serialized)">
+            data-ng-click="config.importSerialized(config.serialized)">
             Import
           </button>
         </td>
@@ -54,7 +54,7 @@
           <button
             class="submit"
             title="Copy the serialized data displayed in the textarea above."
-            data-ng-click="data.copySerialized()">
+            data-ng-click="config.copySerialized()">
             Copy
           </button>
         </td>
@@ -65,7 +65,7 @@
           <button
             class="submit submit-wide"
             title="Clear all your APP data, careful this is irreversible."
-            data-ng-click="data.clear()">
+            data-ng-click="config.clear()">
             Clear all APP data!
           </button>
         </td>

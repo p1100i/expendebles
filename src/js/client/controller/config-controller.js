@@ -1,5 +1,5 @@
 define(['app', 'lzString'], function (app, lzString) {
-  app.controller('dataController', ['$document', '$window', 'financeService', 'storageService', 'timeService', function DataControllerFactory($document, $window, financeService, storageService, timeService) {
+  app.controller('configController', ['$document', '$window', 'financeService', 'storageService', 'timeService', function DataControllerFactory($document, $window, financeService, storageService, timeService) {
     var
       ctrl = this,
 
