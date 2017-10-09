@@ -1,89 +1,45 @@
 <table class="header shadow-bottom" role="navigation">
   <tbody>
     <tr>
-      <td data-ng-if="app.isRootAnchorSelected()" class="bg-solarized-16">
-        <a class="anchor first-anchor" href="#!/help" title="Help">
-          <i class="icon fa fa-question-circle"></i>
-        </a>
-      </td>
-
-      <td data-ng-if="!app.isRootAnchorSelected()" class="bg-solarized-16">
-        <a class="anchor first-anchor" href="#!/" title="/home">
-          <i class="icon fa fa-chevron-up"></i>
-        </a>
-      </td>
-
       <td
-        class="icon-text-wrapper"
-        data-ng-if="app.anchorsDisplayable()"
-        data-ng-class="{ 'selected' : anchor === app.getSelectedAnchor() }"
-        data-ng-repeat="anchor in app.anchors">
-        <a class="anchor normal-anchor" href="{{anchor.href}}" title="{{anchor.title}}">
-          <i
-            class="icon fa"
-            data-ng-class="'fa-' + anchor.icon"></i>
-          <span
-            class="anchor-title"
-            data-ng-if="anchor === app.getSelectedAnchor()"
-            data-ng-bind="anchor.text"></span>
-        </a>
-      </td>
-
-      <td
-        class="selected icon-text-wrapper"
-        data-ng-init="selectedAnchor = app.getSelectedAnchor()"
-        data-ng-if="app.isNormalAnchorSelected() && !app.anchorsDisplayable()">
-        <a class="anchor" href="{{selectedAnchor.href}}" title="{{selectedAnchor.title}}">
-          <i
-            class="icon fa"
-            data-ng-class="'fa-' + selectedAnchor.icon"></i>
-          <span
-            class="anchor-title"
-            data-ng-bind="selectedAnchor.text"></span>
+        data-ng-class="{ 'selected' : app.isAnchorSelected(anchor) }"
+        data-ng-repeat="anchor in app.leftAnchors">
+        <a
+          class="anchor {{anchor.name}}"
+          href="{{anchor.href}}"
+          title="{{anchor.title}}">
+          <i class="icon fa" data-ng-class="'fa-' + anchor.icon"></i>
         </a>
       </td>
 
       <td class="text-center width-99p">
         <div class="interval-wrapper" data-ng-if="app.interval">
-          <a
-            class="anchor float-left"
-            title="Previous month"
-            data-ng-click="app.stepInterval(-1)">
+          <a class="anchor float-left" title="Previous month" data-ng-click="app.stepInterval(-1)">
             <i class="icon fa fa-chevron-left"></i>
           </a>
 
           <div class="inline-block">
-            <span
-              class="bold interval-title"
-              data-ng-bind="app.interval.title">
-            </span>
-
-            <span
-              class="interval-subtitle"
-              data-ng-bind="app.interval.subtitle">
-            </span>
+            <span class="bold interval-title" data-ng-bind="app.interval.title"></span>
+            <span class="interval-subtitle" data-ng-bind="app.interval.subtitle"></span>
           </div>
 
-          <a
-            class="anchor float-right"
-            title="Next month"
-            data-ng-click="app.stepInterval(1)">
+          <a class="anchor float-right" title="Next month" data-ng-click="app.stepInterval(1)">
             <i class="icon fa fa-chevron-right"></i>
           </a>
         </div>
       </td>
 
       <td
-        class="text-right bg-solarized-16 icon-text-wrapper"
-        data-ng-class="{ 'selected' : app.isRootAnchorSelected() }">
-        <a class="anchor" href="{{app.rootAnchor.href}}" title="{{app.rootAnchor.title}}">
-          <i
-            class="icon fa"
-            data-ng-class="'fa-' + app.rootAnchor.icon"></i>
-          <span
-            class="anchor-title"
-            data-ng-if="app.isRootAnchorSelected(app.rootAnchor)"
-            data-ng-bind="app.rootAnchor.text"></span>
+        data-ng-class="{ 'selected' : app.isAnchorSelected(anchor) }"
+        data-ng-repeat="anchor in app.rightAnchors">
+        <span class="anchor-spacer" data-ng-if="!anchor.enabled"></span>
+
+        <a
+          data-ng-if="anchor.enabled"
+          class="anchor {{anchor.name}}"
+          href="{{anchor.href}}"
+          title="{{anchor.title}}">
+          <i class="icon fa" data-ng-class="'fa-' + anchor.icon"></i>
         </a>
       </td>
     </tr>

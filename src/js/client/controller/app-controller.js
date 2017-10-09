@@ -3,39 +3,34 @@ define(['app', 'angular'], function (app, angular) {
     var
       ctrl = this,
 
-      regAnchor,
-      statAnchor,
-      dataAnchor,
-      windowWidth,
-      anchorsWidth,
-      settingWidths,
+      leftAnchors   = [],
+      rightAnchors  = [],
 
-      anchors     = [],
-      rootAnchor  = {},
-
-      MAX_ANCHOR_WIDTH = 60,
-
-      createAnchor = function createAnchor(anchor, text, href, title, icon) {
-        if (!anchor) {
+      createAnchor = function createAnchor(name, href, title, icon, disabled) {
+        var
           anchor = {};
-        }
 
-        anchor.text  = text;
-        anchor.href  = href;
-        anchor.title = title;
-        anchor.icon  = icon;
+        anchor.name     = name;
+        anchor.href     = href;
+        anchor.title    = title;
+        anchor.icon     = icon;
+        anchor.enabled  = !disabled;
 
         return anchor;
       },
 
       setMenu = function setMenu() {
-        regAnchor   = createAnchor({}, 'reg',   '#!/register',  'Register entries', 'plus-circle');
-        statAnchor  = createAnchor({}, 'stat',  '#!/statistic', 'View statistics',  'pie-chart');
-        dataAnchor  = createAnchor({}, 'data',  '#!/data',      'Manage data',      'cog');
+        leftAnchors.push(
+          createAnchor('about', '#!/',          'About',            'bank'),
+          createAnchor('reg',   '#!/register',  'Register entries', 'plus-circle'),
+          createAnchor('stat',  '#!/statistic', 'View statistics',  'pie-chart')
+        );
 
-        anchors.push(regAnchor, statAnchor, dataAnchor);
-
-        createAnchor(rootAnchor, 'about', '#!/', 'About', 'bank');
+        rightAnchors.push(
+          createAnchor('trend', '#!/trend',     'See trends',    'line-chart', true),
+          createAnchor('data',  '#!/data',      'Manage data',   'cog'),
+          createAnchor('help',  '#!/help',      'Help',          'question-circle')
+        );
       },
 
       debug = function debug($event, msg, startDebug) {
@@ -50,32 +45,6 @@ define(['app', 'angular'], function (app, angular) {
         ctrl.debug = undefined;
       },
 
-      isAnchorSelected = function isAnchorSelected(anchor) {
-        var
-          path = '#!' + $location.path();
-
-        return anchor.href === path;
-      },
-
-      isRootAnchorSelected = function isRootAnchorSelected() {
-        return isAnchorSelected(rootAnchor);
-      },
-
-      getSelectedAnchor = function getSelectedAnchor() {
-        return anchors.find(isAnchorSelected);
-      },
-
-      isNormalAnchorSelected = function isNormalAnchorSelected() {
-        var
-          selectedAnchor = getSelectedAnchor();
-
-        return selectedAnchor && selectedAnchor !== rootAnchor;
-      },
-
-      anchorsDisplayable = function anchorsDisplayable() {
-        return isRootAnchorSelected() || anchorsWidth < windowWidth;
-      },
-
       onBodyClick = function onBodyClick() {
         $rootScope.$broadcast('bodyClick');
       },
@@ -84,8 +53,15 @@ define(['app', 'angular'], function (app, angular) {
         timeService.stepInterval(step);
       },
 
+      isAnchorSelected = function isAnchorSelected(anchor) {
+        var
+          path = '#!' + $location.path();
+
+        return anchor.href === path;
+      },
+
       isAnchorIntervalRelated = function isAnchorIntervalRelated() {
-        return isAnchorSelected(regAnchor) || isAnchorSelected(statAnchor);
+        return isAnchorSelected(leftAnchors[1]) || isAnchorSelected(leftAnchors[2]);
       },
 
       onLocationChangeSuccess = function onLocationChangeSuccess() {
@@ -96,37 +72,18 @@ define(['app', 'angular'], function (app, angular) {
         }
       },
 
-      setWidths = function setWidths() {
-        windowWidth   = $window.innerWidth || document.body.clientWidth;
-        anchorsWidth  = anchors.length * MAX_ANCHOR_WIDTH * 2;
-      },
-
-      enqueueSetWidths = function enqueueSetWidths() {
-        if (settingWidths) {
-          $timeout.cancel(settingWidths);
-        }
-
-        settingWidths = $timeout(setWidths, 500);
-      },
-
       init = function init() {
         setMenu();
-        setWidths();
-
-        angular.element($window).on('resize', enqueueSetWidths);
 
         $rootScope.$on('debug',                   debug);
         $rootScope.$on('$locationChangeSuccess',  onLocationChangeSuccess);
 
-        ctrl.anchors                = anchors;
-        ctrl.anchorsDisplayable     = anchorsDisplayable;
-        ctrl.emptyDebug             = emptyDebug;
-        ctrl.getSelectedAnchor      = getSelectedAnchor;
-        ctrl.isNormalAnchorSelected = isNormalAnchorSelected;
-        ctrl.isRootAnchorSelected   = isRootAnchorSelected;
-        ctrl.onBodyClick            = onBodyClick;
-        ctrl.rootAnchor             = rootAnchor;
-        ctrl.stepInterval           = stepInterval;
+        ctrl.emptyDebug       = emptyDebug;
+        ctrl.leftAnchors      = leftAnchors;
+        ctrl.isAnchorSelected = isAnchorSelected ;
+        ctrl.onBodyClick      = onBodyClick;
+        ctrl.rightAnchors     = rightAnchors;
+        ctrl.stepInterval     = stepInterval;
 
         //
         // $window.d = debugService;

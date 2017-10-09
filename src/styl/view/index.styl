@@ -47,6 +47,10 @@ table.header
   background-color  $grey-dark
   mix-user-select(none)
 
+  span.anchor-spacer
+    width   36px
+    display inline-block
+
   a.anchor
     color           $grey-white
     display         inline-block
@@ -54,19 +58,14 @@ table.header
     height          $header-height
     padding         0 8px
     vertical-align  middle
+    width           20px
+
     &:hover
       background-color  $grey
       color             white
 
-  a.first-anchor
-    width 20px
-
-  a.normal-anchor
-    max-width 60px
-
-  span.anchor-title
-    line-height $header-height
-    font-weight bold
+  a.about
+    background-color $solarized-16
 
   div.interval-wrapper
     display   block
@@ -90,17 +89,8 @@ table.header
     line-height $header-height
     font-size   18px
 
-  td.icon-text-wrapper
-    i.icon
-      float left
-
-    span.anchor-title
-      display       inline-block
-      padding-right 20px
-      margin-left   6px
-
   td.selected a
-    background-color  $grey
+    background-color $grey
 
 div.debug
   color             white
@@ -111,7 +101,3 @@ div.debug
   height            10%
   width             100%
   background-color  rgba(122, 122, 122, 0.7)
-
-div.logo
-  color       $solarized-16
-  font-size   34px

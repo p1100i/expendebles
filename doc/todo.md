@@ -1,11 +1,20 @@
-- next
-  - rework header
-    - about/register/statistics # interval # [trends]/settings/help
-    - remove page-name displacement, always show all points
+- icebox
+  - add option to encrypt localstorage data
 
+  - mask values after timeout
+
+  - add demo-data injection
+
+  - customizable categories
+
+- next
   - create help content
     - add basic FAQ
     - add changelog
+
+  + rework header
+    + about/register/statistics # interval # [trends]/settings/help
+    + remove page-name displacement, always show all points
 
   + add storage upgrade logic for data import
     + prefix exported data with version
@@ -131,12 +140,3 @@
     + bind onclick to add expense
 
   + highlight selected/current anchor
-
-- icebox
-  - add option to encrypt localstorage data
-
-  - mask values after timeout
-
-  - add demo-data injection
-
-  - customizable categories

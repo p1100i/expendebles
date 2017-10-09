@@ -18,6 +18,7 @@ describe('appController', function () {
   });
 
   it('should set anchors', function () {
-    expect(this.ctrl.anchors).toEqual(jasmine.any(Array));
+    expect(this.ctrl.leftAnchors).toEqual(jasmine.any(Array));
+    expect(this.ctrl.rightAnchors).toEqual(jasmine.any(Array));
   });
 });
