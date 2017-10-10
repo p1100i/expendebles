@@ -1,14 +1,31 @@
 - icebox
-  - add option to encrypt localstorage data
+  - add registration timestamp for items (visualize it as well)
+
+  - canvas/image based import/export
+
+  - csv based export/import
 
   - mask values after timeout
 
   - add demo-data injection
 
+  - add option to encrypt localstorage data
+
+  - make storageService usable in iOS privateBrowsing as well
+    https://stackoverflow.com/questions/14555347/html5-localstorage-error-with-safari-quota-exceeded-err-dom-exception-22-an
+
   - customizable categories
 
+- next
+  - add yearly statistics about monthly income/outcome/diff
+
+- 1.5.2
+  - fix monthbegday off-by-one issue
+
+  - fix unregistered diff calculation between months
+
 + 1.5.1
-  * fix header spacing isssue
+  + fix header spacing isssue
 
 + 1.5.0
   + show exported base64 data character count
