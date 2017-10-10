@@ -7,6 +7,9 @@
 
   - customizable categories
 
++ 1.5.1
+  * fix header spacing isssue
+
 + 1.5.0
   + show exported base64 data character count
 
