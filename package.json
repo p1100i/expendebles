@@ -1,6 +1,6 @@
 {
   "name": "expendebles",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Your personal privacy-respecting cashflow app.",
   "scripts": {
     "start": "./run-start.sh",
