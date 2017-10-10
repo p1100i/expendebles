@@ -1,4 +1,31 @@
-- next
+- icebox
+  - add option to encrypt localstorage data
+
+  - mask values after timeout
+
+  - add demo-data injection
+
+  - customizable categories
+
++ 1.5.0
+  + show exported base64 data character count
+
+  + create help content
+    + add basic FAQ
+    + add changelog
+
+  + rework header
+    + about/register/statistics # interval # [trends]/settings/help
+    + remove page-name displacement, always show all points
+
+  + add storage upgrade logic for data import
+    + prefix exported data with version
+    + compress exported string data w/ lz-string
+      + JSON.stringify -> lz-compress -> base64
+
+  + remove unnecessary .finance meta level from storage object
+
++ 1.4.1
   + remove unnecessary console.log on registering amount
 
   + fix error on typing zero to date-time of expense
@@ -115,24 +142,3 @@
     + bind onclick to add expense
 
   + highlight selected/current anchor
-
-- icebox
-  - remove unnecessary .finance meta level from storage object
-
-  - add storage upgrade logic for data import
-
-  - compress localstorage data
-
-  - add option to encrypt localstorage data
-
-  - mask values after timeout
-    - add icon for hide/show
-    - centerize interval select element on header
-
-  - add FAQ item about category balancing
-
-  - add changelog to help page
-
-  - add demo-data injection
-
-  - customizable categories

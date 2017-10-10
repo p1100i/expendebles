@@ -8,9 +8,9 @@ describe('/', function () {
   });
 
   it('should work', function () {
-    browser.get('/#!/data').then(function () {
+    browser.get('/#!/config').then(function () {
       var
-        monthBeg        = element(by.model('data.monthBeg')),
+        monthBeg        = element(by.model('config.monthBeg')),
         monthBegOption  = monthBeg.element(by.cssContainingText('option', '15'));
 
       monthBegOption.click();
@@ -58,10 +58,10 @@ describe('/', function () {
       expect(element(by.css('table.items')).isPresent()).toBe(true);
       expect(element(by.css('table.items tr td.amount-cell')).getText()).toBe('111');
 
-      return browser.get('/#!/data');
+      return browser.get('/#!/config');
     }).then(function () {
       var
-        monthBeg            = element(by.model('data.monthBeg')),
+        monthBeg            = element(by.model('config.monthBeg')),
         monthBegOption      = monthBeg.element(by.cssContainingText('option', '8')),
         monthBegLateOption  = monthBeg.element(by.cssContainingText('option', '20')),
         copyButton          = element(by.buttonText('Copy')),

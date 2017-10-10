@@ -5,42 +5,28 @@
     <p>is a free, privacy-respecting, <b>personal cashflow</b> webapp.</p>
   </div>
 
-  <h4>Features:</h4>
-  <ul>
-    <li>- <b>add/manage</b> your transactions</li>
-    <li>- <b>cashflow statistics</b> view
-    <li>- <b>full privacy</b> (no tracking cookies, etc.)</li>
-    <li>- <b>pure client-side</b> app (w/o internetz)</li>
-    <li>- <b>mobile friendly</b> layout</li>
-    <li>- <b><a href="https://github.com/p1100i/expendebles">open source</a> / free</b></li>
+  <h2>Features:</h2>
+  <ul class="disced">
+    <li><b><a href="#!/register">add/manage</a></b> your transactions</li>
+    <li>cashflow <b><a href="#!/statistic">statistics</a></b> view
+    <li><b><a href="#!/config">export/configure</a></b> your data</li>
+    <li><b>full privacy</b> (no tracking cookies, etc.)</li>
+    <li><b>pure client-side</b> app (w/o internetz)</li>
+    <li><b>mobile friendly</b> layout</li>
+    <li><b><a href="https://github.com/p1100i/expendebles">open source</a> / free</b></li>
   </ul>
 
-  <h4>Basics:</h4>
-  <ul>
-    <li>- <a href="#!/register">register</a> entries</li>
-    <li>- view <a href="#!/statistic">statistic</a></li>
-    <li>- manage your <a href="#!/data">data</a></li>
+  <h2>Support:</h2>
+  <ul class="disced">
+    <li><b><a href="https://github.com/p1100i/expendebles/issues">open an issue</a></b> if you need something</li>
+    <li>created by <b><a href="https://twitter.com/p1100i">p1100i</a></b></li>
   </ul>
 
-  <h4>Roadmap:</h4>
-  <ul>
-    <li>- customizable month interval</li>
-    <li>- more statistics / charts</li>
-    <li>- customizable categories</li>
+  <h2>Build:</h2>
+  <ul class="disced">
+    <li><b>version:</b> {{about.version}}</li>
+    <li><b>commit:</b> {{about.buildCommit}}</li>
+    <li><b>unix time:</b> {{about.unixTime}}</li>
+    <li><b>local time:</b> {{about.buildDate | date:about.format}}</li>
   </ul>
-
-  <h4>Credits:</h4>
-  <ul>
-    <li>- <b><a href="https://github.com/p1100i/expendebles/issues">open an issue</a></b> if you need something</li>
-    <li>- created by <b><a href="https://twitter.com/p1100i">p1100i</a></b></li>
-  </ul>
-
-  <h4>Build info:</h4>
-  <ul>
-    <li>- <b>version:</b> {{about.version}}</li>
-    <li>- <b>commit:</b> {{about.buildCommit}}</li>
-    <li>- <b>unix time:</b> {{about.unixTime}}</li>
-    <li>- <b>local time:</b> {{about.buildDate | date:about.format}}</li>
-  </ul>
-
 </div>

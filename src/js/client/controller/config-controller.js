@@ -1,18 +1,22 @@
-define(['app'], function (app) {
-  app.controller('dataController', ['$document', '$window', 'financeService', 'storageService', 'timeService', function DataControllerFactory($document, $window, financeService, storageService, timeService) {
+define(['app', 'lzString'], function (app, lzString) {
+  app.controller('configController', ['$document', '$window', 'financeService', 'storageService', 'timeService', function DataControllerFactory($document, $window, financeService, storageService, timeService) {
     var
       ctrl = this,
 
       serialize = function serialize() {
         var
-          result = $window.btoa($window.JSON.stringify({
-            'version'   : storageService.get('version'),
-            'finance'   : storageService.get('finance'),
-            'monthBeg'  : storageService.get('monthBeg'),
-            'interval'  : storageService.get('interval')
-          }));
+          version     = storageService.get('version'),
+          serialized  = $window.JSON.stringify({
+            'balances'      : storageService.get('balances'),
+            'interval'      : storageService.get('interval'),
+            'monthBeg'      : storageService.get('monthBeg'),
+            'transactions'  : storageService.get('transactions'),
+            'version'       : version
+          });
 
-        return result;
+        serialized = 'version:' + version + '!' + lzString.compressToBase64(serialized);
+
+        return serialized;
       },
 
       copySerialized = function copySerialized() {
@@ -89,21 +93,47 @@ define(['app'], function (app) {
         sync();
       },
 
-      importSerialized = function importSerialized(data) {
+      importSerialized = function importSerialized(serialized) {
         var
-          currentVersion = storageService.get('version');
+          versionBeg  = serialized.indexOf(':'),
+          versionEnd  = serialized.indexOf('!'),
+          version     = parseInt(serialized.substring(versionBeg + 1, versionEnd)),
+          compressed,
+          decompressed,
+          data,
+          key;
 
-        data = $window.JSON.parse($window.atob(data));
+        if (isNaN(version)) {
+          console.error('Could not parse version to import.');
 
-        if (data.version !== currentVersion) {
-          console.error('Version mismatch imported', data.version, 'current', currentVersion);
+          throw new Error('nan_version');
+        }
+
+        compressed    = serialized.substring(versionEnd + 1);
+        decompressed  = lzString.decompressFromBase64(compressed);
+        data          = $window.JSON.parse(decompressed);
+
+        if (data.version !== version) {
+          console.error('Compressed version does not match the given version.');
+
           throw new Error('invalid_version');
         }
 
-        storageService.set('finance', data.finance);
-        storageService.set('interval', data.interval);
+        storageService.clear();
 
-        onMonthBegChanged(data.monthBeg);
+        //
+        // DO upgrade steps if needed.
+        //
+
+        for (key in data) {
+          storageService.set(key, data[key]);
+        }
+
+        storageService.upgrade();
+
+        if (data.monthBeg) {
+          onMonthBegChanged(data.monthBeg);
+        }
       },
 
 

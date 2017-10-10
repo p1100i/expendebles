@@ -41,7 +41,8 @@ var
         'angular'             : '../lib/angular/angular',
         'angularCookies'      : '../lib/angular-cookies/angular-cookies',
         'angularRoute'        : '../lib/angular-route/angular-route',
-        'angularLocalStorage' : '../lib/angular-local-storage/dist/angular-local-storage'
+        'angularLocalStorage' : '../lib/angular-local-storage/dist/angular-local-storage',
+        'lzString'            : '../lib/lz-string/libs/lz-string'
       },
 
       'shim' : {
@@ -62,6 +63,10 @@ var
         'angularLocalStorage' : {
           'deps'    : ['angular'],
           'exports' : 'angularLocalStorage'
+        },
+
+        'lzString' : {
+          'exports' : 'lzString'
         }
       }
 
@@ -97,7 +102,7 @@ var
       'constant/route-config',
       'controller/about-controller',
       'controller/app-controller',
-      'controller/data-controller',
+      'controller/config-controller',
       'controller/help-controller',
       'controller/register-controller',
       'controller/statistic-controller',
