@@ -21,13 +21,13 @@ define(['app', 'angular'], function (app, angular) {
 
       setMenu = function setMenu() {
         leftAnchors.push(
-          createAnchor('about', '#!/',          'About',            'bank'),
-          createAnchor('reg',   '#!/register',  'Register entries', 'plus-circle'),
-          createAnchor('stat',  '#!/statistic', 'View statistics',  'pie-chart')
+          createAnchor('about', '#!/',          'About',      'bank'),
+          createAnchor('reg',   '#!/register',  'Register',   'plus-circle'),
+          createAnchor('stat',  '#!/statistic', 'Statistics', 'pie-chart')
         );
 
         rightAnchors.push(
-          createAnchor('trend', '#!/trend',     'See trends', 'line-chart', true),
+          createAnchor('trend', '#!/trend',     'Trends',     'line-chart', true),
           createAnchor('conf',  '#!/config',    'Configure',  'cog'),
           createAnchor('help',  '#!/help',      'Help',       'question-circle')
         );

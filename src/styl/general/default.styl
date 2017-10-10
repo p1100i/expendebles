@@ -10,6 +10,7 @@ html
 
 body
   height 100%
+  background-color $grey-white
 
 h1
   font-size 1.3em
@@ -23,6 +24,9 @@ h3
 h4
   font-size 0.9em
 
+h5
+  font-size 0.8em
+
 a, a *, [data-ng-click], [ng-click]
   cursor pointer
 
@@ -31,6 +35,10 @@ ul
 
 a
   text-decoration none
+  color       $solarized-6
+  font-weight bold
+  &:hover
+    color     $teal
 
 input[type=text], input[type=password], textarea
   color   $grey

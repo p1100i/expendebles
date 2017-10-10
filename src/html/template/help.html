@@ -1,6 +1,66 @@
-<div class="text-content">
-  <h4>FAQ</h4>
-  <ul>
-    <li>... wait for it</li>
+<div class="help-wrapper text-content">
+  <h2>FAQ</h2>
+
+  <ul class="text-justify faq">
+    <li class="bold">What is this for?</li>
+    <li>I wanted to keep track of my spendings, see what i'm using money on and optionally create different statistics about it, see trends about my savings.</li>
+    <li class="bold">Is my data safe/stored?</li>
+    <li>This webapp uses your browsers <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">localStorage</a> to store data, which means, it never leaves your actual phone/computer. However keep in mind, if you use "Delete browser history" or anything like that, your data is lost. Make sure to backup your data by saving (copy into notepad) the serialized format (which you can import later) on the <a href="#!/config">configure</a> page!</li>
+  </ul>
+
+  <h2>Changelog</h2>
+
+  <h4>1.5.0</h4>
+  <ul class="disced">
+    <li>exported base64 data is now compressed with <a href="https://github.com/pieroxy/lz-string/">lz-compress</a></li>
+    <li>unnecessary navigation step removed from header layout (menus are showed always)</li>
+    <li>about/FAQ/changelog update</li>
+  </ul>
+
+  <h4>1.4.1</h4>
+  <ul class="disced">
+    <li>fixes using invalid when editing transaction datetime on <a href="#!/register">register page</a></li>
+    <li>show year of the selected interval</li>
+    <li>store last selected interval</li>
+  </ul>
+
+  <h4>1.4.0</h4>
+  <ul class="disced">
+    <li>import/export uses base64 encoded string <a href="#!/config">configure page</a></li>
+    <li>month begin day is now exported as well</li>
+  </ul>
+
+  <h4>1.3.1</h4>
+  <ul class="disced">
+    <li>fixes item registration/editing not into the selected interval</li>
+  </ul>
+
+  <h4>1.3.0</h4>
+  <ul class="disced">
+    <li>customizable month starting day on <a href="#!/config">configure page</a></li>
+    <li>option to register monthly balances on <a href="#!/register">register page</a></li>
+    <li>display unregistered difference between two month on <a href="#!/statistic">statistics page</a></li>
+    <li>transaction groups are cumulated</li>
+  </ul>
+
+  <h4>1.2.1</h4>
+  <ul class="disced">
+    <li>fixed json importing on <a href="#!/config">configure page</a></li>
+  </ul>
+
+  <h4>1.2.0</h4>
+  <ul class="disced">
+    <li>display client side storage usage on <a href="#!/config">configure page</a></li>
+  </ul>
+
+  <h4>1.1.0</h4>
+  <ul class="disced">
+    <li>income/expense sum from same category cancel out each other <a href="#!/statistic">statistics page</a></li>
+    <li>display message on transaction registration when no item present on <a href="#!/register">register page</a></li>
+  </ul>
+
+  <h4>1.0.0</h4>
+  <ul class="disced">
+    <li>basic functionality (register/statistic)</li>
   </ul>
 </div>

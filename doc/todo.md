@@ -7,10 +7,12 @@
 
   - customizable categories
 
-- next
-  - create help content
-    - add basic FAQ
-    - add changelog
+- 1.5.0
+  - show exported base64 data character count
+
+  + create help content
+    + add basic FAQ
+    + add changelog
 
   + rework header
     + about/register/statistics # interval # [trends]/settings/help
