@@ -7,8 +7,8 @@
 
   - customizable categories
 
-- 1.5.0
-  - show exported base64 data character count
++ 1.5.0
+  + show exported base64 data character count
 
   + create help content
     + add basic FAQ

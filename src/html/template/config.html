@@ -27,11 +27,12 @@
     </ul>
   </div>
 
-  <table>
+  <table class="serialize">
     <tbody>
       <tr>
         <td colspan="2">
-          <h4>Serialized</h4>
+          <span>Serialized</span>
+          <span class="count" data-ng-bind="'(' + config.serialized.length + ' characters)'"></span>
         </td>
       </tr>
 
