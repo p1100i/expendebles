@@ -102,7 +102,7 @@ var
     expect(element(by.css('table.items tr td.amount-cell')).getText()).toBe('111');
   };
 
-describe('/', function () {
+describe('page', function () {
   it('should have the title', function () {
     browser.get('/');
 
@@ -110,8 +110,10 @@ describe('/', function () {
 
     browser.executeScript('localStorage.setItem(\'app.interval\', 1506808800000);');
   });
+});
 
-  it('should keep data for serialization up-to-date and be updated on config change', function () {
+describe('register', function () {
+  it('should keep data for serialization up-to-date and display updated data on config change', function () {
     browser.get('/#!/config')
       .then(testSettingMonthBeginOption)
       .then(testRegisterAddAndEdit)
