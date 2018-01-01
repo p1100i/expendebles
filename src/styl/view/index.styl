@@ -36,17 +36,13 @@ div.text-content-description
   padding-left  2px
 
 table.header
-  white-space       nowrap
-  color             white
-  position          fixed
-  width             100%
-  height            $header-height
   background-color  $grey-dark
+  color             white
+  height            $header-height
+  position          fixed
+  white-space       nowrap
+  width             100%
   mix-user-select(none)
-
-  span.anchor-spacer
-    width   36px
-    display inline-block
 
   a.anchor
     color           $grey-white
@@ -60,6 +56,17 @@ table.header
     &:hover
       background-color  $grey
       color             white
+
+  i.icon
+    height      $header-height
+    width       20px
+    text-align  center
+    line-height $header-height
+    font-size   18px
+
+  span.anchor-spacer
+    width   36px
+    display inline-block
 
   a.anchor-narrow
     padding 0 2px
@@ -84,13 +91,6 @@ table.header
   span.interval-subtitle
     display   block
     font-size 10px
-
-  i.icon
-    height      $header-height
-    width       20px
-    text-align  center
-    line-height $header-height
-    font-size   18px
 
   td.selected a
     background-color $grey
