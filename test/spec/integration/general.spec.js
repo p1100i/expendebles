@@ -209,19 +209,35 @@ var
     // Set the balancing to 2000 debt.
     setAmount('2000');
     toggleBalancing();
+  },
 
-    stepPrevMonth();
+  getUnregistered = function getUnregistered() {
+    var
+      amountUnregistered = element(by.css('.amount-unregistered'));
+
+    return {
+      'amount'  : amountUnregistered.getText(),
+      'income'  : element(by.css('.amount-unregistered .income')).isPresent()
+    };
   },
 
   testUnregisteredCalculation = function testUnregisteredCalculation() {
     var
-      unregisteredAmount        = element(by.css('.amount-unregistered')).getText(),
-      unregisteredAmountIncome  = element(by.css('.amount-unregistered .income')).isPresent();
+      unregistered;
 
-    expect(getIntervalTitle()).toBe('\'17 Oct');
-    expect(unregisteredAmount).toBe('600');
-    expect(unregisteredAmountIncome).toBe(true);
+    expect(getIntervalTitle()).toBe('\'17 Nov');
 
+    expect(element(by.css('.amount-unregistered')).isPresent()).toBe(false);
+
+    stepPrevMonth();
+
+    unregistered = getUnregistered();
+
+    expect(unregistered.amount).toBe('600');
+    expect(unregistered.income).toBe(true);
+
+    stepPrevMonth();
+    expect(element(by.css('.amount-unregistered')).isPresent()).toBe(false);
   };
 
 describe('general', function () {
