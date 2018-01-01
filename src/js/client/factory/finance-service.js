@@ -13,12 +13,12 @@ define(['app'], function (app) {
         return interval.beg <= serializedItem.t && serializedItem.t <= interval.end;
       },
 
-      isSameMonthAsIntervalBeg = function isSameMonthAsIntervalBeg(serializedItem) {
-        return interval.begDate.getMonth() === serializedItem.m;
+      isCurrentBalance = function isCurrentBalance(serializedItem) {
+        return interval.month === serializedItem.m;
       },
 
-      isSameMonthAsIntervalEnd = function isSameMonthAsIntervalEnd(serializedItem) {
-        return interval.endDate.getMonth() === serializedItem.m;
+      isNextBalance = function isNextBalance(serializedItem) {
+        return interval.nextMonth === serializedItem.m;
       },
 
       getCategory = function getCategory(id) {
@@ -170,7 +170,7 @@ define(['app'], function (app) {
         }
 
         if (balance.month === undefined) {
-          balance.month = interval.begDate.getMonth();
+          balance.month = interval.month;
         }
 
         if (balance.expense === undefined) {
@@ -233,9 +233,8 @@ define(['app'], function (app) {
           len = serializedItems.length;
 
         for (i = 0; i < len; i++) {
-          serializedItem = serializedItems[i];
-
-          maxId = Math.max(maxId, serializedItem.i + 1);
+          serializedItem  = serializedItems[i];
+          maxId           = Math.max(maxId, serializedItem.i + 1);
 
           if (isActual(serializedItem)) {
             items.push(createItem(deserialize(serializedItem)));
@@ -245,27 +244,37 @@ define(['app'], function (app) {
         return maxId;
       },
 
-      getBalancesSum = function getBalancesSum(isCurrent) {
+      getBalancesSum = function getBalancesSum(isActual) {
         var
-          currentBalances     = [],
+          len,
+          balance,
+          result              = 0,
+          resultBalances      = [],
           serializedBalances  = storageService.get('balances');
 
         fillItems(
-          currentBalances,
+          resultBalances,
           createBalance,
           serializedBalances,
-          isCurrent
+          isActual
         );
 
-        return currentBalances.length ? currentBalances.sum('amount') : undefined;
+        len = resultBalances.length;
+
+        while (len--) {
+          balance = resultBalances[len];
+          result += (balance.expense ? -1 : 1) * balance.amount;
+        }
+
+        return result;
       },
 
       getCurrentBalancesSum = function getCurrentBalancesSum() {
-        return getBalancesSum(isSameMonthAsIntervalBeg);
+        return getBalancesSum(isCurrentBalance);
       },
 
       getNextBalancesSum = function getNextBalancesSum() {
-        return getBalancesSum(isSameMonthAsIntervalEnd);
+        return getBalancesSum(isNextBalance);
       },
 
       sync = function sync() {
@@ -288,7 +297,7 @@ define(['app'], function (app) {
           balances,
           createBalance,
           serializedBalances,
-          isSameMonthAsIntervalBeg,
+          isCurrentBalance,
           nextBalanceId
         );
       },
@@ -302,7 +311,7 @@ define(['app'], function (app) {
         if (item.type === 'balance') {
           updateItem(serializedBalances, serializedItem);
 
-          if (!isSameMonthAsIntervalBeg(serializedItem)) {
+          if (!isCurrentBalance(serializedItem)) {
             balances.remove(item);
           }
         } else {

@@ -22,7 +22,7 @@
 - 1.5.2
   + fix monthbegday off-by-one issue
 
-  - fix unregistered diff calculation between months
+  + fix unregistered diff calculation between months
 
 + 1.5.1
   + fix header spacing isssue

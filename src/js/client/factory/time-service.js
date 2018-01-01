@@ -40,12 +40,14 @@ define(['app'], function (app) {
 
         endDate = new Date(endDate.getTime() - 1);
 
-        interval.begDate  = begDate;
-        interval.endDate  = endDate;
-        interval.beg      = begDate.getTime();
-        interval.end      = endDate.getTime();
-        interval.title    = formatService.getIntervalTitle(begDate, endDate);
-        interval.subtitle = formatService.getIntervalSubtitle(begDate, endDate);
+        interval.begDate    = begDate;
+        interval.endDate    = endDate;
+        interval.beg        = begDate.getTime();
+        interval.end        = endDate.getTime();
+        interval.month      = begDate.getMonth();
+        interval.nextMonth  = begDate.getMonth() + 1;
+        interval.title      = formatService.getIntervalTitle(begDate, endDate);
+        interval.subtitle   = formatService.getIntervalSubtitle(begDate, endDate);
 
         saveSelectedInterval(begDate);
 

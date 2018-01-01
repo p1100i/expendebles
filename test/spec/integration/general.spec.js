@@ -11,6 +11,10 @@ var
     return browser.get('/#!/register');
   },
 
+  navigateToStatistics = function navigateToStatistics() {
+    return browser.get('/#!/statistic');
+  },
+
   navigateToConfig = function navigateToConfig() {
     return browser.get('/#!/config');
   },
@@ -57,6 +61,12 @@ var
     right.click();
   },
 
+  toggleBalancing = function toggleBalancing() {
+    var
+      balanceToggle = element(by.css('.toggle-balance'));
+
+    balanceToggle.click();
+  },
 
   startEdit = function startEdit() {
     var
@@ -180,6 +190,38 @@ var
 
     expectRegisterHasItems(true);
     expectRegisterHasItem('111');
+  },
+
+  testAddingItemsToMonths = function testAddingItemsToMonths() {
+    setAmount('1000');
+
+    toggleBalancing();
+    // Set the balancing to 1100 debt.
+    setAmount('1100');
+    toggleBalancing();
+
+    setAmount('500');
+
+    stepNextMonth();
+    setAmount('10');
+
+    toggleBalancing();
+    // Set the balancing to 2000 debt.
+    setAmount('2000');
+    toggleBalancing();
+
+    stepPrevMonth();
+  },
+
+  testUnregisteredCalculation = function testUnregisteredCalculation() {
+    var
+      unregisteredAmount        = element(by.css('.amount-unregistered')).getText(),
+      unregisteredAmountIncome  = element(by.css('.amount-unregistered .income')).isPresent();
+
+    expect(getIntervalTitle()).toBe('\'17 Oct');
+    expect(unregisteredAmount).toBe('600');
+    expect(unregisteredAmountIncome).toBe(true);
+
   };
 
 describe('general', function () {
@@ -212,6 +254,15 @@ describe('general', function () {
           .then(navigateToRegister)
           .then(testRegisteredItemUpdate);
       });
+    });
+  });
+
+  describe('statistics', function () {
+    it('should display unregistered differences between months', function () {
+      navigateToRegister()
+        .then(testAddingItemsToMonths)
+        .then(navigateToStatistics)
+        .then(testUnregisteredCalculation);
     });
   });
 });

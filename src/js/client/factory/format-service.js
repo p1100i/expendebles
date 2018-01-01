@@ -18,12 +18,12 @@ define(['app'], function (app) {
         return '\'' + year;
       },
 
-      getMonth = function getMonth(date) {
+      getLocalizedMonth = function getLocalizedMonth(date) {
         return date.toLocaleString(undefined, LOCALE_MONTH_CONFIG);
       },
 
       getIntervalTitle = function getIntervalTitle(beg) {
-        return getYear(beg) + ' ' + getMonth(beg);
+        return getYear(beg) + ' ' + getLocalizedMonth(beg);
       },
 
       getIntervalSubtitle = function getIntervalSubtitle(beg, end) {
