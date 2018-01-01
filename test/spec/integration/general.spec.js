@@ -76,8 +76,12 @@ var
     return element(by.css('tr.selected td.amount-cell')).getText();
   },
 
-  getIntervalText = function getIntervalText() {
+  getIntervalTitle = function getIntervalTitle() {
     return element(by.binding('app.interval.title')).getText();
+  },
+
+  getIntervalSubtitle = function getIntervalSubtitle() {
+    return element(by.binding('app.interval.subtitle')).getText();
   },
 
   expectRegisterHasItem = function expectRegisterHasItem(amount) {
@@ -99,12 +103,12 @@ var
     setAmount('111');
     startEdit();
 
-    expect(getIntervalText()).toBe('\'17 Sep');
+    expect(getIntervalTitle()).toBe('\'17 Sep');
 
     setDate('2017', '10', '09', '08', '40');
 
     expect(getSelectedText()).toBe('111');
-    expect(getIntervalText()).toBe('\'17 Sep');
+    expect(getIntervalTitle()).toBe('\'17 Sep');
 
     finishEdit();
 
@@ -112,7 +116,7 @@ var
 
     stepPrevMonth();
 
-    expect(getIntervalText()).toBe('\'17 Aug');
+    expect(getIntervalTitle()).toBe('\'17 Aug');
 
     expectRegisterHasItems(true);
     expectRegisterHasItem('111');
@@ -149,8 +153,26 @@ var
     expect(monthBeg.getAttribute('value')).toEqual('number:7');
   },
 
+  testIntervalDisplay = function testIntervalDisplay() {
+    expect(getIntervalTitle()).toBe('\'17 Oct');
+    expect(getIntervalSubtitle()).toBe('10.01-10.31');
+
+    stepPrevMonth();
+
+    expect(getIntervalTitle()).toBe('\'17 Sep');
+    expect(getIntervalSubtitle()).toBe('09.01-09.30');
+
+    stepNextMonth();
+    stepNextMonth();
+    stepNextMonth();
+    stepNextMonth();
+
+    expect(getIntervalTitle()).toBe('\'18 Jan');
+    expect(getIntervalSubtitle()).toBe('01.01-01.31');
+  },
+
   testRegisteredItemUpdate = function testRegisteredItemUpdate() {
-    expect(getIntervalText()).toBe('\'17 Aug');
+    expect(getIntervalTitle()).toBe('\'17 Aug');
 
     expectRegisterHasItems(false);
 
@@ -173,10 +195,13 @@ describe('general', function () {
   });
 
   describe('register', function () {
+    it('should display correct intervals', function () {
+      navigateToRegister().then(testIntervalDisplay);
+    });
+
     describe('with custom month begin options', function () {
       beforeEach(function () {
-        navigateToConfig()
-          .then(testSettingMonthBeginOption);
+        navigateToConfig().then(testSettingMonthBeginOption);
       });
 
       it('should keep data for serialization up-to-date and display updated data on config change', function () {

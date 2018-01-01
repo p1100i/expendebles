@@ -38,10 +38,12 @@ define(['app'], function (app) {
           begDate         = new Date(date.getFullYear(), date.getMonth() - 1 + monthTranslate, monthBeg),
           endDate         = new Date(date.getFullYear(), date.getMonth() + monthTranslate,     monthBeg);
 
+        endDate = new Date(endDate.getTime() - 1);
+
         interval.begDate  = begDate;
         interval.endDate  = endDate;
         interval.beg      = begDate.getTime();
-        interval.end      = endDate.getTime() - 1;
+        interval.end      = endDate.getTime();
         interval.title    = formatService.getIntervalTitle(begDate, endDate);
         interval.subtitle = formatService.getIntervalSubtitle(begDate, endDate);
 

@@ -27,10 +27,10 @@ define(['app'], function (app) {
       },
 
       getIntervalSubtitle = function getIntervalSubtitle(beg, end) {
-        return pad(beg.getMonth() + 1, 2) + '.' +
-               pad(beg.getDate()  + 1, 2) + '-' +
-               pad(end.getMonth() + 1, 2) + '.' +
-               pad(end.getDate()  + 1, 2);
+        beg = pad(beg.getMonth() + 1, 2) + '.' + pad(beg.getDate(), 2);
+        end = pad(end.getMonth() + 1, 2) + '.' + pad(end.getDate(), 2);
+
+        return beg + '-' + end;
       };
 
     return {
