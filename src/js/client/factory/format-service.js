@@ -18,19 +18,19 @@ define(['app'], function (app) {
         return '\'' + year;
       },
 
-      getMonth = function getMonth(date) {
+      getLocalizedMonth = function getLocalizedMonth(date) {
         return date.toLocaleString(undefined, LOCALE_MONTH_CONFIG);
       },
 
       getIntervalTitle = function getIntervalTitle(beg) {
-        return getYear(beg) + ' ' + getMonth(beg);
+        return getYear(beg) + ' ' + getLocalizedMonth(beg);
       },
 
       getIntervalSubtitle = function getIntervalSubtitle(beg, end) {
-        return pad(beg.getMonth() + 1, 2) + '.' +
-               pad(beg.getDate()  + 1, 2) + '-' +
-               pad(end.getMonth() + 1, 2) + '.' +
-               pad(end.getDate()  + 1, 2);
+        beg = pad(beg.getMonth() + 1, 2) + '.' + pad(beg.getDate(), 2);
+        end = pad(end.getMonth() + 1, 2) + '.' + pad(end.getDate(), 2);
+
+        return beg + '-' + end;
       };
 
     return {

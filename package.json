@@ -1,9 +1,9 @@
 {
   "name": "expendebles",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Your personal privacy-respecting cashflow app.",
   "scripts": {
-    "start": "./run-start.sh",
+    "dev": "./run-dev.sh",
     "integration": "./run-integration-test.sh",
     "test": "./run-unit-test.sh"
   },

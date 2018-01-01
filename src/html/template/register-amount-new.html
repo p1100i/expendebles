@@ -20,6 +20,7 @@
       data-ng-click="register.setExpense($event, register.selectedItem, 0)">
       <i class="fa fa-money"></i>
       <i class="fa fa-plus"></i>
+    </button>
   </td>
 
   <td>
@@ -41,6 +42,7 @@
       data-ng-disabled="!register.isEditable()"
       data-ng-click="register.setEditMode($event, true)">
       <i class="fa fa-list"></i>
+    </button>
   </td>
 
   <td>
@@ -50,5 +52,6 @@
       type="submit"
       data-ng-click="register.destroyItem($event, register.selectedItem)">
       <i class="fa fa-trash-o"></i>
+    </button>
   </td>
 </tr>
