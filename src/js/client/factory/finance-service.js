@@ -261,6 +261,10 @@ define(['app'], function (app) {
 
         len = resultBalances.length;
 
+        if (!len) {
+          return;
+        }
+
         while (len--) {
           balance = resultBalances[len];
           result += (balance.expense ? -1 : 1) * balance.amount;
