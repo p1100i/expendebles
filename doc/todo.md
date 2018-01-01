@@ -19,7 +19,7 @@
 - next
   - add yearly statistics about monthly income/outcome/diff
 
-- 1.5.3
++ 1.5.3
   + fix unregistered calculation w/o next/current monthly balance
 
 + 1.5.2
