@@ -19,7 +19,7 @@
 - next
   - add yearly statistics about monthly income/outcome/diff
 
-- 1.5.2
++ 1.5.2
   + fix monthbegday off-by-one issue
 
   + fix unregistered diff calculation between months
