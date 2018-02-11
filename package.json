@@ -3,9 +3,7 @@
   "version": "1.5.3",
   "description": "Your personal privacy-respecting cashflow app.",
   "scripts": {
-    "dev": "./run-dev.sh",
-    "integration": "./run-integration-test.sh",
-    "test": "./run-unit-test.sh"
+    "test": "./grunt"
   },
   "repository": {
     "type": "git",
