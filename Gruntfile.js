@@ -121,7 +121,7 @@ module.exports = function runGrunt(grunt) {
               createLibCopyObject(['angular-local-storage', 'dist', 'angular-local-storage.js']),
               createLibCopyObject(['angular-mocks',         'angular-mocks.js']),
               createLibCopyObject(['angular-route',         'angular-route.js']),
-              createLibCopyObject(['socket.io-client',      'dist', 'socket.io.js'])
+              createLibCopyObject(['lz-string',             'libs', 'lz-string.js'])
             ]
           },
 
