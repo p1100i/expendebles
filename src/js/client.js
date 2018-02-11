@@ -44,7 +44,7 @@ var
         'angular'             : '../lib/angular',
         'angularRoute'        : '../lib/angular-route',
         'angularLocalStorage' : '../lib/angular-local-storage',
-        'socketIo'            : '../lib/socket.io'
+        'lzString'            : '../lib/lz-string'
       },
 
       'shim' : {
@@ -60,6 +60,10 @@ var
         'angularLocalStorage' : {
           'deps'    : ['angular'],
           'exports' : 'angularLocalStorage'
+        },
+
+        'lzString' : {
+          'exports' : 'lzString'
         }
       }
 
@@ -89,15 +93,25 @@ var
     requirejs([
       'angular',
       'app',
-      'angularRoute',
       'angularLocalStorage',
-      'socketIo',
+      'angularRoute',
       'constant/route-config',
       'controller/about-controller',
       'controller/app-controller',
+      'controller/config-controller',
       'controller/help-controller',
+      'controller/register-controller',
+      'controller/statistic-controller',
+      'directive/amount-bubble-directive',
+      'directive/category-bubble-directive',
       'directive/help-directive',
-      'factory/setting-service'
+      'directive/statistic-groups-directive',
+      'factory/debug-service',
+      'factory/finance-service',
+      'factory/format-service',
+      'factory/setting-service',
+      'factory/storage-service',
+      'factory/time-service'
     ], function (angular, app) {
       app.config(['$httpProvider', '$routeProvider', 'routeConfig', 'localStorageServiceProvider', function ($httpProvider, $routeProvider, routeConfig, localStorageServiceProvider) {
         var
