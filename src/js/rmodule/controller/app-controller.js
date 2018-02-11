@@ -1,19 +1,7 @@
-define(['app', 'di', 'socketIo'], function (app, di, socketIo) {
-  app.controller('appController', ['$rootScope', '$location', '$window', 'settingService', function appControllerFactory($rootScope, $location, $window, settingService) {
+define(['app', 'angular'], function (app, angular) {
+  app.controller('appController', ['$rootScope', '$location', '$window', '$timeout', 'timeService', 'debugService', function appControllerFactory($rootScope, $location, $window, $timeout, timeService, debugService) {
     var
-      app = this,
-
-      //
-      // Remove these line if you don't need socketIo connection.
-      //
-      // You can remove the SocketClient from di-client.js as well,
-      // to avoid including it into the bundled code.
-      //
-      // Make sure to do this for di-server.js and server.js as well,
-      // to avoid initialazing socketIo server.
-      //
-      SocketClient  = di.get('SocketClient'),
-      socketClient  = new SocketClient(socketIo),
+      ctrl = this,
 
       leftAnchors   = [],
       rightAnchors  = [],
@@ -33,12 +21,36 @@ define(['app', 'di', 'socketIo'], function (app, di, socketIo) {
 
       setMenu = function setMenu() {
         leftAnchors.push(
-          createAnchor('help',  '#!/help', 'Help',  'question-circle')
+          createAnchor('about', '#!/',          'About',      'bank'),
+          createAnchor('reg',   '#!/register',  'Register',   'plus-circle'),
+          createAnchor('stat',  '#!/statistic', 'Statistics', 'pie-chart')
         );
 
         rightAnchors.push(
-          createAnchor('about', '#!/',     'About', 'home')
+          createAnchor('trend', '#!/trend',     'Trends',     'line-chart', true),
+          createAnchor('conf',  '#!/config',    'Configure',  'cog'),
+          createAnchor('help',  '#!/help',      'Help',       'question-circle')
         );
+      },
+
+      debug = function debug($event, msg, startDebug) {
+        ctrl.debug += ' ' + msg;
+
+        if (startDebug) {
+          debugger;
+        }
+      },
+
+      emptyDebug = function emptyDebug() {
+        ctrl.debug = undefined;
+      },
+
+      onBodyClick = function onBodyClick() {
+        $rootScope.$broadcast('bodyClick');
+      },
+
+      stepInterval = function stepInterval(step) {
+        timeService.stepInterval(step);
       },
 
       isAnchorSelected = function isAnchorSelected(anchor) {
@@ -48,25 +60,34 @@ define(['app', 'di', 'socketIo'], function (app, di, socketIo) {
         return anchor.href === path;
       },
 
-      onFocused = function onFocused() {
-        $rootScope.$broadcast('window:focus');
+      isAnchorIntervalRelated = function isAnchorIntervalRelated() {
+        return isAnchorSelected(leftAnchors[1]) || isAnchorSelected(leftAnchors[2]);
+      },
+
+      onLocationChangeSuccess = function onLocationChangeSuccess() {
+        delete ctrl.interval;
+
+        if (isAnchorIntervalRelated()) {
+          ctrl.interval = timeService.getInterval();
+        }
       },
 
       init = function init() {
-        app.bodyClass         = settingService.get('bodyClass');
-        app.isAnchorSelected  = isAnchorSelected ;
-        app.leftAnchors       = leftAnchors;
-        app.rightAnchors      = rightAnchors;
-
-        $window.onfocus = onFocused;
-
         setMenu();
 
-        //
-        // An example of message sending in socketIo.
-        //
-        socketClient.emit('hello');
+        $rootScope.$on('debug',                   debug);
+        $rootScope.$on('$locationChangeSuccess',  onLocationChangeSuccess);
 
+        ctrl.emptyDebug       = emptyDebug;
+        ctrl.leftAnchors      = leftAnchors;
+        ctrl.isAnchorSelected = isAnchorSelected ;
+        ctrl.onBodyClick      = onBodyClick;
+        ctrl.rightAnchors     = rightAnchors;
+        ctrl.stepInterval     = stepInterval;
+
+        //
+        // $window.d = debugService;
+        //
       };
 
     init();

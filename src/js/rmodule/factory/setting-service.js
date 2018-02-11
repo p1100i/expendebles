@@ -1,39 +1,92 @@
 define(['app'], function (app) {
-  app.factory('settingService', ['$rootScope', 'localStorageService', function settingServiceFactory($rootScope, localStorageService) {
+  app.factory('settingService', ['storageService', function settingServiceFactory(storageService) {
     var
-      DEFAULTS = {
-        'bodyClass' : 'simple'
+      CATEGORIES = [
+        ['gro', 'groceries',  'shopping-cart'],
+        ['uti', 'utility',    'wrench'],
+        ['sal', 'salary',     'money'],
+        ['inv', 'investment', 'diamond'],
+        ['sho', 'shopping',   'shopping-bag'],
+        ['eat', 'eating',     'cutlery'],
+        ['hea', 'healthcare', 'medkit'],
+        ['fue', 'fuel',       'car'],
+        ['tra', 'transport',  'train'],
+        ['hol', 'holiday',    'suitcase'],
+        ['gif', 'gift',       'gift'],
+        ['spo', 'sport',      'soccer-ball-o'],
+        ['fun', 'fun',        'glass'],
+        ['cul', 'culture',    'ticket']
+      ],
+
+      categories = [],
+
+      defaultCategory,
+
+      createCategory = function createCategory(id, name, icon) {
+        return {
+          'id'    : id,
+          'name'  : name,
+          'icon'  : icon
+        };
       },
 
-      CURRENT_VERSION = 1,
-
-      get = function get(key) {
+      addCategory = function addCategory(id, name, icon) {
         var
-          value = localStorageService.get(key);
+          category = createCategory(id, name, icon);
 
-        return value === null ? DEFAULTS[key] : value;
+        categories.push(category);
+
+        return category;
       },
 
-      set = function set(key, value) {
-        localStorageService.set(key, value);
+      getDateFormat = function getDateFormat(short) {
+        if (short) {
+          return 'yyyy-MM-dd HH:mm';
+        }
 
-        $rootScope.$broadcast('settingChanged', key, value);
+        return 'yyyy-MM-dd HH:mm:ss';
+      },
+
+      getDefaultCategory = function getDefaultCategory() {
+        return defaultCategory;
+      },
+
+      getCategories = function getCategories() {
+        return categories;
+      },
+
+      getCategory = function getCategory(id) {
+        var
+          category = categories.get(id, 'id');
+
+        if (!category) {
+          console.error('no category w/ id:', id);
+        }
+        return category;
       },
 
       init = function init() {
         var
-          version = localStorageService.get('version');
+          i,
+          data,
+          len = CATEGORIES.length;
 
-        if (!version) {
-          localStorageService.set('version', CURRENT_VERSION);
+        for (i = 0; i < len; i++) {
+          data = CATEGORIES[i];
+
+          addCategory(data[0], data[1], data[2]);
         }
+
+        defaultCategory = categories[0];
       };
 
     init();
 
     return {
-      'get' : get,
-      'set' : set
+      'getCategories'       : getCategories,
+      'getCategory'         : getCategory,
+      'getDateFormat'       : getDateFormat,
+      'getDefaultCategory'  : getDefaultCategory
     };
   }]);
 });
