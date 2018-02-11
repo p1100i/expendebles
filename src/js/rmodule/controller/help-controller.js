@@ -1,11 +1,11 @@
 define(['app'], function (app) {
   app.controller('helpController', [function HelpControllerFactory() {
-    var
-      // ctrl = this,
+    // var
+    //   help = this,
 
-      init = function init() {
-      };
+    //   init = function init() {
+    //   };
 
-    init();
+    // init();
   }]);
 });

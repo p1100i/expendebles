@@ -9,7 +9,7 @@ module.exports = function (config) {
 
   options = {
     'reporters'       : reporters,
-    'basePath'        : '../build/compiled',
+    'basePath'        : '../build/development',
     'frameworks'      : ['jasmine', 'requirejs'],
     'colors'          : true,
     'logLevel'        : config.LOG_WARN, // config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
@@ -21,9 +21,9 @@ module.exports = function (config) {
     // later on a match with - included true - won't inject the script into the page.
     'files': [
       '../../node_modules/phantomjs-polyfill/bind-polyfill.js',
-      'js/bootstrap.js',
+      'js/bundle.js',
       { 'pattern' : 'js/**/*.js',                           'included': false },
-      { 'pattern' : '../../test/spec/client/**/*.spec.js',  'included': false }
+      { 'pattern' : '../../test/spec/rmodule/**/*.spec.js',  'included': false }
     ],
 
     // Start these browsers, currently available:
@@ -58,11 +58,11 @@ module.exports = function (config) {
     coverageReporters.push({ 'type' : 'json', 'subdir' : 'json', 'file': 'coverage.json' });
 
     options.preprocessors = {
-      'js/client/**/*.js': 'coverage'
+      'js/rmodule/**/*.js': 'coverage'
     };
 
     options.coverageReporter = {
-      'dir'       : '../../test/coverage/client',
+      'dir'       : '../../test/coverage/rmodule',
       'reporters' : coverageReporters
     };
 

@@ -1,7 +1,10 @@
+/* globals
+  document,
+  window
+*/
 var
-  html          = document.getElementsByTagName('html')[0],
-  shortMethods  = require('short-methods'),
-  pkg           = require('./package'),
+  diClient  = require('./dimodule/di-client'),
+  html      = document.getElementsByTagName('html')[0],
 
   init = function init() {
     var
@@ -10,11 +13,11 @@ var
       files = karma && karma.files,
 
       karmaRequirejsConfig = {
-        'baseUrl' : '/base/js/client'
+        'baseUrl' : '/base/js/rmodule'
       },
 
       // Workaround so, r.js ignores it on minifaction.
-      karmaDeps = ['../lib/angular-mocks/angular-mocks'],
+      karmaDeps = ['../lib/angular-mocks'],
 
       onRequireJsFinished = function onRequireJsFinished() {
         if (karma) {
@@ -31,28 +34,22 @@ var
     }
 
     requirejs.config({
-      'baseUrl': '/js/client',
+      'baseUrl': '/js/rmodule',
 
       'urlArgs' : function () {
         return '?' + Math.random().toString(36).slice(2);
       },
 
       'paths' : {
-        'angular'             : '../lib/angular/angular',
-        'angularCookies'      : '../lib/angular-cookies/angular-cookies',
-        'angularRoute'        : '../lib/angular-route/angular-route',
-        'angularLocalStorage' : '../lib/angular-local-storage/dist/angular-local-storage',
-        'lzString'            : '../lib/lz-string/libs/lz-string'
+        'angular'             : '../lib/angular',
+        'angularRoute'        : '../lib/angular-route',
+        'angularLocalStorage' : '../lib/angular-local-storage',
+        'lzString'            : '../lib/lz-string'
       },
 
       'shim' : {
         'angular'  :{
           'exports' : 'angular'
-        },
-
-        'angularCookies' : {
-          'deps'    : ['angular'],
-          'exports' : 'angularCookies'
         },
 
         'angularRoute' : {
@@ -76,8 +73,8 @@ var
       requirejs.config(karmaRequirejsConfig);
     }
 
-    define('pkg', function () {
-      return pkg;
+    define('di', function defineDi() {
+      return diClient;
     });
 
     define('build', function () {
@@ -96,9 +93,8 @@ var
     requirejs([
       'angular',
       'app',
-      'angularCookies',
-      'angularRoute',
       'angularLocalStorage',
+      'angularRoute',
       'constant/route-config',
       'controller/about-controller',
       'controller/app-controller',
@@ -153,8 +149,6 @@ var
       }]);
 
       window.angularTemplates(app);
-
-      shortMethods(true);
 
       angular.bootstrap(html, ['app']);
 

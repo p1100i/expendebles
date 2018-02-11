@@ -1,6 +1,8 @@
 - icebox
   - add registration timestamp for items (visualize it as well)
 
+  - add generated-date for exported config (afert version string, only for UX purpose)
+
   - canvas/image based import/export
 
   - csv based export/import
@@ -17,7 +19,11 @@
   - customizable categories
 
 - next
+  - ensure app-server is running for integration testing
+
   - add yearly statistics about monthly income/outcome/diff
+
+  - fix showing of unregistered stat between dec/jan
 
 + 1.5.3
   + fix unregistered calculation w/o next/current monthly balance

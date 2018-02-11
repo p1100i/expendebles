@@ -2,8 +2,28 @@ module.exports = function runGrunt(grunt) {
   var
     pkg = grunt.file.readJSON('package.json'),
 
+    path          = require('path'),
+    childProcess  = require('child_process'),
+
     getCommit = function getCommit() {
-      return require('child_process').spawnSync('git', ['rev-parse', '--short', 'HEAD']).stdout.toString().trim();
+      return childProcess.spawnSync('git', ['rev-parse', '--short', 'HEAD']).stdout.toString().trim();
+    },
+
+    createLibCopyObject = function createLibCopyObject(dirs) {
+      var
+        src   = dirs.slice(),
+        dest  = [dirs[dirs.length - 1]];
+
+      src.unshift('node_modules');
+      dest.unshift('build', 'development', 'js', 'lib');
+
+      src   = path.join.apply(null, src);
+      dest  = path.join.apply(null, dest);
+
+      return {
+        'src'   : src,
+        'dest'  : dest
+      };
     },
 
     registerTask = function registerTask(taskName, task) {
@@ -21,32 +41,16 @@ module.exports = function runGrunt(grunt) {
 
     getTaskConfig = function getTaskConfig() {
       return {
-        'bower' : {
-          'install' : {
-            'options' : {
-              'copy' : false
-            }
-          }
-        },
-
         'browserify' : {
-          'target' : {
-            'files': [
-              {
-                'expand'  : true,
-                'src'     : 'client-bootstrap.js',
-                'dest'    : 'build/precompiled/js'
-              }
-            ]
-          }
+          'build/tmp/js/client.js' : 'src/js/client.js'
         },
 
         'clean' : {
           'coverage' : 'test/coverage',
 
-          'precompiled' : 'build/precompiled',
-          'compiled'    : 'build/compiled',
-          'minified'    : 'build/minified'
+          'tmp'         : 'build/tmp',
+          'development' : 'build/development',
+          'production'  : 'build/production'
         },
 
         'concat' : {
@@ -54,47 +58,78 @@ module.exports = function runGrunt(grunt) {
             'separator': ';'
           },
 
-          'compiled' : {
-            'files': {
-              'build/compiled/js/bootstrap.js' : ['bower_components/requirejs/require.js', 'build/precompiled/js/template.js', 'build/precompiled/js/client-bootstrap.js']
-            }
-          }
+          'build/development/js/bundle.js' : [
+            'node_modules/requirejs/require.js',
+            'build/tmp/js/template.js',
+            'build/tmp/js/client.js'
+          ],
+
+          'build/production/js/bundle.js' : [
+            'node_modules/requirejs/require.js',
+            'build/tmp/js/template.js',
+            'build/tmp/js/client.js'
+          ]
         },
 
         'copy' : {
-          'asset_compiled' : {
-            'expand'  : true,
-            'cwd'     : 'asset/',
-            'src'     : '**/*',
-            'dest'    : 'build/compiled/'
+          'asset' : {
+            'files' : [
+              {
+                'expand'  : true,
+                'cwd'     : 'asset/',
+                'src'     : '**/*',
+                'dest'    : 'build/development/'
+              },
+
+              {
+                'expand'  : true,
+                'cwd'     : 'asset/',
+                'src'     : '**/*',
+                'dest'    : 'build/production/'
+              }
+            ]
           },
 
-          'asset_minified' : {
-            'expand'  : true,
-            'cwd'     : 'asset/',
-            'src'     : '**/*',
-            'dest'    : 'build/minified/'
+          'fa' : {
+            'files' : [
+              {
+                'expand'  : true,
+                'cwd'     : 'node_modules/font-awesome/fonts',
+                'src'     : '*',
+                'dest'    : 'build/development/fonts'
+              },
+
+              {
+                'expand'  : true,
+                'cwd'     : 'node_modules/font-awesome/fonts',
+                'src'     : '*',
+                'dest'    : 'build/production/fonts'
+              }
+            ]
           },
 
           'view' : {
             'expand'  : true,
             'cwd'     : 'src/html/view',
             'src'     : '**/*',
-            'dest'    : 'build/compiled'
+            'dest'    : 'build/development'
           },
 
-          'js_lib_client' : {
-            'expand'  : true,
-            'cwd'     : 'bower_components',
-            'src'     : '**/*',
-            'dest'    : 'build/compiled/js/lib'
+          'lib' : {
+            'files' : [
+              createLibCopyObject(['angular',               'angular.js']),
+              createLibCopyObject(['angular-local-storage', 'dist', 'angular-local-storage.js']),
+              createLibCopyObject(['angular-mocks',         'angular-mocks.js']),
+              createLibCopyObject(['angular-route',         'angular-route.js']),
+              createLibCopyObject(['lz-string',             'libs', 'lz-string.js'])
+            ]
           },
 
-          'js_src_client' : {
+          'rmodule' : {
             'expand'  : true,
-            'cwd'     : 'src/js/client',
+            'cwd'     : 'src/js/rmodule',
             'src'     : '**/*',
-            'dest'    : 'build/compiled/js/client'
+            'dest'    : 'build/development/js/rmodule'
           }
         },
 
@@ -104,26 +139,19 @@ module.exports = function runGrunt(grunt) {
             'roundingPrecision': -1
           },
 
-          'minified': {
-            'files': [
-              {
-                'src'   : 'build/compiled/css/app.css',
-                'dest'  : 'build/minified/css/app.css'
-              }
-            ]
-          }
+          'build/production/css/app.css' : 'build/development/css/app.css'
         },
 
         'env' : {
           'coverage': {
-            'SRC_COVERAGE'    : '../test/coverage/node/instrument/src/js/node',
+            'SRC_COVERAGE'    : '../test/coverage/dimodule/instrument/src/js',
             'KARMA_COVERAGE'  : true
           }
         },
 
         'gh-pages' : {
           'options': {
-            'base': 'build/minified',
+            'base': 'build/production',
             'user': {
               'name': '<%= pkg.author.name %>',
               'email': '<%= pkg.author.email %>'
@@ -134,35 +162,31 @@ module.exports = function runGrunt(grunt) {
         },
 
         'htmlmin' : {
-          'minified': {
-            'options': {
-              'removeComments'      : true,
-              'collapseWhitespace'  : true
-            },
+          'options': {
+            'removeComments'      : true,
+            'collapseWhitespace'  : true
+          },
 
-            'files': [
-              {
-                'expand'  : true,
-                'src'     : ['*.html'],
-                'cwd'     : 'build/compiled',
-                'dest'    : 'build/minified'
-              }
-            ]
+          'production': {
+            'expand'  : true,
+            'src'     : ['*.html'],
+            'cwd'     : 'src/html/view',
+            'dest'    : 'build/production'
           }
         },
 
         'instrument' : {
-          'files' : 'src/js/node/**/*.js',
+          'files' : 'src/js/dimodule/**/*.js',
 
           'options' : {
             'lazy'      : true,
-            'basePath'  : 'test/coverage/node/instrument'
+            'basePath'  : 'test/coverage/dimodule/instrument'
           }
         },
 
         'jasmine-node' : {
           'options' : {
-            'spec_files'  : ['test/spec/node/**/*.spec.js'],
+            'spec_files'  : ['test/spec/dimodule/**/*.spec.js'],
             'random'      : true
           }
         },
@@ -253,9 +277,17 @@ module.exports = function runGrunt(grunt) {
             'patterns' : ['.js', '.css']
           },
 
-          'minified': {
-            'src'   : 'build/minified/**/*',
-            'dest'  : 'build/minified'
+          'development': {
+            //
+            // Note: build/development contains lots of other directories.
+            //
+            'src'   : ['build/development/css/*', 'build/development/js/*'],
+            'dest'  : 'build/development'
+          },
+
+          'production': {
+            'src'   : 'build/production/**/*',
+            'dest'  : 'build/production'
           }
         },
 
@@ -263,17 +295,21 @@ module.exports = function runGrunt(grunt) {
           'default' : {
             'cwd'         : 'src/html/template',
             'src'         : '**/*.html',
-            'dest'        : 'build/precompiled/js/template.js',
+            'dest'        : 'build/tmp/js/template.js',
             'options'     : {
               'bootstrap': function (module, script) {
+                //
                 // This predefines a function which will populate the angular
                 // cache with the template HTML. Check out the generated
                 // template.js under the build directory, you'll need to call
                 // it with your angular app instance.
+                //
                 return 'window.angularTemplates = function angularTemplates(app) { app.run([\'$templateCache\', function ($templateCache) { ' + script + ' } ]) };';
               },
 
+              //
               // Reference existing task.
+              //
               'htmlmin' : {
                 'collapseWhitespace'        : true,
                 'collapseBooleanAttributes' : true
@@ -290,12 +326,12 @@ module.exports = function runGrunt(grunt) {
 
         'protractor' : {
           'options' : {
-            'keepAlive' : true
+            //
+            // This can be disabled after the first run.
+            //
+            'webdriverManagerUpdate' : true,
 
-            //
-            // To update webdriver:
-            //
-            // 'webdriverManagerUpdate' : true
+            'keepAlive' : true
           },
 
           'default' : {
@@ -315,33 +351,54 @@ module.exports = function runGrunt(grunt) {
             },
 
             'files': [{
-              'src'   : ['build/precompiled/js/client-bootstrap.js'],
-              'dest'  : 'build/precompiled/js/client-bootstrap.js'
+              'src'   : ['build/tmp/js/client.js'],
+              'dest'  : 'build/tmp/js/client.js'
             }]
           },
 
-          'coverage_client': {
+          'coverage_rmodule': {
             'options': {
               'patterns': [{
-                'match'       : /\/[^"]*build\/compiled/g,
+                'match'       : /\/[^"]*build\/development/g,
                 'replacement' : 'src'
               }]
             },
 
             'files': [{
-              'src'   : ['test/coverage/client/json/coverage.json'],
-              'dest'  : 'test/coverage/client/json/coverage.json'
+              'src'   : ['test/coverage/rmodule/json/coverage.json'],
+              'dest'  : 'test/coverage/rmodule/json/coverage.json'
             }]
           }
         },
 
         'requirejs' : {
-          'minified' : {
+          'production' : {
             'options': {
-              'baseUrl'         : 'build/compiled/js/client',
-              'mainConfigFile'  : 'client-bootstrap.js',
-              'include'         : ['../bootstrap.js'],
-              'out'             : 'build/minified/js/bootstrap.js'
+              'baseUrl'         : 'build/development/js/rmodule',
+              //
+              // src file is used only as configuration, it is only parsed
+              // by requireJS to know what to include. The file which is the
+              // source of minification is defined in the `include` property.
+              //
+              'mainConfigFile'  : 'src/js/client.js',
+              'include'         : ['../../../production/js/bundle.js'],
+              'out'             : 'build/production/js/bundle.js',
+
+              'uglify2' : {
+                'compress' : {
+                  'dead_code' : true,
+
+                  //
+                  // Put code in your app in a condition
+                  // if (DEBUG) ... it will be never built
+                  // into the production, however you can
+                  // leave it there for development purpose.
+                  //
+                  'global_defs': {
+                    'DEBUG' : false
+                  }
+                }
+              }
             }
           }
         },
@@ -349,63 +406,70 @@ module.exports = function runGrunt(grunt) {
         'storeCoverage' : {
           'options' : {
             'include-all-sources' : true,
-            'dir'                 : 'test/coverage/node/json'
+            'dir'                 : 'test/coverage/dimodule/json'
           }
         },
 
         'stylus' : {
           'options' : {
+            //
             // Use import statements on css as copy inclusion.
+            //
             'include css' : true,
             'compress'    : false
           },
 
-          'compiled' : {
-            'files': [
-              {
-                'src'     : 'src/styl/main.styl',
-                'dest'    : 'build/compiled/css/app.css'
-              }
-            ]
-          }
+          'build/development/css/app.css' : 'src/styl/main.styl'
         },
 
         'symlinkassets' : {
-          'minified': {
-            'root'  : 'minified',
-            'src'   : 'build/minified/**/*',
-            'dest'  : 'build/minified'
+          'development': {
+            'root'  : 'development',
+            'src'   : 'build/development/**/*',
+            'dest'  : 'build/development'
+          },
+
+          'production': {
+            'root'  : 'production',
+            'src'   : 'build/production/**/*',
+            'dest'  : 'build/production'
           }
         },
 
         'watch' : {
-          'options' : {
-            'spawn' : false
-          },
+          //
+          // Turning off 'spawn' option can speed up the watch execution, however
+          // some grunt-task do not play well by having executed multiple times
+          // in the same process (e.g. jasmine-node)
+          //
+          // 'options' : {
+          //   'spawn' : false
+          // },
+          //
 
           'asset' : {
             'files' : ['asset/**/*'],
-            'tasks' : ['copy:asset_compiled', 'copy:asset_minified']
+            'tasks' : ['copy:asset']
           },
 
-          'bootstrap' : {
-            'files' : ['client-bootstrap.js'],
-            'tasks' : ['test:core', 'browserify', 'replace:build', 'concat:compiled', 'test:client']
+          'bundle' : {
+            'files' : ['src/js/client.js', 'src/js/dimodule/**/*.js', 'test/spec/dimodule/**/*.js'],
+            'tasks' : ['test:core', 'browserify', 'replace:build', 'concat', 'md5:development', 'test:client']
           },
 
-          'client' : {
-            'files' : ['src/js/client/**/*.js', 'test/spec/client/**/*.js'],
-            'tasks' : ['test:core', 'copy:js_src_client', 'test:client']
+          'rmodule' : {
+            'files' : ['src/js/rmodule/**/*.js', 'test/spec/rmodule/**/*.js'],
+            'tasks' : ['test:core', 'copy:rmodule', 'test:client']
           },
 
           'html' : {
             'files' : ['src/html/**/*.html'],
-            'tasks' : ['ngtemplates', 'concat:compiled', 'copy:view']
+            'tasks' : ['ngtemplates', 'concat', 'copy:view', 'md5:development']
           },
 
           'styl' : {
             'files' : ['src/styl/**/*'],
-            'tasks' : ['stylus:compiled']
+            'tasks' : ['stylus', 'md5:development']
           }
         }
       };
@@ -419,7 +483,7 @@ module.exports = function runGrunt(grunt) {
         // 'jasmine-node',
         // 'storeCoverage',
         'karma',
-        'replace:coverage_client',
+        'replace:coverage_rmodule',
         'makeReport'
       ],
 
@@ -437,31 +501,45 @@ module.exports = function runGrunt(grunt) {
         'karma'
       ],
 
+      'test:e2e' : [
+        'protractor'
+      ],
+
+      'md5:development' : [
+        'md5symlink:development',
+        'symlinkassets:development'
+      ],
+
+      'md5:production' : [
+        'md5symlink:production',
+        'symlinkassets:production'
+      ],
+
       'compile' : [
-        'clean:precompiled',
-        'clean:compiled',
+        'clean:tmp',
+        'clean:development',
         'browserify',
         'replace:build',
         'ngtemplates',
-        'concat:compiled',
-        'stylus:compiled',
-        'copy:js_src_client',
-        'copy:js_lib_client',
+        'concat',
+        'stylus',
+        'copy:fa',
+        'copy:lib',
+        'copy:rmodule',
         'copy:view',
-        'copy:asset_compiled'
+        'copy:asset',
+        'md5:development'
       ],
 
       'minify' : [
-        'clean:minified',
-        'htmlmin:minified',
-        'cssmin:minified',
-        'copy:asset_minified',
-        'requirejs'
-      ],
-
-      'md5' : [
-        'md5symlink',
-        'symlinkassets'
+        'clean:production',
+        'htmlmin',
+        'cssmin',
+        'copy:asset',
+        'copy:fa',
+        'concat',
+        'requirejs',
+        'md5:production'
       ],
 
       'build:dev' : [
@@ -472,8 +550,7 @@ module.exports = function runGrunt(grunt) {
 
       'build' : [
         'compile',
-        'minify',
-        'md5'
+        'minify'
       ],
 
       'test' : [
@@ -490,13 +567,11 @@ module.exports = function runGrunt(grunt) {
 
       'publish' : [
         'clean',
-        'bower',
         'build',
         'gh-pages'
       ],
 
       'default' : [
-        'bower',
         'test:style',
         'build',
         'coverage'
@@ -511,29 +586,7 @@ module.exports = function runGrunt(grunt) {
 
       grunt.initConfig(taskConfig);
 
-      grunt.loadNpmTasks('grunt-angular-templates');
-      grunt.loadNpmTasks('grunt-bower-task');
-      grunt.loadNpmTasks('grunt-browserify');
-      grunt.loadNpmTasks('grunt-contrib-clean');
-      grunt.loadNpmTasks('grunt-contrib-concat');
-      grunt.loadNpmTasks('grunt-contrib-copy');
-      grunt.loadNpmTasks('grunt-contrib-cssmin');
-      grunt.loadNpmTasks('grunt-contrib-htmlmin');
-      grunt.loadNpmTasks('grunt-contrib-jasmine-node');
-      grunt.loadNpmTasks('grunt-contrib-jshint');
-      grunt.loadNpmTasks('grunt-contrib-requirejs');
-      grunt.loadNpmTasks('grunt-contrib-stylus');
-      grunt.loadNpmTasks('grunt-contrib-watch');
-      grunt.loadNpmTasks('grunt-env');
-      grunt.loadNpmTasks('grunt-gh-pages');
-      grunt.loadNpmTasks('grunt-istanbul');
-      grunt.loadNpmTasks('grunt-jscs');
-      grunt.loadNpmTasks('grunt-karma');
-      grunt.loadNpmTasks('grunt-md5symlink');
-      grunt.loadNpmTasks('grunt-notify');
-      grunt.loadNpmTasks('grunt-protractor-runner');
-      grunt.loadNpmTasks('grunt-replace');
-      grunt.loadNpmTasks('grunt-symlinkassets');
+      require('load-grunt-tasks')(grunt);
 
       // Run notification hooks: notify about successful run also.
       grunt.task.run('notify_hooks');
