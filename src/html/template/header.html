@@ -4,7 +4,11 @@
       <td
         data-ng-class="{ 'selected' : app.isAnchorSelected(anchor) }"
         data-ng-repeat="anchor in app.leftAnchors">
+
+        <span class="anchor-spacer" data-ng-if="!anchor.enabled"></span>
+
         <a
+          data-ng-if="anchor.enabled"
           class="anchor {{anchor.name}}"
           href="{{anchor.href}}"
           title="{{anchor.title}}">

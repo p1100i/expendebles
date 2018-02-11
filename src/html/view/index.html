@@ -19,16 +19,17 @@
 
     <title>expendebles</title>
 
-    <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
+    <link rel="shortcut icon" href="image/favicon.png">
+    <link rel="apple-touch-icon" href="image/favicon.png">
 
     <link type="text/css" rel="stylesheet" href="css/app.css">
 
-    <script type="text/javascript" src="js/bootstrap.js" defer></script>
+    <script type="text/javascript" src="js/bundle.js" defer></script>
   </head>
 
   <body data-ng-controller="appController as app" data-ng-click="app.onBodyClick($event)">
     <div class="page-wrapper" >
-      <div class="content-frame" data-ng-include="'header.html'"></div>
+      <div class="header-wrapper" data-ng-include="'header.html'"></div>
 
       <div class="content-wrapper">
         <!-- ng-view works by using angular routing. -->
