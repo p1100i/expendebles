@@ -1,27 +1,5 @@
-- icebox
-  - add registration timestamp for items (visualize it as well)
-
-  - add generated-date for exported config (afert version string, only for UX purpose)
-
-  - canvas/image based import/export
-
-  - csv based export/import
-
-  - mask values after timeout
-
-  - add demo-data injection
-
-  - add option to encrypt localstorage data
-
-  - make storageService usable in iOS privateBrowsing as well
-    https://stackoverflow.com/questions/14555347/html5-localstorage-error-with-safari-quota-exceeded-err-dom-exception-22-an
-
-  - customizable categories
-
 - next
-  - ensure app-server is running for integration testing
-
-  - add yearly statistics about monthly income/outcome/diff
+  - fix issue where balance entries pop up in next year data ?o.O
 
   - fix showing of unregistered stat between dec/jan
 
