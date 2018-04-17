@@ -31,18 +31,30 @@ define(['app'], function (app) {
           timestamp = loadSelectedInterval();
         }
 
+        //
+        // Having 11 as selected monthBeg, considered cornercases w/
+        // `new Date(timestamp)` can be like:
+        //
+        // * Wed Jan 10 2018 23:59:59 GMT+0100 (CET) -> getMonth() : 0
+        // * Thu Jan 11 2018 00:00:00 GMT+0100 (CET) -> getMonth() : 0
+        // * Mon Dec 11 2017 00:00:00 GMT+0100 (CET) -> getMonth() : 11
+        //
         var
           begDate,
           endDate,
           date            = new Date(timestamp),
-          days            = date.getDate(),
-          monthTranslate  = days < monthBeg ? 0 : 1,
+          dateDays        = date.getDate(),
+          monthTranslate  = dateDays < monthBeg ? 0 : 1,
           begMonth        = date.getMonth() - 1 + monthTranslate,
-          endMonth        = (begMonth + 1) % 12,
           begYear         = date.getFullYear(),
+          endMonth        = begMonth + 1,
           endYear         = begYear;
 
-        if (endMonth === 0) {
+        if (begMonth === -1) {
+          begMonth = 11;
+          begYear--;
+        } else if (begMonth === 11) {
+          endMonth = 0;
           endYear++;
         }
 
@@ -131,7 +143,6 @@ define(['app'], function (app) {
 
     return {
       'getInterval'           : getInterval,
-      'setInterval'           : setInterval,
       'getMonthBeg'           : getMonthBeg,
       'setMonthBeg'           : setMonthBeg,
       'getPossibleMonthBegs'  : getPossibleMonthBegs,

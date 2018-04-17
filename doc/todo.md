@@ -1,3 +1,6 @@
++ 1.5.6
+  + fix issue abouth going an extra year forward
+
 + 1.5.5
   + fix issue where balance entries pop up in next year data ?o.O
 
