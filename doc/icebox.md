@@ -1,3 +1,5 @@
+- add upgrade notes show logic
+
 - ensure app-server is running for integration testing
 
 - add yearly statistics about monthly income/outcome/diff
