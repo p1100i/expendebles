@@ -1,6 +1,6 @@
 {
   "name": "expendebles",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "description": "Your personal privacy-respecting cashflow app.",
   "scripts": {
     "test": "./grunt"
