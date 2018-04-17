@@ -7,12 +7,12 @@
     </tbody>
   </table>
 
-  <div class="text-content" data-ng-if="!register.transactions.length">
-    <p>Enter amount to register a transaction!</p>
-  </div>
+  <div data-ng-class="{ 'faded' : register.editMode }">
+    <div class="text-content" data-ng-if="!register.transactions.length">
+      <p>No transactions registered for this interval.</p>
+    </div>
 
-  <div data-ng-if="register.transactions.length" data-ng-class="{ 'faded' : register.editMode }">
-    <table class="items">
+    <table class="items transactions" data-ng-if="register.transactions.length">
       <tbody>
         <tr
           data-ng-class="{ 'selected' : transaction === register.selectedItem }"
@@ -45,7 +45,11 @@
       </button>
     </div>
 
-    <table class="items">
+    <div class="text-content" data-ng-if="!register.balances.length">
+      <p>No balances registered for this interval.</p>
+    </div>
+
+    <table class="items balances" data-ng-if="register.balances.length">
       <tbody>
         <tr
           data-ng-class="{ 'selected' : balance === register.selectedItem }"
