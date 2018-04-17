@@ -1,9 +1,12 @@
-- next
++ 1.5.5
   + fix issue where balance entries pop up in next year data ?o.O
 
   + fix showing of unregistered stat between dec/jan
 
-  - create upgrade logic for adding `.y` to balances
+  + create upgrade logic for adding `.y` to balances
+
++ 1.5.4
+  + integrate new morf-generator
 
 + 1.5.3
   + fix unregistered calculation w/o next/current monthly balance
