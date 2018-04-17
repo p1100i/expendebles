@@ -1,10 +1,17 @@
+//
+// browser.sleep(10000);
+//
 var
-  setLastUsedInterval = function setLastUsedInterval() {
-    browser.executeScript('localStorage.setItem(\'app.interval\', 1506808800000);');
+  cleanAppData = function cleanAppData() {
+    return browser.executeScript('localStorage.clear();');
+  },
+
+  setLastUsedIntervalToSeventeenOctober = function setLastUsedIntervalToSeventeenOctober() {
+    return browser.executeScript('localStorage.setItem(\'app.interval\', 1506808800000);');
   },
 
   navigateToLanding = function navigateToLanding() {
-    browser.get('/');
+    return browser.get('/');
   },
 
   navigateToRegister = function navigateToRegister() {
@@ -19,7 +26,7 @@ var
     return browser.get('/#!/config');
   },
 
-  testSettingMonthBeginOption = function testSettingMonthBeginOption() {
+  setMonthBeginOption = function setMonthBeginOption() {
     var
       monthBeg        = element(by.model('config.monthBeg')),
       monthBegOption  = monthBeg.element(by.cssContainingText('option', '15'));
@@ -47,39 +54,37 @@ var
     input.sendKeys([day, month, year].join('/') + protractor.Key.TAB + hour + ':' + minute);
   },
 
-  stepPrevMonth = function stepPrevMonth() {
+  clickElementTimes = function clickElementTimes(selector, times) {
     var
-      left= element(by.css('[title="Previous month"]'));
+      domElement = element(selector);
 
-    left.click();
+    if (!times) {
+      times = 1;
+    }
+
+    while (times--) {
+      domElement.click();
+    }
   },
 
-  stepNextMonth = function stepNextMonth() {
-    var
-      right = element(by.css('[title="Next month"]'));
+  stepPrevMonth = function stepPrevMonth(times) {
+    clickElementTimes(by.css('[title="Previous month"]'), times);
+  },
 
-    right.click();
+  stepNextMonth = function stepNextMonth(times) {
+    clickElementTimes(by.css('[title="Next month"]'), times);
   },
 
   toggleBalancing = function toggleBalancing() {
-    var
-      balanceToggle = element(by.css('.toggle-balance'));
-
-    balanceToggle.click();
+    clickElementTimes(by.css('.toggle-balance'));
   },
 
   startEdit = function startEdit() {
-    var
-      edit = element(by.css('.edit'));
-
-    edit.click();
+    clickElementTimes(by.css('.edit'));
   },
 
   finishEdit = function finishEdit() {
-    var
-      done = element(by.css('[title="Done"]'));
-
-    done.click();
+    clickElementTimes(by.css('[title="Done"]'));
   },
 
   getSelectedText = function getSelectedText() {
@@ -94,18 +99,30 @@ var
     return element(by.binding('app.interval.subtitle')).getText();
   },
 
-  expectRegisterHasItem = function expectRegisterHasItem(amount) {
+  expectRegisterHasTransaction = function expectRegisterHasTransaction(amount) {
     var
-      item = element(by.css('table.items tr td.amount-cell'));
+      item = element(by.css('table.transactions tr td.amount-cell'));
 
     expect(item.getText()).toBe(amount);
   },
 
-  expectRegisterHasItems = function expectRegisterHasItems(expectedValue) {
-    var
-      items = element(by.css('table.items'));
+  expectPresent = function expectPresent(selector, value) {
+    if (value === undefined) {
+      value = true;
+    }
 
-    expect(items.isPresent()).toBe(expectedValue);
+    var
+      domElement = element(selector);
+
+    expect(domElement.isPresent()).toBe(value);
+  },
+
+  expectRegisterHasTransactions = function expectRegisterHasTransactions(value) {
+    expectPresent(by.css('table.transactions'), value);
+  },
+
+  expectRegisterHasBalances = function expectRegisterHasBalances(value) {
+    expectPresent(by.css('table.balances'), value);
   },
 
   testRegisterAddAndEdit= function testRegisterAddAndEdit() {
@@ -122,14 +139,14 @@ var
 
     finishEdit();
 
-    expectRegisterHasItems(false);
+    expectRegisterHasTransactions(false);
 
     stepPrevMonth();
 
     expect(getIntervalTitle()).toBe('\'17 Aug');
 
-    expectRegisterHasItems(true);
-    expectRegisterHasItem('111');
+    expectRegisterHasTransactions();
+    expectRegisterHasTransaction('111');
   },
 
   testSerializationWithReconfiguration = function testSerializationWithReconfiguration() {
@@ -172,10 +189,7 @@ var
     expect(getIntervalTitle()).toBe('\'17 Sep');
     expect(getIntervalSubtitle()).toBe('09.01-09.30');
 
-    stepNextMonth();
-    stepNextMonth();
-    stepNextMonth();
-    stepNextMonth();
+    stepNextMonth(4);
 
     expect(getIntervalTitle()).toBe('\'18 Jan');
     expect(getIntervalSubtitle()).toBe('01.01-01.31');
@@ -184,20 +198,22 @@ var
   testRegisteredItemUpdate = function testRegisteredItemUpdate() {
     expect(getIntervalTitle()).toBe('\'17 Aug');
 
-    expectRegisterHasItems(false);
+    expectRegisterHasTransactions(false);
 
     stepNextMonth();
 
-    expectRegisterHasItems(true);
-    expectRegisterHasItem('111');
+    expectRegisterHasTransactions();
+    expectRegisterHasTransaction('111');
   },
 
-  testAddingItemsToMonths = function testAddingItemsToMonths() {
+  addItemsAndBalancesToMonthAndNextMonth = function addItemsAndBalancesToMonthAndNextMonth() {
     setAmount('1000');
 
-    toggleBalancing();
     // Set the balancing to 1100 debt.
+    toggleBalancing();
     setAmount('1100');
+
+    // Balancing off.
     toggleBalancing();
 
     setAmount('500');
@@ -205,10 +221,24 @@ var
     stepNextMonth();
     setAmount('10');
 
+    // Balancing on.
     toggleBalancing();
+
     // Set the balancing to 2000 debt.
     setAmount('2000');
     toggleBalancing();
+
+    // First month vs second month
+    //
+    // Trans         Trans
+    // -1000           -10
+    //  -500
+    //  ====          ====
+    // -1500           -10
+    //
+    // Blanc         Blanc
+    // -1100         -2000
+    //
   },
 
   getUnregistered = function getUnregistered() {
@@ -221,29 +251,23 @@ var
     };
   },
 
-  testUnregisteredCalculation = function testUnregisteredCalculation() {
+  testNoUnregistered = function testNoUnregistered() {
+    expect(element(by.css('.amount-unregistered')).isPresent()).toBe(false);
+  },
+
+  testUnregisteredCalculation = function testUnregisteredCalculation(amount, isIncome) {
     var
-      unregistered;
+      unregistered = getUnregistered();
 
-    expect(getIntervalTitle()).toBe('\'17 Nov');
-
-    expect(element(by.css('.amount-unregistered')).isPresent()).toBe(false);
-
-    stepPrevMonth();
-
-    unregistered = getUnregistered();
-
-    expect(unregistered.amount).toBe('600');
-    expect(unregistered.income).toBe(true);
-
-    stepPrevMonth();
-    expect(element(by.css('.amount-unregistered')).isPresent()).toBe(false);
+    expect(unregistered.amount).toBe(amount);
+    expect(unregistered.income).toBe(isIncome);
   };
 
 describe('general', function () {
   beforeEach(function () {
-    navigateToLanding();
-    setLastUsedInterval();
+    navigateToLanding()
+      .then(cleanAppData)
+      .then(setLastUsedIntervalToSeventeenOctober);
   });
 
   describe('landing page', function () {
@@ -257,9 +281,38 @@ describe('general', function () {
       navigateToRegister().then(testIntervalDisplay);
     });
 
+    describe('with registration w/ transactions and balances in december/january', function () {
+      beforeEach(function () {
+        navigateToRegister()
+          .then(stepNextMonth.bind(null, 2))
+          .then(addItemsAndBalancesToMonthAndNextMonth);
+      });
+
+      describe('with checking decembers statistics', function () {
+        beforeEach(function () {
+          navigateToStatistics().then(stepPrevMonth);
+        });
+
+        it('should display unregistered amount for december', function () {
+          testUnregisteredCalculation('600', true);
+        });
+      });
+
+      describe('with checking next years december', function () {
+        beforeEach(function () {
+          stepNextMonth(11);
+        });
+
+        it('should not display them for next year', function () {
+          expectRegisterHasTransactions(false);
+          expectRegisterHasBalances(false);
+        });
+      });
+    });
+
     describe('with custom month begin options', function () {
       beforeEach(function () {
-        navigateToConfig().then(testSettingMonthBeginOption);
+        navigateToConfig().then(setMonthBeginOption);
       });
 
       it('should keep data for serialization up-to-date and display updated data on config change', function () {
@@ -275,10 +328,23 @@ describe('general', function () {
 
   describe('statistics', function () {
     it('should display unregistered differences between months', function () {
+      var
+        expectations = function expectations() {
+          expect(getIntervalTitle()).toBe('\'17 Nov');
+
+          testNoUnregistered();
+          stepPrevMonth();
+
+          testUnregisteredCalculation('600', true);
+          stepPrevMonth();
+
+          testNoUnregistered();
+        };
+
       navigateToRegister()
-        .then(testAddingItemsToMonths)
+        .then(addItemsAndBalancesToMonthAndNextMonth)
         .then(navigateToStatistics)
-        .then(testUnregisteredCalculation);
+        .then(expectations);
     });
   });
 });

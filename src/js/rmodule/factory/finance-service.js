@@ -14,11 +14,11 @@ define(['app'], function (app) {
       },
 
       isCurrentBalance = function isCurrentBalance(serializedItem) {
-        return interval.month === serializedItem.m;
+        return interval.begMonth === serializedItem.m && interval.begYear === serializedItem.y;
       },
 
       isNextBalance = function isNextBalance(serializedItem) {
-        return interval.nextMonth === serializedItem.m;
+        return interval.endMonth === serializedItem.m && interval.endYear === serializedItem.y;
       },
 
       getCategory = function getCategory(id) {
@@ -78,6 +78,10 @@ define(['app'], function (app) {
 
         if (item.month !== undefined) {
           serializedItem.m = item.month;
+        }
+
+        if (item.year !== undefined) {
+          serializedItem.y = item.year;
         }
 
         return serializedItem;
@@ -170,7 +174,11 @@ define(['app'], function (app) {
         }
 
         if (balance.month === undefined) {
-          balance.month = interval.month;
+          balance.month = interval.begMonth;
+        }
+
+        if (balance.year === undefined) {
+          balance.year = interval.begYear;
         }
 
         if (balance.expense === undefined) {

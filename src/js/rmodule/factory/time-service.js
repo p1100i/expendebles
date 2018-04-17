@@ -32,20 +32,37 @@ define(['app'], function (app) {
         }
 
         var
+          begDate,
+          endDate,
           date            = new Date(timestamp),
           days            = date.getDate(),
           monthTranslate  = days < monthBeg ? 0 : 1,
-          begDate         = new Date(date.getFullYear(), date.getMonth() - 1 + monthTranslate, monthBeg),
-          endDate         = new Date(date.getFullYear(), date.getMonth() + monthTranslate,     monthBeg);
+          begMonth        = date.getMonth() - 1 + monthTranslate,
+          endMonth        = (begMonth + 1) % 12,
+          begYear         = date.getFullYear(),
+          endYear         = begYear;
 
+        if (endMonth === 0) {
+          endYear++;
+        }
+
+        begDate = new Date(begYear, begMonth, monthBeg);
+        endDate = new Date(endYear, endMonth, monthBeg);
+
+        //
+        // endDate is calculated the same way as the next intervals begDate,
+        // hence remove one millisec.
+        //
         endDate = new Date(endDate.getTime() - 1);
 
         interval.begDate    = begDate;
         interval.endDate    = endDate;
         interval.beg        = begDate.getTime();
         interval.end        = endDate.getTime();
-        interval.month      = begDate.getMonth();
-        interval.nextMonth  = begDate.getMonth() + 1;
+        interval.begMonth   = begMonth;
+        interval.endMonth   = endMonth;
+        interval.begYear    = begYear;
+        interval.endYear    = endYear;
         interval.title      = formatService.getIntervalTitle(begDate, endDate);
         interval.subtitle   = formatService.getIntervalSubtitle(begDate, endDate);
 
