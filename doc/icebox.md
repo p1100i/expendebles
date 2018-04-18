@@ -1,6 +1,6 @@
-- add upgrade notes show logic
+- generalize release display on help.html
 
-- ensure app-server is running for integration testing
+- add upgrade notes show logic
 
 - add yearly statistics about monthly income/outcome/diff
 
@@ -17,6 +17,8 @@
 - add demo-data injection
 
 - add option to encrypt localstorage data
+
+- ensure app-server is running for integration testing
 
 - make storageService usable in iOS privateBrowsing as well
   https://stackoverflow.com/questions/14555347/html5-localstorage-error-with-safari-quota-exceeded-err-dom-exception-22-an
