@@ -77,16 +77,6 @@ var
       return diClient;
     });
 
-    define('build', function () {
-      //
-      // Strings gets replaced on build time, by grunt.
-      //
-      return {
-        'date'    : '@@BUILD_DATE',
-        'commit'  : '@@BUILD_COMMIT'
-      };
-    });
-
     //
     // List all of your services/constants/controllers/etc, here.
     //

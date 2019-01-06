@@ -24,9 +24,9 @@
 
   <h2>Build:</h2>
   <ul class="disced">
-    <li><b>version:</b> {{about.version}}</li>
-    <li><b>commit:</b> {{about.buildCommit}}</li>
-    <li><b>unix time:</b> {{about.unixTime}}</li>
-    <li><b>local time:</b> {{about.buildDate | date:about.format}}</li>
+    <li><b>version:</b> v{{about.build.version}}</li>
+    <li><b>commit:</b> {{about.build.commit}}</li>
+    <li><b>date:</b> {{about.build.date | date:'yyyy-MM-dd HH:mm'}}</li>
+
   </ul>
 </div>
