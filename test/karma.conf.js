@@ -1,3 +1,5 @@
+process.env.CHROME_BIN='/usr/bin/chromium';
+
 module.exports = function (config) {
   var
     options,
@@ -20,20 +22,27 @@ module.exports = function (config) {
     // The order matters, if something is matched with false `included` property,
     // later on a match with - included true - won't inject the script into the page.
     'files': [
-      '../../node_modules/phantomjs-polyfill/bind-polyfill.js',
       'js/bundle.js',
-      { 'pattern' : 'js/**/*.js',                           'included': false },
-      { 'pattern' : '../../test/spec/rmodule/**/*.spec.js',  'included': false }
+      { 'pattern' : 'js/**/*.js',                             'included': false },
+      { 'pattern' : '../../test/spec/rmodule/**/*.spec.js',   'included': false }
     ],
 
     // Start these browsers, currently available:
     // - Chrome
     // - ChromeCanary
+    // - ChromeHeadless
     // - Firefox
     // - Opera (has to be installed with `npm install karma-opera-launcher`)
     // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
-    // - PhantomJS
     // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
+    // - PhantomJS
+    //
+    //
+    'browsers': [
+      browser || 'ChromeHeadless'
+      // 'Chrome' // Note: read below!
+    ],
+
     //
     // You can run the tests in chrome by installing
     // 'npm install -g karma-chrome-launcher'
@@ -43,11 +52,7 @@ module.exports = function (config) {
     // click on debug, open a developer console and refresh a page.
     // After that you should land in debug mode, in the context of the
     // specific jasmine spec.
-    'browsers': [
-      browser || 'PhantomJS'
-      // 'Chrome' // READ ABOVE PLS ^^^
-    ],
-
+    //
     // Use this if you want to run the specs in a browser w/ UI.
     // Specs will be executed on every reload.
     // 'singleRun': false
@@ -55,7 +60,11 @@ module.exports = function (config) {
   };
 
   if (coverage) {
-    coverageReporters.push({ 'type' : 'json', 'subdir' : 'json', 'file': 'coverage.json' });
+    coverageReporters.push({
+      'type'    : 'json',
+      'subdir'  : 'json',
+      'file'    : 'coverage.json'
+    });
 
     options.preprocessors = {
       'js/rmodule/**/*.js': 'coverage'

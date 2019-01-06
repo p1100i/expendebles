@@ -30,7 +30,8 @@
   "dependencies": {
     "node-static": "^0.7.11",
     "short-methods": "^1.5.0",
-    "yargs": "^12.0.5"
+    "yargs": "^12.0.5",
+    "depi": "^0.1.0",
   },
   "devDependencies": {
     "angular": "^1.7.5",
@@ -76,5 +77,7 @@
     "phantomjs-polyfill": "^0.0.2",
     "requirejs": "^2.3.6",
     "socket.io-client": "^2.2.0"
+    "grunt-ejs": "^0.3.0",
+    "karma-chrome-launcher": "^2.2.0"
   }
 }

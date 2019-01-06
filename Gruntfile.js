@@ -142,6 +142,21 @@ module.exports = function runGrunt(grunt) {
           'build/production/css/app.css' : 'build/development/css/app.css'
         },
 
+        'ejs' : {
+          'build' : {
+            'options': {
+              'date'        : Date.now(),
+              'commit'      : getCommit(),
+              'description' : pkg.description,
+              'name'        : pkg.name,
+              'version'     : pkg.version
+            },
+
+            'src'   : ['src/ejs/build.ejs'],
+            'dest'  : 'src/js/dimodule/build.js'
+          }
+        },
+
         'env' : {
           'coverage': {
             'SRC_COVERAGE'    : '../test/coverage/dimodule/instrument/src/js',
@@ -340,21 +355,6 @@ module.exports = function runGrunt(grunt) {
         },
 
         'replace' : {
-          'build' : {
-            'options': {
-              'patterns': [{
-                'json' : {
-                  'BUILD_DATE'    : Date.now(),
-                  'BUILD_COMMIT'  : getCommit()
-                }
-              }]
-            },
-
-            'files': [{
-              'src'   : ['build/tmp/js/client.js'],
-              'dest'  : 'build/tmp/js/client.js'
-            }]
-          },
 
           'coverage_rmodule': {
             'options': {
@@ -518,8 +518,8 @@ module.exports = function runGrunt(grunt) {
       'compile' : [
         'clean:tmp',
         'clean:development',
+        'ejs:build',
         'browserify',
-        'replace:build',
         'ngtemplates',
         'concat',
         'stylus',
