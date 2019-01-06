@@ -1,5 +1,5 @@
 var
-  di = require('./di'),
+  di = require('depi'),
   shortMethods  = require('short-methods');
 
 di.set('package', require('../../../package'));

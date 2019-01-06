@@ -1,4 +1,4 @@
 var
-  di = require('./di');
+  di = require('depi');
 
 module.exports = di;

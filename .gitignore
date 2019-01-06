@@ -5,3 +5,4 @@ build/tmp/*
 build/development/*
 build/production/*
 config/*
+src/js/dimodule/build.js
