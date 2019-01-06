@@ -1,3 +1,12 @@
-language: node_js
-node_js:
-  - "stable"
+os:
+  - linux
+dist:
+  - xenial
+language:
+  - node_js
+services:
+  - docker
+install:
+  - docker pull p1100i/js
+script:
+  - docker run -ti --rm --privileged -v "$(pwd):/builds/p1100i/expendebles" p1100i/js
